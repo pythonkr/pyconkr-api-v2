@@ -55,7 +55,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       # Pull request dose not get the gitub action secrets
-      # this section will be applied to the deploy workflow
+      # this section will be applied to the deploy workflows
       - name: Setup Auth for Private Repo
         uses: webfactory/ssh-agent@v0.5.4
         with:
