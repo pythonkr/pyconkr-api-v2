@@ -65,7 +65,7 @@ jobs:
 
       - name: update pyconkr-secretes
         run: |
-         ./update_secrets.sh
+          ./update_secrets.sh
 
       - name: Test with Django Test
         run: |
