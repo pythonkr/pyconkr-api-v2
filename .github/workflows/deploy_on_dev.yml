@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -42,17 +42,18 @@ jobs:
 
       - name: Create Virtualenv
         run: |
-          virtualenv pyconweb2022-zappa
+          virtualenv zappa-env
 
       # - name: Activate Virtualenv
       #   run: |
-      #     source ./pyconweb2022-zappa/bin/activate
+      #     source ./zappa-env/bin/activate
 
       - name: Install dependencies
         run: |
-          source ./pyconweb2022-zappa/bin/activate
+          source ./zappa-env/bin/activate
           python -m pip install --upgrade pip
           pip install pytest
+          pip install zappa
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       # Pull request dose not get the gitub action secrets
@@ -69,14 +70,13 @@ jobs:
 
       - name: Test with Django Test
         run: |
-          source ./pyconweb2022-zappa/bin/activate
-          cd pyconweb2022
+          source ./zappa-env/bin/activate
           python manage.py test
 
-      - name: Test with pytest
-        run: |
-          source ./pyconweb2022-zappa/bin/activate
-          pytest pyconweb2022
+#      - name: Test with pytest
+#        run: |
+#          source ./zappa-env/bin/activate
+#          pytest pyconweb2022
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -90,7 +90,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2021_AWS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.PYCON_DEV_2021_AWS_SECRET }}
         run: |
-          source ./pyconweb2022-zappa/bin/activate
-          cd pyconweb2022
-          zappa update dev
+          source ./zappa-env/bin/activate
+          zappa update dev2023
 #          zappa manage dev collectstatic

@@ -1,0 +1,17 @@
+name: Pull Request Merge Precondition
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose"
