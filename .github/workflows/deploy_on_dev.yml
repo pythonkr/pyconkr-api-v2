@@ -66,7 +66,7 @@ jobs:
 
       - name: update pyconkr-secretes
         run: |
-          chmod 775 ./update_secrets.sh
+         chmod 775 ./update_secrets.sh
          ./update_secrets.sh
 
       - name: Test with Django Test
