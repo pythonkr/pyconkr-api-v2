@@ -86,7 +86,7 @@ jobs:
 
       - name: Zappa Deploy(Update)
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2023_AWS_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2023_AWS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.PYCON_DEV_2023_AWS_SECRET }}
         run: |
           source ./zappa-env/bin/activate
