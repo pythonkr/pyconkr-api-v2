@@ -74,10 +74,10 @@ jobs:
           source ./zappa-env/bin/activate
           python manage.py test
 
-#      - name: Test with pytest
-#        run: |
-#          source ./zappa-env/bin/activate
-#          pytest pyconweb2022
+      - name: Test with pytest
+        run: |
+          source ./zappa-env/bin/activate
+          pytest .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
