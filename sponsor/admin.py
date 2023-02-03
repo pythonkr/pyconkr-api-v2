@@ -1,6 +1,7 @@
 from django.contrib import admin
-from sponsor.models import Sponsor, SponsorLevel
 from django_summernote.admin import SummernoteModelAdmin
+
+from sponsor.models import Sponsor, SponsorLevel
 
 
 class SponsorAdmin(SummernoteModelAdmin):
