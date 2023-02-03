@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 from sorl.thumbnail import ImageField as SorlImageField
 
 User = get_user_model()
@@ -60,8 +60,8 @@ class Sponsor(models.Model):
 
     creator = models.ForeignKey(
         User,
-        null=True,      # TODO: 추루 로그인 적용 후 입력
-        blank=True,     # TODO: 추루 로그인 적용 후 입력
+        null=True,  # TODO: 추루 로그인 적용 후 입력
+        blank=True,  # TODO: 추루 로그인 적용 후 입력
         on_delete=models.CASCADE,
         help_text="후원사를 등록한 유저",
         related_name="sponsor_creator",
