@@ -60,8 +60,8 @@ class Sponsor(models.Model):
 
     creator = models.ForeignKey(
         User,
-        null=True,      # TODO: 추루 로그인 적용 후 입력
-        blank=True,     # TODO: 추루 로그인 적용 후 입력
+        null=True,  # TODO: 추루 로그인 적용 후 입력
+        blank=True,  # TODO: 추루 로그인 적용 후 입력
         on_delete=models.CASCADE,
         help_text="후원사를 등록한 유저",
         related_name="sponsor_creator",
