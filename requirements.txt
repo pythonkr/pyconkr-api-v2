@@ -11,3 +11,4 @@ sqlparse==0.4.3
 tzdata==2022.7
 sorl-thumbnail==12.9.0
 django-summernote==0.8.20.0
+Pillow==9.4.0

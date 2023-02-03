@@ -1,10 +1,10 @@
 from django.contrib import admin
 from sponsor.models import Sponsor, SponsorLevel
+from django_summernote.admin import SummernoteModelAdmin
 
 
 class SponsorAdmin(SummernoteModelAdmin):
-    formfield_overrides = {models.TextField: {
-        'widget': SummernoteWidgetWithCustomToolbar}}
+    summernote_fields = "__all__"
     autocomplete_fields = ('creator', 'manager_id',)
     list_display = ('creator', 'name', 'level', 'manager_name', 'manager_email', 'manager_id',
                     'submitted', 'accepted', 'paid_at',)
@@ -16,8 +16,8 @@ admin.site.register(Sponsor, SponsorAdmin)
 
 
 class SponsorLevelAdmin(SummernoteModelAdmin):
-    list_display = ('id', 'order', 'name', 'slug', 'price', 'limit',)
-    list_editable = ('order', 'slug',)
+    list_display = ('id', 'order', 'name', 'price', 'limit',)
+    list_editable = ('order',)
     ordering = ('order',)
     search_fields = ('name',)
 
