@@ -3,6 +3,7 @@ name: Deploy Django with zappa on DEV stage
 on:
   push:
     branches: [devdev]
+  workflow_dispatch:
 
 jobs:
   build:

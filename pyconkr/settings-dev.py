@@ -4,6 +4,10 @@ from pyconkr.settings import *
 
 DEBUG = True
 
+ALLOWED_HOSTS += [
+    "api-dev.pycon.kr",
+]
+
 # RDS
 DATABASES = {
     "default": {
