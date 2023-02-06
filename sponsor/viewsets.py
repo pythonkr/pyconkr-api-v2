@@ -11,6 +11,7 @@ from sponsor.serializers import SponsorListSerializer, SponsorSerializer
 class SponsorViewSet(ModelViewSet):
     serializer_class = SponsorSerializer
     permission_classes = [IsOwnerOrReadOnly]  # 본인 소유만 수정가능
+    http_method_names = ["get", "post"]     # 지금은 조회/등록만 가능 TODO: 추후 수정기능 추가
 
     def get_queryset(self):
         return Sponsor.objects.all()
