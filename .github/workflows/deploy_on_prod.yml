@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: psf/black@stable
         with:
-          options: "--check --verbose"
+          options: "--check --verbose --exclude migrations"
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
