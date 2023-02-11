@@ -14,7 +14,7 @@ class SponsorSerializer(ModelSerializer):
             "manager_tel",  # 상세에만 포함되는 필드
             "business_registration_number",  # 상세에만 포함되는 필드
             "business_registration_file",  # 상세에만 포함되는 필드
-            "bank_book_file",   # 상세에만 포함되는 필드
+            "bank_book_file",  # 상세에만 포함되는 필드
             "url",
             "logo_image",
             "level",

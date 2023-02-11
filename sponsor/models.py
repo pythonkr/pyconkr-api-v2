@@ -49,8 +49,10 @@ class SponsorLevel(models.Model):
 def registration_file_upload_to(instance, filename):
     return f"sponsor/business_registration/{instance.id}/{filename}"
 
+
 def bank_book_file_upload_to(instance, filename):
     return f"sponsor/bank_book/{instance.id}/{filename}"
+
 
 def logo_image_upload_to(instance, filename):
     return f"sponsor/logo/{instance.id}/{filename}"
