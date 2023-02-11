@@ -49,6 +49,8 @@ class SponsorLevel(models.Model):
 def registration_file_upload_to(instance, filename):
     return f"sponsor/business_registration/{instance.id}/{filename}"
 
+def bank_book_file_upload_to(instance, filename):
+    return f"sponsor/bank_book/{instance.id}/{filename}"
 
 def logo_image_upload_to(instance, filename):
     return f"sponsor/logo/{instance.id}/{filename}"
@@ -89,6 +91,11 @@ class Sponsor(models.Model):
         max_length=100,
         help_text="입력하신 메일로 후원과 관련된 안내 메일이나 문의를 보낼 예정입니다. 후원 담당자의 이메일 주소를 입력해주십시오.",
     )
+    manager_tel = models.CharField(
+        max_length=20,
+        default="",
+        help_text="메일에 회신이 없거나, 긴급한 건의 경우, 문자나 유선으로 안내드릴 수 있습니다. 후원 담당자의 유선 연락처를 입력해주십시오.",
+    )
     manager_id = models.ForeignKey(
         User,
         null=True,
@@ -106,7 +113,14 @@ class Sponsor(models.Model):
     business_registration_file = models.FileField(
         null=True,
         blank=True,
+        default=None,
         upload_to=registration_file_upload_to,
+        help_text="후원사 사업자 등록증 스캔본입니다. 세금 계산서 발급에 사용됩니다.",
+    )
+    bank_book_file = models.FileField(
+        null=True,
+        blank=True,
+        upload_to=bank_book_file_upload_to,
         help_text="후원사 사업자 등록증 스캔본입니다. 세금 계산서 발급에 사용됩니다.",
     )
     url = models.CharField(

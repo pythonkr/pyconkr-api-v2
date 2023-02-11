@@ -11,8 +11,10 @@ class SponsorSerializer(ModelSerializer):
             "desc",  # 국문/영문 모두 한 필드에 담아 제공하는 것으로 결정
             "manager_name",  # 상세에만 포함되는 필드
             "manager_email",  # 상세에만 포함되는 필드
+            "manager_tel",  # 상세에만 포함되는 필드
             "business_registration_number",  # 상세에만 포함되는 필드
             "business_registration_file",  # 상세에만 포함되는 필드
+            "bank_book_file",   # 상세에만 포함되는 필드
             "url",
             "logo_image",
             "level",
