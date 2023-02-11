@@ -35,6 +35,18 @@ class SponsorListSerializer(ModelSerializer):
 
 
 class SponsorLevelSerializer(ModelSerializer):
+    class Meta:
+        model = SponsorLevel
+        fields = [
+            "name",
+            "price",
+            "desc",
+            "limit",
+            "id",
+        ] # TODO: Add fields to show
+
+
+class SponsorRemainingAccountSerializer(ModelSerializer):
     remaining = SerializerMethodField()
 
     class Meta:
@@ -42,7 +54,6 @@ class SponsorLevelSerializer(ModelSerializer):
         fields = [
             "name",
             "price",
-            "desc",
             "limit",
             "remaining",
             "id",

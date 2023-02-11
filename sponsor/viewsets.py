@@ -4,7 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from sponsor.models import Sponsor, SponsorLevel
 from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
-from sponsor.serializers import SponsorListSerializer, SponsorSerializer, SponsorLevelSerializer
+from sponsor.serializers import (
+    SponsorListSerializer, SponsorSerializer, SponsorLevelSerializer, SponsorRemainingAccountSerializer)
 
 
 class SponsorViewSet(ModelViewSet):
@@ -56,5 +57,19 @@ class SponsorLevelViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = SponsorLevel.objects.all().order_by("-price")
         serializer = SponsorLevelSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+
+class SponsorRemainingAccountViewSet(ModelViewSet):
+    serializer_class = SponsorLevelSerializer
+    http_method_names = ["get"]
+
+    def get_queryset(self):
+        return SponsorLevel.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        queryset = SponsorLevel.objects.all().order_by("-price")
+        serializer = SponsorRemainingAccountSerializer(queryset, many=True)
 
         return Response(serializer.data)
