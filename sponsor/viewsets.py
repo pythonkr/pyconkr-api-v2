@@ -1,3 +1,5 @@
+from typing import Type
+
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -5,7 +7,11 @@ from rest_framework.viewsets import ModelViewSet
 from sponsor.models import Sponsor, SponsorLevel
 from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
 from sponsor.serializers import (
-    SponsorListSerializer, SponsorSerializer, SponsorLevelSerializer, SponsorRemainingAccountSerializer)
+    SponsorListSerializer,
+    SponsorSerializer,
+    SponsorLevelSerializer,
+    SponsorRemainingAccountSerializer,
+)
 
 
 class SponsorViewSet(ModelViewSet):
@@ -43,7 +49,7 @@ class SponsorViewSet(ModelViewSet):
 
     def check_owner_permission(self, request, sponsor_data: Sponsor):
         return OwnerOnly.has_object_permission(
-            self=OwnerOnly, request=request, view=self, obj=sponsor_data
+            self=Type[OwnerOnly], request=request, view=self, obj=sponsor_data
         )
 
 
