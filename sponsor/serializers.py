@@ -1,6 +1,7 @@
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from sponsor.models import Sponsor
+from sponsor.models import Sponsor, SponsorLevel
 
 
 class SponsorSerializer(ModelSerializer):
@@ -31,3 +32,33 @@ class SponsorListSerializer(ModelSerializer):
             "logo_image",
             "id",
         ]
+
+
+class SponsorLevelSerializer(ModelSerializer):
+    class Meta:
+        model = SponsorLevel
+        fields = [
+            "name",
+            "price",
+            "desc",
+            "limit",
+            "id",
+        ]  # TODO: Add fields to show
+
+
+class SponsorRemainingAccountSerializer(ModelSerializer):
+    remaining = SerializerMethodField()
+
+    class Meta:
+        model = SponsorLevel
+        fields = [
+            "name",
+            "price",
+            "limit",
+            "remaining",
+            "id",
+        ]
+
+    @staticmethod
+    def get_remaining(obj):
+        return obj.current_remaining_number

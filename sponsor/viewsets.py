@@ -1,11 +1,17 @@
+from typing import Type
+
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from sponsor.models import Sponsor
+from sponsor.models import Sponsor, SponsorLevel
 from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
-from sponsor.serializers import SponsorListSerializer, SponsorSerializer
+from sponsor.serializers import (
+    SponsorLevelSerializer,
+    SponsorListSerializer,
+    SponsorRemainingAccountSerializer,
+    SponsorSerializer,
+)
 
 
 class SponsorViewSet(ModelViewSet):
@@ -43,5 +49,33 @@ class SponsorViewSet(ModelViewSet):
 
     def check_owner_permission(self, request, sponsor_data: Sponsor):
         return OwnerOnly.has_object_permission(
-            self=OwnerOnly, request=request, view=self, obj=sponsor_data
+            self=Type[OwnerOnly], request=request, view=self, obj=sponsor_data
         )
+
+
+class SponsorLevelViewSet(ModelViewSet):
+    serializer_class = SponsorLevelSerializer
+    http_method_names = ["get"]
+
+    def get_queryset(self):
+        return SponsorLevel.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        queryset = SponsorLevel.objects.all().order_by("-price")
+        serializer = SponsorLevelSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+
+class SponsorRemainingAccountViewSet(ModelViewSet):
+    serializer_class = SponsorLevelSerializer
+    http_method_names = ["get"]
+
+    def get_queryset(self):
+        return SponsorLevel.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        queryset = SponsorLevel.objects.all().order_by("-price")
+        serializer = SponsorRemainingAccountSerializer(queryset, many=True)
+
+        return Response(serializer.data)
