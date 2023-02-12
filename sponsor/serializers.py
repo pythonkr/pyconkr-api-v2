@@ -43,7 +43,7 @@ class SponsorLevelSerializer(ModelSerializer):
             "desc",
             "limit",
             "id",
-        ] # TODO: Add fields to show
+        ]  # TODO: Add fields to show
 
 
 class SponsorRemainingAccountSerializer(ModelSerializer):
@@ -59,5 +59,6 @@ class SponsorRemainingAccountSerializer(ModelSerializer):
             "id",
         ]
 
-    def get_remaining(self, obj):
+    @staticmethod
+    def get_remaining(obj):
         return obj.current_remaining_number
