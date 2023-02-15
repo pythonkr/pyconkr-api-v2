@@ -4,3 +4,13 @@
 
 ## PR 이전에
 * 컨벤션 유지를 위해 `black`과 `isort`를 적용하고 있습니다.
+
+
+## how to run localtesting ( sqlite3 based )
+```
+# to setup pytest and requirements
+pip install -r requirements-dev.txt
+# run test
+pytest
+```
+
