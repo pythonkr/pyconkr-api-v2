@@ -130,3 +130,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # django-summernote
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+CONSTANCE_CONFIG = {
+    'SPONSOR_NOTI_CHANNEL': ("", "후원사 변동사항에 대한 알림을 보낼 채널",),
+}
