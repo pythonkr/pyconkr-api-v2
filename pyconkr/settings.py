@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_summernote",
     "constance",
+    "constance.backends.database",
     # apps
     "sponsor",
 ]
@@ -132,6 +133,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
+# django-constance
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_CONFIG = {
     "SLACK_SECRET": (
         "",
