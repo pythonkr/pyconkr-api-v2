@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # add-on
     "rest_framework",
     "django_summernote",
+    "constance",
     # apps
     "sponsor",
 ]
