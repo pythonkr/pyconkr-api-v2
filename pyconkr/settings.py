@@ -132,6 +132,12 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 CONSTANCE_CONFIG = {
-    "SLACK_SECRET": ("", "Slack 알림 전송에 사용할 Secret",),
-    "SPONSOR_NOTI_CHANNEL": ("", "후원사 변동사항에 대한 알림을 보낼 채널",),
+    "SLACK_SECRET": (
+        "",
+        "Slack 알림 전송에 사용할 Secret",
+    ),
+    "SPONSOR_NOTI_CHANNEL": (
+        "",
+        "후원사 변동사항에 대한 알림을 보낼 채널",
+    ),
 }
