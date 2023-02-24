@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "constance.backends.database",
     # apps
     "sponsor",
+    "status",
 ]
 
 MIDDLEWARE = [

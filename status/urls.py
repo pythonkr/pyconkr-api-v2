@@ -16,13 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-import sponsor.routers
-import status.urls
+from status.views import StatusView
 
 urlpatterns = [
-    path("api-auth/", include("rest_framework.urls")),
-    path("summernote/", include("django_summernote.urls")),
-    path("admin/", admin.site.urls),
-    path("sponsors/", include(sponsor.routers.get_router().urls)),
-    path("status/", include(status.urls)),
+    path("<str:name>", StatusView.as_view()),
 ]
