@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -23,7 +24,6 @@ from drf_spectacular.views import (
 )
 
 import sponsor.routers
-import pyconkr.settings as settings
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
