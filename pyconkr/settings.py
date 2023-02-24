@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # add-on
     "rest_framework",
     "django_summernote",
+    "constance",
+    "constance.backends.database",
     # apps
     "sponsor",
 ]
@@ -130,3 +132,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # django-summernote
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+# django-constance
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+CONSTANCE_CONFIG = {
+    "SLACK_SECRET": (
+        "",
+        "Slack 알림 전송에 사용할 Secret",
+    ),
+    "SPONSOR_NOTI_CHANNEL": (
+        "",
+        "후원사 변동사항에 대한 알림을 보낼 채널",
+    ),
+}
