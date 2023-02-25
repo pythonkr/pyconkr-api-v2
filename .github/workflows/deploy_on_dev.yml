@@ -103,4 +103,5 @@ jobs:
           AWS_S3_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2023_AWS_KEY }}
           AWS_S3_SECRET_ACCESS_KEY: ${{ secrets.PYCON_DEV_2023_AWS_SECRET }}
         run: |
+          source ./zappa-env/bin/activate
           python manage.py collectstatic --no-input --settings=pyconkr.settings-dev
