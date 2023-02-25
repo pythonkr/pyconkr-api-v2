@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "constance.backends.database",
     # apps
     "sponsor",
+    "status",
     # swagger
     "drf_spectacular",
 ]
