@@ -1,5 +1,6 @@
 from typing import Type
 
+from django.db.transaction import atomic
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -12,12 +13,14 @@ from sponsor.serializers import (
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
 )
+from sponsor.validators import SponsorValidater
 
 
 class SponsorViewSet(ModelViewSet):
     serializer_class = SponsorSerializer
     permission_classes = [IsOwnerOrReadOnly]  # 본인 소유만 수정가능
     http_method_names = ["get", "post"]  # 지금은 조회/등록만 가능 TODO: 추후 수정기능 추가
+    validator = SponsorValidater()
 
     def get_queryset(self):
         return Sponsor.objects.all()
@@ -27,10 +30,14 @@ class SponsorViewSet(ModelViewSet):
         serializer = SponsorListSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    @atomic
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        self.validator.assert_create(serializer.validated_data)
+
+        new_sponsor = serializer.save()
+
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
