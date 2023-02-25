@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "constance.backends.database",
     # apps
     "sponsor",
+    # swagger
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -144,4 +146,26 @@ CONSTANCE_CONFIG = {
         "",
         "후원사 변동사항에 대한 알림을 보낼 채널",
     ),
+}
+
+# drf-spectacular
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "pyconkr-api-v2",
+    "DESCRIPTION": "파이콘 한국 웹서비스용 API (2023 ~ )",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": True,
+    # available SwaggerUI configuration parameters
+    # https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
+    # available SwaggerUI versions: https://github.com/swagger-api/swagger-ui/releases
+    "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
 }
