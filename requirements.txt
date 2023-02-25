@@ -9,3 +9,9 @@ mysql-connector-python==8.0.32
 mysqlclient==2.1.1
 sqlparse==0.4.3
 tzdata==2022.7
+sorl-thumbnail==12.9.0
+django-summernote==0.8.20.0
+Pillow==9.4.0
+django-constance==2.9.1
+django-picklefield==3.1
+drf-spectacular==0.25.1

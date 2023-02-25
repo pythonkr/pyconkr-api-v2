@@ -3,6 +3,7 @@ name: Deploy Django with zappa on DEV stage
 on:
   push:
     branches: [devdev]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: psf/black@stable
         with:
-          options: "--check --verbose"
+          options: "--check --verbose --exclude migrations"
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
