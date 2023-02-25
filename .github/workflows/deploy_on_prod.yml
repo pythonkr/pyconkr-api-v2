@@ -93,4 +93,14 @@ jobs:
         run: |
           source ./zappa-env/bin/activate
           zappa update prod2023
-#          zappa manage production collectstatic
+#          zappa manage prod2023 "collectstatic --no-input"
+
+      - name: Collect Static Files to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2023_AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PYCON_DEV_2023_AWS_SECRET }}
+          AWS_S3_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2023_AWS_KEY }}
+          AWS_S3_SECRET_ACCESS_KEY: ${{ secrets.PYCON_DEV_2023_AWS_SECRET }}
+        run: |
+          source ./zappa-env/bin/activate
+          python manage.py collectstatic --no-input --settings=pyconkr.settings-prod
