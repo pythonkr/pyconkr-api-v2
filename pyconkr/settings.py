@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # apps
     "sponsor",
     "status",
+    "ticket",
     # swagger
     "drf_spectacular",
 ]
