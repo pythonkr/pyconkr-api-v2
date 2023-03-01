@@ -21,8 +21,6 @@ class ProposalSerializer(ModelSerializer):
             "video_url",
             "slide_url",
             "room_num",
-            "created_at",
-            "updated_at",
         ]
 
 
@@ -36,8 +34,6 @@ class ProposalListSerializer(ModelSerializer):
             "duration",
             "language",
             "category",
-            "created_at",
-            "updated_at",
         ]
 
 
