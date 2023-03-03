@@ -17,7 +17,7 @@ class SponsorLevel(models.Model):
     )
     visible = models.BooleanField(default=True)
     price = models.IntegerField(default=0)
-    limit = models.IntegerField(default=0, help_text="후원사 등급 별 구좌수")
+    limit = models.IntegerField(default=0, help_text="후원사 등급별 구좌 수")
     order = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -64,8 +64,8 @@ class Sponsor(models.Model):
 
     creator = models.ForeignKey(
         User,
-        null=True,  # TODO: 추루 로그인 적용 후 입력
-        blank=True,  # TODO: 추루 로그인 적용 후 입력
+        null=True,  # TODO: 추후 로그인 적용 후 입력
+        blank=True,  # TODO: 추후 로그인 적용 후 입력
         on_delete=models.CASCADE,
         help_text="후원사를 등록한 유저",
         related_name="sponsor_creator",
@@ -110,7 +110,7 @@ class Sponsor(models.Model):
         max_length=100,
         null=True,
         blank=True,
-        help_text="후원사 사업자 등록번호입니다. 세금 계산서 발급에 사용됩니다.",
+        help_text="후원사 사업자 등록 번호입니다. 세금 계산서 발급에 사용됩니다.",
     )
     business_registration_file = models.FileField(
         null=True,
@@ -123,13 +123,13 @@ class Sponsor(models.Model):
         null=True,
         blank=True,
         upload_to=bank_book_file_upload_to,
-        help_text="후원사 사업자 등록증 스캔본입니다. 세금 계산서 발급에 사용됩니다.",
+        help_text="후원사 통장 사본입니다.",
     )
     url = models.CharField(
         max_length=255,
         null=True,
         blank=True,
-        help_text="파이콘 홈페이지에 공개되는 후원사 홈페이지 주소입니다.",
+        help_text="파이콘 한국 홈페이지에 공개되는 후원사 홈페이지 주소입니다.",
     )
     logo_image = SorlImageField(
         upload_to=logo_image_upload_to,
