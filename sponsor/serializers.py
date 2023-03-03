@@ -1,10 +1,11 @@
 from rest_framework.fields import SerializerMethodField
-from rest_framework.serializers import ModelSerializer
+
+import rest_framework.serializers as serializers
 
 from sponsor.models import Sponsor, SponsorLevel
 
 
-class SponsorSerializer(ModelSerializer):
+class SponsorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sponsor
         fields = [
@@ -23,7 +24,7 @@ class SponsorSerializer(ModelSerializer):
         ]
 
 
-class SponsorListSerializer(ModelSerializer):
+class SponsorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sponsor
         fields = [
@@ -35,7 +36,7 @@ class SponsorListSerializer(ModelSerializer):
         ]
 
 
-class SponsorLevelSerializer(ModelSerializer):
+class SponsorLevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = SponsorLevel
         fields = [
@@ -47,8 +48,9 @@ class SponsorLevelSerializer(ModelSerializer):
         ]  # TODO: Add fields to show
 
 
-class SponsorRemainingAccountSerializer(ModelSerializer):
+class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
     remaining = SerializerMethodField()
+    available = SerializerMethodField()
 
     class Meta:
         model = SponsorLevel
@@ -58,8 +60,13 @@ class SponsorRemainingAccountSerializer(ModelSerializer):
             "limit",
             "remaining",
             "id",
+            "available",
         ]
 
     @staticmethod
     def get_remaining(obj):
         return obj.current_remaining_number
+
+    @staticmethod
+    def get_available(obj: SponsorLevel):
+        return True if obj.current_remaining_number < obj.limit else False
