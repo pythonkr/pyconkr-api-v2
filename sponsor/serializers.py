@@ -1,6 +1,5 @@
-from rest_framework.fields import SerializerMethodField
-
 import rest_framework.serializers as serializers
+from rest_framework.fields import SerializerMethodField
 
 from sponsor.models import Sponsor, SponsorLevel
 
