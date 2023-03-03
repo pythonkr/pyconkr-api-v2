@@ -69,4 +69,4 @@ class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_available(obj: SponsorLevel):
-        return True if obj.current_remaining_number < obj.limit else False
+        return True if obj.current_remaining_number > 0 else False
