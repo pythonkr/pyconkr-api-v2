@@ -1,6 +1,5 @@
-from rest_framework.fields import SerializerMethodField
-
 import rest_framework.serializers as serializers
+from rest_framework.fields import SerializerMethodField
 
 from sponsor.models import Sponsor, SponsorLevel
 
@@ -69,4 +68,4 @@ class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_available(obj: SponsorLevel):
-        return True if obj.current_remaining_number < obj.limit else False
+        return True if obj.current_remaining_number > 0 else False
