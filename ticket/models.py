@@ -26,9 +26,9 @@ class ConferenceTicket(models.Model):
     # 구매 일자
     bought_at = models.DateTimeField()
     # 사용자
-    user = models.ForeignKey(User, on_delete=models.RESTRICT)
+    user = models.ForeignKey(User, on_delete=models.RESTRICT, db_index=True)
     # 티켓 코드
-    ticket_code = models.CharField(max_length=25, default=make_ticket_code, unique=True)
+    ticket_code = models.CharField(max_length=25, default=make_ticket_code, unique=True, db_index=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
