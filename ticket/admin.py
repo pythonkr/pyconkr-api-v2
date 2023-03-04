@@ -21,6 +21,7 @@ class ConferenceTicketTypeAdmin(admin.ModelAdmin):
         "name",
         "price",
         "min_price",
+        "day",
     )
 
 
