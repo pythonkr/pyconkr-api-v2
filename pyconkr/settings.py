@@ -148,6 +148,14 @@ CONSTANCE_CONFIG = {
         "",
         "후원사 변동사항에 대한 알림을 보낼 채널",
     ),
+    "CONFERENCE_PARTICIPANT_COUNT_SAT": (
+        1700,
+        "컨퍼런스(토) 참가자 수",
+    ),
+    "CONFERENCE_PARTICIPANT_COUNT_SUN": (
+        1700,
+        "컨퍼런스(일) 참가자 수",
+    ),
 }
 
 # drf-spectacular
