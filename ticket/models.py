@@ -1,4 +1,5 @@
 import shortuuid
+from constance import config
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -22,6 +23,27 @@ class ConferenceTicketType(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def buyable(self) -> bool:
+        sat_ticket_count = (ConferenceTicket.objects
+                            .filter(models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND"))
+                            .count())
+        sun_ticket_count = (ConferenceTicket.objects
+                            .filter(models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND"))
+                            .count())
+
+        can_buy_sat_ticket = sat_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SAT
+        can_buy_sun_ticket = sun_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SUN
+
+        if self.day == "SAT":
+            return can_buy_sat_ticket
+        elif self.day == "SUN":
+            return can_buy_sun_ticket
+        elif self.day == "WEEKEND":
+            return can_buy_sat_ticket and can_buy_sun_ticket
+        else:
+            raise ValueError(f"{self.day} is not valid day.")
 
 
 def make_ticket_code() -> str:
