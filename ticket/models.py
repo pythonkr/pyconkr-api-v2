@@ -11,6 +11,14 @@ class ConferenceTicketType(models.Model):
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
     desc = models.TextField(max_length=1000)
+    day = models.CharField(
+        max_length=10,
+        choices=(
+            ("SAT", "토요일"),
+            ("SUN", "일요일"),
+            ("WEEKEND", "토/일요일"),
+        ),
+    )
 
     def __str__(self):
         return self.name
