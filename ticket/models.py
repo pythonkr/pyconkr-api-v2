@@ -52,7 +52,7 @@ def make_ticket_code() -> str:
 
 class ConferenceTicket(models.Model):
     # 구분
-    ticket_type = models.ForeignKey(ConferenceTicketType, on_delete=models.RESTRICT)
+    ticket_type = models.ForeignKey(ConferenceTicketType, on_delete=models.RESTRICT, db_index=True)
     # 구매 일자
     bought_at = models.DateTimeField()
     # 사용자
