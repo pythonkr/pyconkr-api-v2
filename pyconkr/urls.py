@@ -24,6 +24,7 @@ from drf_spectacular.views import (
 
 import sponsor.routers
 import status.urls
+import ticket.urls
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
@@ -31,6 +32,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sponsors/", include(sponsor.routers.get_router().urls)),
     path("status/", include(status.urls)),
+    path("ticket/", include(ticket.urls)),
 ]
 
 if settings.DEBUG is True:
