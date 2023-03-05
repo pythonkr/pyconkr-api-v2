@@ -42,9 +42,8 @@ def get__get_conference_ticket_types(request: HttpRequest) -> HttpResponse:
 def get__check_conference_ticket_buyable(request: HttpRequest, ticket_type_code: str) -> HttpResponse:
     """특정 티켓 종류 구매 가능 여부 조회"""
     request = GetConferenceTicketTypesBuyableRequest(request)
-    ticket_type = get_object_or_404(ConferenceTicketType, code=ticket_type_code)
 
-    print(request)
+    ticket_type = get_object_or_404(ConferenceTicketType, code=ticket_type_code)
 
     if request.querystring.username is None:
         return HttpResponse(json.dumps(ticket_type.buyable))
@@ -55,7 +54,6 @@ def get__check_conference_ticket_buyable(request: HttpRequest, ticket_type_code:
         return HttpResponse(json.dumps(ticket_type.buyable))
 
     bought_tickets = ConferenceTicket.objects.filter(user=user)
-    print(bought_tickets)
 
     return HttpResponse(json.dumps(ticket_type.buyable and all(
         (bought_ticket.ticket_type.can_coexist(ticket_type) for bought_ticket in bought_tickets))))
