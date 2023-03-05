@@ -1,14 +1,16 @@
 import json
+import traceback
 from datetime import datetime
-from typing import Callable, Literal
 
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from typing import Callable, Literal
 
 from .models import ConferenceTicketType, ConferenceTicket
-from .requests import GetConferenceTicketTypesBuyableRequest
+from .requests import CheckConferenceTicketTypeBuyableRequest, GetConferenceTicketTypesRequest, \
+    AddConferenceTicketRequest, RequestParsingException
 from .view_models import ConferenceTicketTypeViewModel
 
 User = get_user_model()
@@ -29,9 +31,30 @@ def request_method(method: METHOD) -> Callable:
     return decorator
 
 
+def exception_wrapper(func: Callable[[HttpRequest, ...], HttpResponse]):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except RequestParsingException:
+            traceback.print_exc()
+            print(f"{args=}")
+            print(f"{kwargs=}")
+            return HttpResponse("Invalid request", status=400)
+        except (Exception,):
+            print(f"{args=}")
+            print(f"{kwargs=}")
+            traceback.print_exc()
+            return HttpResponse(status=500)
+
+    return wrapper
+
+
 @request_method("GET")
-def get__get_conference_ticket_types(request: HttpRequest) -> HttpResponse:
+@exception_wrapper
+def get__get_conference_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
     """티켓 종류 목록 조회"""
+    request = GetConferenceTicketTypesRequest(request, **kwargs)
+
     ticket_types = ConferenceTicketType.objects.all()
 
     return HttpResponse(
@@ -39,11 +62,12 @@ def get__get_conference_ticket_types(request: HttpRequest) -> HttpResponse:
 
 
 @request_method("GET")
-def get__check_conference_ticket_buyable(request: HttpRequest, ticket_type_code: str) -> HttpResponse:
+@exception_wrapper
+def get__check_conference_ticket_type_buyable(request: HttpRequest, **kwargs) -> HttpResponse:
     """특정 티켓 종류 구매 가능 여부 조회"""
-    request = GetConferenceTicketTypesBuyableRequest(request)
+    request = CheckConferenceTicketTypeBuyableRequest(request, **kwargs)
 
-    ticket_type = get_object_or_404(ConferenceTicketType, code=ticket_type_code)
+    ticket_type = get_object_or_404(ConferenceTicketType, code=request.match_info.ticket_type_code)
 
     if request.querystring.username is None:
         return HttpResponse(json.dumps(ticket_type.buyable))
@@ -60,14 +84,14 @@ def get__check_conference_ticket_buyable(request: HttpRequest, ticket_type_code:
 
 
 @request_method("POST")
-def post__add_ticket(request: HttpRequest) -> HttpResponse:
+@exception_wrapper
+def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     """티켓 결제 완료, 추가 요청"""
+    request = AddConferenceTicketRequest(request)
 
-    data = json.loads(request.body)
-    if not isinstance(data, dict):
-        return HttpResponse("Invalid data", status=400)
+    data = request.data
 
-    ticket_type = data.get("ticket_type")
+    ticket_type = data.ticket_type
     if ticket_type is None:
         return HttpResponse("Invalid ticket type", status=400)
     try:
@@ -75,7 +99,7 @@ def post__add_ticket(request: HttpRequest) -> HttpResponse:
     except ConferenceTicketType.DoesNotExist:
         return HttpResponse("Invalid ticket type", status=400)
 
-    bought_at = data.get("bought_at")
+    bought_at = data.bought_at
     if bought_at is None:
         return HttpResponse("Invalid bought_at", status=400)
     try:
@@ -83,11 +107,11 @@ def post__add_ticket(request: HttpRequest) -> HttpResponse:
     except ValueError:
         return HttpResponse("Invalid datetime format (bought_at)", status=400)
 
-    user = data.get("user")
-    if user is None:
-        return HttpResponse("Invalid user", status=400)
+    username = data.username
+    if username is None:
+        return HttpResponse("Invalid username", status=400)
     try:
-        user = User.objects.get(username=user)
+        user = User.objects.get(username=username)
     except User.DoesNotExist:
         return HttpResponse("Cannot find user with user_id", status=400)
 
