@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import shortuuid
 from constance import config
 from django.contrib.auth import get_user_model
@@ -26,6 +28,7 @@ class ConferenceTicketType(models.Model):
 
     @property
     def buyable(self) -> bool:
+        """잔여 수량이 있는지"""
         sat_ticket_count = (ConferenceTicket.objects
                             .filter(models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND"))
                             .count())
@@ -44,6 +47,14 @@ class ConferenceTicketType(models.Model):
             return can_buy_sat_ticket and can_buy_sun_ticket
         else:
             raise ValueError(f"{self.day} is not valid day.")
+
+    def can_coexist(self, other: ConferenceTicketType) -> bool:
+        if self.day == "SAT" and other.day == "SUN":
+            return True
+        if self.day == "SUN" and other.day == "SAT":
+            return True
+
+        return False
 
 
 def make_ticket_code() -> str:
