@@ -1,9 +1,9 @@
 import json
 from dataclasses import dataclass
+from typing import Optional, Type, TypeVar
 
 import jsons
 from django.http import HttpRequest
-from typing import Optional, Type, TypeVar
 
 _T = TypeVar("_T", bound=Type)
 

@@ -1,18 +1,18 @@
 import json
 import traceback
 from datetime import datetime
-
-from django.contrib.auth import get_user_model
-from django.http import HttpResponse, HttpRequest
-from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
 from typing import Callable, Literal
 
-from .models import ConferenceTicketType, ConferenceTicket
+from django.contrib.auth import get_user_model
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import ConferenceTicket, ConferenceTicketType
 from .requests import (
+    AddConferenceTicketRequest,
     CheckConferenceTicketTypeBuyableRequest,
     GetConferenceTicketTypesRequest,
-    AddConferenceTicketRequest,
     RequestParsingException,
 )
 from .view_models import ConferenceTicketTypeViewModel
