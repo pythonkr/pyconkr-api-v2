@@ -1,0 +1,158 @@
+import json
+import traceback
+from datetime import datetime
+from typing import Callable, Literal
+
+from django.contrib.auth import get_user_model
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import ConferenceTicket, ConferenceTicketType
+from .requests import (
+    AddConferenceTicketRequest,
+    CheckConferenceTicketTypeBuyableRequest,
+    GetConferenceTicketTypesRequest,
+    RequestParsingException,
+)
+from .view_models import ConferenceTicketTypeViewModel
+
+User = get_user_model()
+
+METHOD = Literal["HEAD", "GET", "POST", "PATCH", "PUT", "DELETE"]
+
+
+def request_method(method: METHOD) -> Callable:
+    def decorator(func: Callable):
+        @csrf_exempt
+        def wrapper(*args, **kwargs):
+            if args[0].method not in method:
+                return HttpResponse("Method not allowed", status=405)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def exception_wrapper(func: Callable[[HttpRequest, ...], HttpResponse]):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except RequestParsingException:
+            traceback.print_exc()
+            print(f"{args=}")
+            print(f"{kwargs=}")
+            return HttpResponse("Invalid request", status=400)
+        except (Exception,):
+            print(f"{args=}")
+            print(f"{kwargs=}")
+            traceback.print_exc()
+            return HttpResponse(status=500)
+
+    return wrapper
+
+
+@request_method("GET")
+@exception_wrapper
+def get__get_conference_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
+    """티켓 종류 목록 조회"""
+    request = GetConferenceTicketTypesRequest(request, **kwargs)
+
+    ticket_types = ConferenceTicketType.objects.all()
+
+    return HttpResponse(
+        json.dumps(
+            [
+                ConferenceTicketTypeViewModel(ticket_type).to_dict()
+                for ticket_type in ticket_types
+            ]
+        )
+    )
+
+
+@request_method("GET")
+@exception_wrapper
+def get__check_conference_ticket_type_buyable(
+    request: HttpRequest, **kwargs
+) -> HttpResponse:
+    """특정 티켓 종류 구매 가능 여부 조회"""
+    request = CheckConferenceTicketTypeBuyableRequest(request, **kwargs)
+
+    ticket_type = get_object_or_404(
+        ConferenceTicketType, code=request.match_info.ticket_type_code
+    )
+
+    if request.querystring.username is None:
+        return HttpResponse(json.dumps(ticket_type.buyable))
+
+    try:
+        user = User.objects.get(username=request.querystring.username)
+    except User.DoesNotExist:
+        return HttpResponse(json.dumps(ticket_type.buyable))
+
+    bought_tickets = ConferenceTicket.objects.filter(user=user)
+
+    return HttpResponse(
+        json.dumps(
+            ticket_type.buyable
+            and all(
+                (
+                    bought_ticket.ticket_type.can_coexist(ticket_type)
+                    for bought_ticket in bought_tickets
+                )
+            )
+        )
+    )
+
+
+@request_method("POST")
+@exception_wrapper
+def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
+    """티켓 결제 완료, 추가 요청"""
+    request = AddConferenceTicketRequest(request)
+
+    data = request.data
+
+    ticket_type = data.ticket_type
+    if ticket_type is None:
+        return HttpResponse("Invalid ticket type", status=400)
+    try:
+        ticket_type = ConferenceTicketType.objects.get(code=ticket_type)
+    except ConferenceTicketType.DoesNotExist:
+        return HttpResponse("Invalid ticket type", status=400)
+
+    bought_at = data.bought_at
+    if bought_at is None:
+        return HttpResponse("Invalid bought_at", status=400)
+    try:
+        bought_at = datetime.strptime(bought_at, "%Y-%m-%dT%H:%M:%S")
+    except ValueError:
+        return HttpResponse("Invalid datetime format (bought_at)", status=400)
+
+    username = data.username
+    if username is None:
+        return HttpResponse("Invalid username", status=400)
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse("Cannot find user with user_id", status=400)
+
+    bought_tickets = ConferenceTicket.objects.filter(user=user)
+    if any(
+        (
+            not bought_ticket.ticket_type.can_coexist(ticket_type)
+            for bought_ticket in bought_tickets
+        )
+    ):
+        return HttpResponse("Duplicate day", status=400)
+
+    ticket = ConferenceTicket.objects.create(
+        ticket_type=ticket_type,
+        bought_at=bought_at,
+        user=user,
+    )
+
+    ticket.save()
+
+    return HttpResponse(ticket.id)

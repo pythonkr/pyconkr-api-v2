@@ -6,7 +6,6 @@ import sponsor.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("sponsor", "0001_initial"),
     ]
