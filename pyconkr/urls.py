@@ -31,8 +31,8 @@ urlpatterns = [
     path("summernote/", include("django_summernote.urls")),
     path("admin/", admin.site.urls),
     path("sponsors/", include(sponsor.routers.get_router().urls)),
-    path("status/", include(status.urls)),
-    path("ticket/", include(ticket.urls)),
+    path("statuses/", include(status.urls)),
+    path("tickets/", include(ticket.urls)),
 ]
 
 if settings.DEBUG is True:
