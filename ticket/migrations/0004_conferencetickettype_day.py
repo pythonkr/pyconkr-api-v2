@@ -4,16 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0003_alter_conferenceticket_ticket_code'),
+        ("ticket", "0003_alter_conferenceticket_ticket_code"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='conferencetickettype',
-            name='day',
-            field=models.CharField(choices=[('SAT', '토요일'), ('SUN', '일요일'), ('WEEKEND', '토/일요일')], default='SAT', max_length=10),
+            model_name="conferencetickettype",
+            name="day",
+            field=models.CharField(
+                choices=[("SAT", "토요일"), ("SUN", "일요일"), ("WEEKEND", "토/일요일")],
+                default="SAT",
+                max_length=10,
+            ),
             preserve_default=False,
         ),
     ]

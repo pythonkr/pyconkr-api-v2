@@ -9,8 +9,12 @@ from django.views.decorators.csrf import csrf_exempt
 from typing import Callable, Literal
 
 from .models import ConferenceTicketType, ConferenceTicket
-from .requests import CheckConferenceTicketTypeBuyableRequest, GetConferenceTicketTypesRequest, \
-    AddConferenceTicketRequest, RequestParsingException
+from .requests import (
+    CheckConferenceTicketTypeBuyableRequest,
+    GetConferenceTicketTypesRequest,
+    AddConferenceTicketRequest,
+    RequestParsingException,
+)
 from .view_models import ConferenceTicketTypeViewModel
 
 User = get_user_model()
@@ -58,16 +62,26 @@ def get__get_conference_ticket_types(request: HttpRequest, **kwargs) -> HttpResp
     ticket_types = ConferenceTicketType.objects.all()
 
     return HttpResponse(
-        json.dumps([ConferenceTicketTypeViewModel(ticket_type).to_dict() for ticket_type in ticket_types]))
+        json.dumps(
+            [
+                ConferenceTicketTypeViewModel(ticket_type).to_dict()
+                for ticket_type in ticket_types
+            ]
+        )
+    )
 
 
 @request_method("GET")
 @exception_wrapper
-def get__check_conference_ticket_type_buyable(request: HttpRequest, **kwargs) -> HttpResponse:
+def get__check_conference_ticket_type_buyable(
+    request: HttpRequest, **kwargs
+) -> HttpResponse:
     """특정 티켓 종류 구매 가능 여부 조회"""
     request = CheckConferenceTicketTypeBuyableRequest(request, **kwargs)
 
-    ticket_type = get_object_or_404(ConferenceTicketType, code=request.match_info.ticket_type_code)
+    ticket_type = get_object_or_404(
+        ConferenceTicketType, code=request.match_info.ticket_type_code
+    )
 
     if request.querystring.username is None:
         return HttpResponse(json.dumps(ticket_type.buyable))
@@ -79,8 +93,17 @@ def get__check_conference_ticket_type_buyable(request: HttpRequest, **kwargs) ->
 
     bought_tickets = ConferenceTicket.objects.filter(user=user)
 
-    return HttpResponse(json.dumps(ticket_type.buyable and all(
-        (bought_ticket.ticket_type.can_coexist(ticket_type) for bought_ticket in bought_tickets))))
+    return HttpResponse(
+        json.dumps(
+            ticket_type.buyable
+            and all(
+                (
+                    bought_ticket.ticket_type.can_coexist(ticket_type)
+                    for bought_ticket in bought_tickets
+                )
+            )
+        )
+    )
 
 
 @request_method("POST")
@@ -116,7 +139,12 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
         return HttpResponse("Cannot find user with user_id", status=400)
 
     bought_tickets = ConferenceTicket.objects.filter(user=user)
-    if any((not bought_ticket.ticket_type.can_coexist(ticket_type) for bought_ticket in bought_tickets)):
+    if any(
+        (
+            not bought_ticket.ticket_type.can_coexist(ticket_type)
+            for bought_ticket in bought_tickets
+        )
+    ):
         return HttpResponse("Duplicate day", status=400)
 
     ticket = ConferenceTicket.objects.create(

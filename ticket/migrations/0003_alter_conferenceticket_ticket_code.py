@@ -5,15 +5,19 @@ import ticket.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0002_alter_conferencetickettype_min_price'),
+        ("ticket", "0002_alter_conferencetickettype_min_price"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='conferenceticket',
-            name='ticket_code',
-            field=models.CharField(db_index=True, default=ticket.models.make_ticket_code, max_length=25, unique=True),
+            model_name="conferenceticket",
+            name="ticket_code",
+            field=models.CharField(
+                db_index=True,
+                default=ticket.models.make_ticket_code,
+                max_length=25,
+                unique=True,
+            ),
         ),
     ]

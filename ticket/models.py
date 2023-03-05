@@ -29,12 +29,12 @@ class ConferenceTicketType(models.Model):
     @property
     def buyable(self) -> bool:
         """잔여 수량이 있는지"""
-        sat_ticket_count = (ConferenceTicket.objects
-                            .filter(models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND"))
-                            .count())
-        sun_ticket_count = (ConferenceTicket.objects
-                            .filter(models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND"))
-                            .count())
+        sat_ticket_count = ConferenceTicket.objects.filter(
+            models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND")
+        ).count()
+        sun_ticket_count = ConferenceTicket.objects.filter(
+            models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND")
+        ).count()
 
         can_buy_sat_ticket = sat_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SAT
         can_buy_sun_ticket = sun_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SUN
@@ -63,13 +63,17 @@ def make_ticket_code() -> str:
 
 class ConferenceTicket(models.Model):
     # 구분
-    ticket_type = models.ForeignKey(ConferenceTicketType, on_delete=models.RESTRICT, db_index=True)
+    ticket_type = models.ForeignKey(
+        ConferenceTicketType, on_delete=models.RESTRICT, db_index=True
+    )
     # 구매 일자
     bought_at = models.DateTimeField()
     # 사용자
     user = models.ForeignKey(User, on_delete=models.RESTRICT, db_index=True)
     # 티켓 코드
-    ticket_code = models.CharField(max_length=25, default=make_ticket_code, unique=True, db_index=True)
+    ticket_code = models.CharField(
+        max_length=25, default=make_ticket_code, unique=True, db_index=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

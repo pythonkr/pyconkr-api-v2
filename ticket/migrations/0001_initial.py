@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,26 +14,54 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ConferenceTicketType',
+            name="ConferenceTicketType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=50)),
-                ('name', models.CharField(max_length=100)),
-                ('price', models.IntegerField()),
-                ('min_price', models.IntegerField(null=True)),
-                ('desc', models.TextField(max_length=1000)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.CharField(max_length=50)),
+                ("name", models.CharField(max_length=100)),
+                ("price", models.IntegerField()),
+                ("min_price", models.IntegerField(null=True)),
+                ("desc", models.TextField(max_length=1000)),
             ],
         ),
         migrations.CreateModel(
-            name='ConferenceTicket',
+            name="ConferenceTicket",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bought_at', models.DateTimeField()),
-                ('ticket_code', models.CharField(max_length=25)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('ticket_type', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='ticket.conferencetickettype')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("bought_at", models.DateTimeField()),
+                ("ticket_code", models.CharField(max_length=25)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "ticket_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.RESTRICT,
+                        to="ticket.conferencetickettype",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.RESTRICT,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

@@ -5,30 +5,44 @@ import sponsor.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sponsor', '0002_sponsor_bank_book_file_sponsor_manager_tel_and_more'),
+        ("sponsor", "0002_sponsor_bank_book_file_sponsor_manager_tel_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sponsor',
-            name='bank_book_file',
-            field=models.FileField(blank=True, help_text='후원사 통장 사본입니다.', null=True, upload_to=sponsor.models.bank_book_file_upload_to),
+            model_name="sponsor",
+            name="bank_book_file",
+            field=models.FileField(
+                blank=True,
+                help_text="후원사 통장 사본입니다.",
+                null=True,
+                upload_to=sponsor.models.bank_book_file_upload_to,
+            ),
         ),
         migrations.AlterField(
-            model_name='sponsor',
-            name='business_registration_number',
-            field=models.CharField(blank=True, help_text='후원사 사업자 등록 번호입니다. 세금 계산서 발급에 사용됩니다.', max_length=100, null=True),
+            model_name="sponsor",
+            name="business_registration_number",
+            field=models.CharField(
+                blank=True,
+                help_text="후원사 사업자 등록 번호입니다. 세금 계산서 발급에 사용됩니다.",
+                max_length=100,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='sponsor',
-            name='url',
-            field=models.CharField(blank=True, help_text='파이콘 한국 홈페이지에 공개되는 후원사 홈페이지 주소입니다.', max_length=255, null=True),
+            model_name="sponsor",
+            name="url",
+            field=models.CharField(
+                blank=True,
+                help_text="파이콘 한국 홈페이지에 공개되는 후원사 홈페이지 주소입니다.",
+                max_length=255,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='sponsorlevel',
-            name='limit',
-            field=models.IntegerField(default=0, help_text='후원사 등급별 구좌 수'),
+            model_name="sponsorlevel",
+            name="limit",
+            field=models.IntegerField(default=0, help_text="후원사 등급별 구좌 수"),
         ),
     ]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0001_initial'),
+        ("ticket", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='conferencetickettype',
-            name='min_price',
+            model_name="conferencetickettype",
+            name="min_price",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]

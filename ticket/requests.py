@@ -37,10 +37,17 @@ class GetConferenceTicketTypesRequest:
 
     def __init__(self, request: HttpRequest, **kwargs):
         try:
-            self.querystring = jsons.load(_extract_querystring(request), GetConferenceTicketTypesRequest.Querystring)
-            self.match_info = jsons.load(kwargs, GetConferenceTicketTypesRequest.MatchInfo)
-            self.data = jsons.load(json.loads(request.body) if request.body else dict(),
-                                   GetConferenceTicketTypesRequest.Data)
+            self.querystring = jsons.load(
+                _extract_querystring(request),
+                GetConferenceTicketTypesRequest.Querystring,
+            )
+            self.match_info = jsons.load(
+                kwargs, GetConferenceTicketTypesRequest.MatchInfo
+            )
+            self.data = jsons.load(
+                json.loads(request.body) if request.body else dict(),
+                GetConferenceTicketTypesRequest.Data,
+            )
         except Exception as e:
             raise RequestParsingException() from e
 
@@ -65,11 +72,17 @@ class CheckConferenceTicketTypeBuyableRequest:
 
     def __init__(self, request: HttpRequest, **kwargs):
         try:
-            self.querystring = jsons.load(_extract_querystring(request),
-                                          CheckConferenceTicketTypeBuyableRequest.Querystring)
-            self.match_info = jsons.load(kwargs, CheckConferenceTicketTypeBuyableRequest.MatchInfo)
-            self.data = jsons.load(json.loads(request.body) if request.body else dict(),
-                                   CheckConferenceTicketTypeBuyableRequest.Data)
+            self.querystring = jsons.load(
+                _extract_querystring(request),
+                CheckConferenceTicketTypeBuyableRequest.Querystring,
+            )
+            self.match_info = jsons.load(
+                kwargs, CheckConferenceTicketTypeBuyableRequest.MatchInfo
+            )
+            self.data = jsons.load(
+                json.loads(request.body) if request.body else dict(),
+                CheckConferenceTicketTypeBuyableRequest.Data,
+            )
         except Exception as e:
             raise RequestParsingException() from e
 
@@ -96,10 +109,14 @@ class AddConferenceTicketRequest:
 
     def __init__(self, request: HttpRequest, **kwargs):
         try:
-            self.querystring = jsons.load(_extract_querystring(request), AddConferenceTicketRequest.Querystring)
+            self.querystring = jsons.load(
+                _extract_querystring(request), AddConferenceTicketRequest.Querystring
+            )
             self.match_info = jsons.load(kwargs, AddConferenceTicketRequest.MatchInfo)
-            self.data = jsons.load(json.loads(request.body) if request.body else dict(),
-                                   AddConferenceTicketRequest.Data)
+            self.data = jsons.load(
+                json.loads(request.body) if request.body else dict(),
+                AddConferenceTicketRequest.Data,
+            )
         except Exception as e:
             raise RequestParsingException() from e
 
