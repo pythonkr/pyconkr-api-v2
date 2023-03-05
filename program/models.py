@@ -4,11 +4,9 @@ from django.db import models
 User = get_user_model()
 
 
-class ProgramCategory(models.Model):
+class ProposalCategory(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     visible = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -25,34 +23,38 @@ class Proposal(models.Model):
     )
 
     difficulty = models.CharField(
-        max_length=1,
+        max_length=15,
         choices=(
-            ("B", "Beginner"),
-            ("I", "Intermediate"),
-            ("E", "Experienced"),
+            ("BEGINNER", "Beginner"),
+            ("INTERMEDIATE", "Intermediate"),
+            ("EXPERIENCED", "Experienced"),
         ),
     )
 
     duration = models.CharField(
-        max_length=1,
+        max_length=15,
         choices=(
-            ("S", "25min"),
-            ("L", "40min"),
+            ("SHORT", "25min"),
+            ("LONG", "40min"),
         ),
     )
 
     language = models.CharField(
-        max_length=1,
+        max_length=15,
         choices=(
             ("", "---------"),
-            ("K", "Korean"),
-            ("E", "English"),
+            ("KOREAN", "Korean"),
+            ("ENGLISH", "English"),
         ),
         default="",
     )
 
     category = models.ForeignKey(
-        ProgramCategory, on_delete=models.SET_DEFAULT, null=True, blank=True, default=14
+        ProposalCategory,
+        on_delete=models.SET_DEFAULT,
+        null=True,
+        blank=True,
+        default=14,
     )
     accepted = models.BooleanField(default=False)
     introduction = models.TextField(
@@ -67,7 +69,21 @@ class Proposal(models.Model):
     slide_url = models.CharField(
         max_length=255, null=True, blank=True, help_text="발표 자료 URL"
     )
-    track_num = models.IntegerField(null=True, blank=True, help_text="트랙 번호")
+    room_num = models.CharField(
+        max_length=15,
+        null=True,
+        blank=True,
+        help_text="발표장소",
+        choices=(
+            ("101", "101"),
+            ("102", "102"),
+            ("103", "103"),
+            ("104", "104"),
+            ("105", "105"),
+        ),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title

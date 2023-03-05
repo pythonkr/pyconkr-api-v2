@@ -75,7 +75,7 @@ class SponsorLevelViewSet(ModelViewSet):
 
 
 class SponsorRemainingAccountViewSet(ModelViewSet):
-    serializer_class = SponsorLevelSerializer
+    serializer_class = SponsorRemainingAccountSerializer
     http_method_names = ["get"]
 
     def get_queryset(self):
@@ -83,6 +83,6 @@ class SponsorRemainingAccountViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = SponsorLevel.objects.all().order_by("-price")
-        serializer = SponsorRemainingAccountSerializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data)
