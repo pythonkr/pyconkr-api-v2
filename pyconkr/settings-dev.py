@@ -26,8 +26,8 @@ del MEDIA_ROOT
 # DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 # STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 
-DEFAULT_FILE_STORAGE = MediaStorage
-STATICFILES_STORAGE = StaticStorage
+DEFAULT_FILE_STORAGE = "pyconkr.storage.MediaStorage"
+STATICFILES_STORAGE = "pyconkr.storage.StaticStorage"
 
 AWS_S3_ACCESS_KEY_ID = os.getenv("AWS_S3_ACCESS_KEY_ID")
 AWS_S3_SECRET_ACCESS_KEY = os.getenv("AWS_S3_SECRET_ACCESS_KEY")
