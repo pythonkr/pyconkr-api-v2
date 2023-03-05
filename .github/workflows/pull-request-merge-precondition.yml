@@ -22,11 +22,11 @@ jobs:
 
       - uses: psf/black@stable
         with:
-          options: "--check --verbose --exclude migrations"
+          options: "--check --verbose"
 
       - uses: isort/isort-action@master
         with:
-          configuration: "--check-only --diff --profile black"
+          configuration: "--check-only --diff"
           requirementsFiles: "requirements.txt"
 
       - name: install dependencies

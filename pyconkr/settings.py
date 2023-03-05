@@ -24,6 +24,7 @@ SECRET_KEY = "django-insecure-0k!2&v8q15yfhyn2sy9o(9#6lmn4a&585fa*bzc%ash3))2jyx
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+APPEND_SLASH = False
 
 ALLOWED_HOSTS = []
 
@@ -48,11 +49,14 @@ INSTALLED_APPS = [
     "ticket",
     # swagger
     "drf_spectacular",
+    # cors
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -179,3 +183,5 @@ SPECTACULAR_SETTINGS = {
     # available SwaggerUI versions: https://github.com/swagger-api/swagger-ui/releases
     "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
