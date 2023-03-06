@@ -18,8 +18,8 @@ from sponsor.validators import SponsorValidater
 
 class SponsorViewSet(ModelViewSet):
     serializer_class = SponsorSerializer
-    permission_classes = [IsOwnerOrReadOnly]  # 본인 소유만 수정가능
-    http_method_names = ["get", "post"]  # 지금은 조회/등록만 가능 TODO: 추후 수정기능 추가
+    permission_classes = [IsOwnerOrReadOnly]  # 본인 소유만 수정 가능
+    http_method_names = ["get", "post"]  # 지금은 조회/등록만 가능 TODO: 추후 수정 기능 추가
     validator = SponsorValidater()
 
     def get_queryset(self):
@@ -75,7 +75,7 @@ class SponsorLevelViewSet(ModelViewSet):
 
 
 class SponsorRemainingAccountViewSet(ModelViewSet):
-    serializer_class = SponsorLevelSerializer
+    serializer_class = SponsorRemainingAccountSerializer
     http_method_names = ["get"]
 
     def get_queryset(self):
@@ -83,6 +83,6 @@ class SponsorRemainingAccountViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = SponsorLevel.objects.all().order_by("-price")
-        serializer = SponsorRemainingAccountSerializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data)
