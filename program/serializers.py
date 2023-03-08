@@ -1,10 +1,9 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
 
 from program.models import Proposal, ProposalCategory
 
 
-class ProposalSerializer(ModelSerializer):
+class ProposalSerializer(serializers.ModelSerializer):
     accepted = serializers.BooleanField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
@@ -32,7 +31,7 @@ class ProposalSerializer(ModelSerializer):
         ]
 
 
-class ProposalListSerializer(ModelSerializer):
+class ProposalListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proposal
         fields = [
@@ -46,7 +45,7 @@ class ProposalListSerializer(ModelSerializer):
         ]
 
 
-class ProposalCategorySerializer(ModelSerializer):
+class ProposalCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProposalCategory
         fields = [
