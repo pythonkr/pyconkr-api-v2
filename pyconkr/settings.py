@@ -147,10 +147,7 @@ CONSTANCE_CONFIG = {
         "",
         "Slack 알림 전송에 사용할 Secret",
     ),
-    "SPONSOR_NOTI_CHANNEL": (
-        "",
-        "후원사 변동사항에 대한 알림을 보낼 채널",
-    ),
+    "SLACK_SPONSOR_NOTI_WEBHOOK_URL": ("", "후원사 관련 사항 알림을 위한 SLACK WEBHOOK URL"),
 }
 
 # drf-spectacular
