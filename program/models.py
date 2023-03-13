@@ -8,6 +8,10 @@ class ProposalCategory(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     visible = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = "프로그램 카테고리"
+        verbose_name_plural = "프로그램 카테고리들"
+
     def __str__(self):
         return self.name
 
@@ -84,6 +88,10 @@ class Proposal(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "프로그램"
+        verbose_name_plural = "프로그램들"
 
     def __str__(self):
         return self.title

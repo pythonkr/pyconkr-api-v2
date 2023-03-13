@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # apps
     "sponsor",
     "status",
+    "program",
     # swagger
     "drf_spectacular",
     # cors
