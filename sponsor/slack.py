@@ -1,6 +1,6 @@
 import requests
-from requests import RequestException
 from constance import config
+from requests import RequestException
 
 
 def send_new_sponsor_notification(id: int, sponsor_name: str):
