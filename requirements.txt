@@ -17,3 +17,4 @@ django-picklefield==3.1
 drf-spectacular==0.25.1
 django-cors-headers==3.14.0
 requests==2.28.2
+django-picklefield==3.1
