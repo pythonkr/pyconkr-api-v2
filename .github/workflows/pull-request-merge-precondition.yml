@@ -37,6 +37,7 @@ jobs:
 
       - name: check migrations
         run: |
+          python manage.py migrate
           python manage.py makemigrations --check --dry-run
 
       - name: run pytest
