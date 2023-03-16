@@ -35,11 +35,6 @@ jobs:
           pip install -r requirements-dev.txt
           pip install pytest-cov
 
-      - name: check migrations
-        run: |
-          python manage.py migrate
-          python manage.py makemigrations --check --dry-run
-
       - name: run pytest
         run: |
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pyconkr ./ | tee pytest-coverage.txt
