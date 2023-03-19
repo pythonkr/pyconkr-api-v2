@@ -109,23 +109,8 @@ DATABASES = {
 # https://django-allauth.readthedocs.io/en/latest/providers.html
 
 SOCIALACCOUNT_PROVIDERS = {
-    "github": {
-        # "SCOPE": [
-        #     "user",
-        #     "repo",
-        #     "read:org",
-        # ],
-    },
-    "google": {
-        # "SCOPE": [
-        #     "profile",
-        #     "email",
-        # ],
-        # "AUTH_PARAMS": {
-        #     "access_type": "online",
-        # },
-        # "OAUTH_PKCE_ENABLED": True,
-    },
+    "github": {},
+    "google": {},
     "kakao": {},
 }
 
@@ -137,6 +122,13 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "access_token",
+    # "JWT_AUTH_SECURE": True,
+    "JWT_AUTH_HTTPONLY": False,
+}
 
 
 # Password validation
@@ -198,6 +190,10 @@ CONSTANCE_CONFIG = {
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ),
 }
 
 SPECTACULAR_SETTINGS = {
@@ -217,3 +213,5 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"

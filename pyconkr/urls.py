@@ -27,14 +27,12 @@ import status.urls
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
-    path("accounts/", include("allauth.urls")),
-    path("dj-rest-auth/", include("dj_rest_auth.urls")),
-    path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
     path("summernote/", include("django_summernote.urls")),
     path("admin/", admin.site.urls),
     path("sponsors", include(sponsor.routers.get_router().urls)),
     path("status", include(status.urls)),
     path("programs/", include("program.urls")),
+    path("", include("account.urls")),
 ]
 
 if settings.DEBUG is True:

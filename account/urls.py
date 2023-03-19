@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import include, path
 
 from .views import GitHubLogin
 
 urlpatterns = [
-    path("github/", GitHubLogin.as_view(), name="login-github"),
+    path("auth/", include("dj_rest_auth.urls")),
+    path("auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("auth/github/login/", GitHubLogin.as_view(), name="github_login"),
 ]
