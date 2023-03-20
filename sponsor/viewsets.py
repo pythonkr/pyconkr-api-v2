@@ -13,6 +13,7 @@ from sponsor.serializers import (
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
 )
+from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
 
 
@@ -37,6 +38,13 @@ class SponsorViewSet(ModelViewSet):
         self.validator.assert_create(serializer.validated_data)
 
         new_sponsor = serializer.save()
+
+        # slack 알림을 실패하더라도 transaction 전체를 롤백하지는 않아야 함
+        # TODO 람다 외부 인터넷 접근 확인 후 활성화
+        # try:
+        #     send_new_sponsor_notification(new_sponsor.id, new_sponsor.name)
+        # except RuntimeError as e:
+        #     print(e)
 
         return Response(serializer.data)
 
