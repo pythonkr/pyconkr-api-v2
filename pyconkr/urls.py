@@ -32,6 +32,7 @@ urlpatterns = [
     path("sponsors", include(sponsor.routers.get_router().urls)),
     path("status", include(status.urls)),
     path("programs/", include("program.urls")),
+    path("", include("account.urls")),
 ]
 
 if settings.DEBUG is True:
