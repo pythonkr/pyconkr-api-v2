@@ -213,4 +213,6 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+
 OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
+OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
