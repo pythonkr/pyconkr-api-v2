@@ -57,7 +57,6 @@ class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
             "name",
             "price",
             "limit",
-            "remaining",
             "id",
             "available",
         ]
