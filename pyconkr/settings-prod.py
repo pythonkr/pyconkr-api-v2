@@ -30,3 +30,5 @@ AWS_S3_ACCESS_KEY_ID = os.getenv("AWS_S3_ACCESS_KEY_ID")
 AWS_S3_SECRET_ACCESS_KEY = os.getenv("AWS_S3_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = "ap-northeast-2"
 AWS_STORAGE_BUCKET_NAME = "pyconkr-api-v2-static"
+
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ("rest_framework.renderers.JSONRenderer",)
