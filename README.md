@@ -10,6 +10,7 @@
   * mac
     * brew install mysql-client
 * pip install -r requirements-local.txt
+  * based on sqlite3
 
 ## how to run localtesting ( sqlite3 based )
 ```
