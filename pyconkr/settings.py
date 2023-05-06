@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "status",
     "ticket",
     "program",
+    "payment",
     # swagger
     "drf_spectacular",
     # cors
