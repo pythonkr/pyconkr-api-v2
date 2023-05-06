@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # apps
     "sponsor",
     "status",
+    "ticket",
     "program",
     # swagger
     "drf_spectacular",
@@ -182,7 +183,18 @@ CONSTANCE_CONFIG = {
         "",
         "Slack 알림 전송에 사용할 Secret",
     ),
-    "SLACK_SPONSOR_NOTI_WEBHOOK_URL": ("", "후원사 관련 사항 알림을 위한 SLACK WEBHOOK URL"),
+    "SPONSOR_NOTI_CHANNEL": (
+        "",
+        "후원사 변동사항에 대한 알림을 보낼 채널",
+    ),
+    "CONFERENCE_PARTICIPANT_COUNT_SAT": (
+        1700,
+        "컨퍼런스(토) 참가자 수",
+    ),
+    "CONFERENCE_PARTICIPANT_COUNT_SUN": (
+        1700,
+        "컨퍼런스(일) 참가자 수",
+    ),
 }
 
 # drf-spectacular
@@ -212,7 +224,6 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
-
 
 OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
 OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
