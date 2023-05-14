@@ -1,7 +1,7 @@
 from dataclasses import asdict, dataclass
 from typing import Optional
 
-from .models import ConferenceTicketType
+from .models import TicketType
 
 
 @dataclass(init=False)
@@ -13,7 +13,7 @@ class ConferenceTicketTypeViewModel:
     desc: str
     day: str
 
-    def __init__(self, model: ConferenceTicketType):
+    def __init__(self, model: TicketType):
         self.code = model.code
         self.name = model.name
         self.price = model.price

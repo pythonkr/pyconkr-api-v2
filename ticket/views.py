@@ -5,10 +5,11 @@ from typing import Callable, Literal
 
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
+from django.views import View
 
-from .models import ConferenceTicket, ConferenceTicketType
+from .models import ConferenceTicket, TicketType
 from .requests import (
     AddConferenceTicketRequest,
     CheckConferenceTicketTypeBuyableRequest,
@@ -16,6 +17,8 @@ from .requests import (
     RequestParsingException,
 )
 from .view_models import ConferenceTicketTypeViewModel
+
+import payment.utils
 
 User = get_user_model()
 
@@ -59,7 +62,7 @@ def get__get_conference_ticket_types(request: HttpRequest, **kwargs) -> HttpResp
     """티켓 종류 목록 조회"""
     request = GetConferenceTicketTypesRequest(request, **kwargs)
 
-    ticket_types = ConferenceTicketType.objects.all()
+    ticket_types = TicketType.objects.all()
 
     return HttpResponse(
         json.dumps(
@@ -80,7 +83,7 @@ def get__check_conference_ticket_type_buyable(
     request = CheckConferenceTicketTypeBuyableRequest(request, **kwargs)
 
     ticket_type = get_object_or_404(
-        ConferenceTicketType, code=request.match_info.ticket_type_code
+        TicketType, code=request.match_info.ticket_type_code
     )
 
     if request.querystring.username is None:
@@ -118,8 +121,8 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     if ticket_type is None:
         return HttpResponse("Invalid ticket type", status=400)
     try:
-        ticket_type = ConferenceTicketType.objects.get(code=ticket_type)
-    except ConferenceTicketType.DoesNotExist:
+        ticket_type = TicketType.objects.get(code=ticket_type)
+    except TicketType.DoesNotExist:
         return HttpResponse("Invalid ticket type", status=400)
 
     bought_at = data.bought_at
@@ -157,8 +160,42 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
 
     return HttpResponse(ticket.id)
 
-def temp():
-    pass
 
-def temp_refund(ticket_id):
+def get__ticket_list(request):
+    all_types = TicketType.objects.all()
+
+    dto = {
+        "ticket_items": all_types,
+    }
+
+    return render(request, "ticket-list.html", dto)
+
+
+class TicketDetailView(View):
+    def get(self, request, item_id: int):
+        ticket_type = TicketType.objects.get(id=item_id)
+        payment_key = payment.utils.generate_payment_key(request.user, ticket_type=ticket_type)
+        user = request.user
+
+        dto = {
+            "ticket_type": ticket_type,
+            "payment_key": payment_key,
+            "user_name": user.last_name + user.first_name
+        }
+
+        return render(request, "ticket-detail.html", dto)
+
+    def post(self, request):
+        pass
+
+
+def ticket_success(request):
+    return render(request, "ticket-success.html")
+
+
+def ticket_failed(request):
+    return render(request, "ticket-failed.html")
+
+
+def temp_refund(request, ticket_id):
     pass
