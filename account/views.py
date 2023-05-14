@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.views import APIView
 
-import payment
+from ticket.models import Ticket
 
 from allauth.account.views import LoginView, LogoutView
 
@@ -34,6 +34,6 @@ class MyPage(APIView):
 
 @login_required
 def mypage_payments(request):
-    payment_list = payment.models.Payment.objects.filter(user_id=request.user)
+    ticket_list = Ticket.objects.filter(user=request.user)
     return render(request, 'account_mypage_payments.html',
-                  context={'payment_list': payment_list})
+                  context={'ticket_list': ticket_list})

@@ -5,6 +5,8 @@ from constance import config
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from payment.models import Payment
+
 User = get_user_model()
 
 
@@ -29,10 +31,10 @@ class TicketType(models.Model):
     @property
     def buyable(self) -> bool:
         """잔여 수량이 있는지"""
-        sat_ticket_count = ConferenceTicket.objects.filter(
+        sat_ticket_count = Ticket.objects.filter(
             models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND")
         ).count()
-        sun_ticket_count = ConferenceTicket.objects.filter(
+        sun_ticket_count = Ticket.objects.filter(
             models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND")
         ).count()
 
@@ -61,7 +63,7 @@ def make_ticket_code() -> str:
     return shortuuid.uuid()
 
 
-class ConferenceTicket(models.Model):
+class Ticket(models.Model):
     # 구분
     ticket_type = models.ForeignKey(
         TicketType, on_delete=models.RESTRICT, db_index=True
@@ -74,6 +76,8 @@ class ConferenceTicket(models.Model):
     ticket_code = models.CharField(
         max_length=25, default=make_ticket_code, unique=True, db_index=True
     )
+    # 결제 정보
+    payment = models.ForeignKey(Payment, on_delete=models.PROTECT)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
