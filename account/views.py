@@ -4,6 +4,8 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from django.conf import settings
 
+from rest_framework.views import APIView
+
 
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
@@ -15,3 +17,6 @@ class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
     callback_url = settings.OAUTH_GOOGLE_CALLBACK_URL
     client_class = OAuth2Client
+
+class MyPage(APIView):
+    pass

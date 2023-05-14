@@ -156,3 +156,6 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     ticket.save()
 
     return HttpResponse(ticket.id)
+
+def temp():
+    pass

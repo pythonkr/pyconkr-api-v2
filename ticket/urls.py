@@ -9,4 +9,9 @@ urlpatterns = [
         views.get__check_conference_ticket_type_buyable,
     ),
     re_path(r"^conference-tickets", views.post__add_conference_ticket),
+    re_path(r"^list$", views.temp),
+    re_path(r"^{item_id}$", views.temp),
+    re_path(r"^success$", views.temp),
+    re_path(r"^failed$", views.temp),
+    re_path(r"^{ticket_id}/refund$", views.temp),
 ]
