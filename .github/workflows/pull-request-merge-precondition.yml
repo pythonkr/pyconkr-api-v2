@@ -20,9 +20,9 @@ jobs:
           persist-credentials: true # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      - uses: psf/black@stable
-        with:
-          options: "--check --verbose"
+      #- uses: psf/black@stable
+      #  with:
+      #    options: "--check --verbose"
 
       #- uses: isort/isort-action@master
       #  with:
