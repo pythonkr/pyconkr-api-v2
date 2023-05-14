@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # cors
     "corsheaders",
+    # django-import-export
+    "import_export",
 ]
 
 MIDDLEWARE = [
