@@ -25,6 +25,7 @@ from drf_spectacular.views import (
 import sponsor.routers
 import status.urls
 import ticket.urls
+import payment.urls
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
@@ -34,6 +35,7 @@ urlpatterns = [
     path("programs/", include("program.urls")),
     path("statuses/", include(status.urls)),
     path("tickets/", include(ticket.urls)),
+    path("payments/", include(payment.urls)),
     path("", include("account.urls")),
 ]
 
