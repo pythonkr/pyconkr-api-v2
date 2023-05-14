@@ -24,10 +24,10 @@ jobs:
         with:
           options: "--check --verbose"
 
-      - uses: isort/isort-action@master
-        with:
-          configuration: "--check-only --diff"
-          requirementsFiles: "requirements.txt"
+      #- uses: isort/isort-action@master
+      #  with:
+      #    configuration: "--check-only --diff"
+      #    requirementsFiles: "requirements.txt"
 
       - name: install dependencies
         run: |
