@@ -5,6 +5,9 @@
             <tr>
                 <th>id </th>
                 <th>user</th>
+                <th>금액</th>
+                <th>결제일 </th>
+                <th>취소</th>
             </tr>
         </thead>
         <tbody>
@@ -12,6 +15,14 @@
                 <tr>
                     <td>{{ payment.id }}</td>
                     <td>{{ payment.user_id }}</td>
+                    <td>{{ payment.money }}</td>
+                    <td>{{ payment.create_at }}</td>
+                    <td>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Button
+                          </button>
+
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
