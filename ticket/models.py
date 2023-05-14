@@ -8,7 +8,7 @@ from django.db import models
 User = get_user_model()
 
 
-class ConferenceTicketType(models.Model):
+class TicketType(models.Model):
     code = models.CharField(max_length=50)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
@@ -48,7 +48,7 @@ class ConferenceTicketType(models.Model):
         else:
             raise ValueError(f"{self.day} is not valid day.")
 
-    def can_coexist(self, other: ConferenceTicketType) -> bool:
+    def can_coexist(self, other: TicketType) -> bool:
         if self.day == "SAT" and other.day == "SUN":
             return True
         if self.day == "SUN" and other.day == "SAT":
@@ -64,7 +64,7 @@ def make_ticket_code() -> str:
 class ConferenceTicket(models.Model):
     # 구분
     ticket_type = models.ForeignKey(
-        ConferenceTicketType, on_delete=models.RESTRICT, db_index=True
+        TicketType, on_delete=models.RESTRICT, db_index=True
     )
     # 구매 일자
     bought_at = models.DateTimeField()

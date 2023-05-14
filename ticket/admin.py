@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ConferenceTicket, ConferenceTicketType
+from .models import ConferenceTicket, TicketType
 
 
 class ConferenceTicketAdmin(admin.ModelAdmin):
@@ -25,4 +25,4 @@ class ConferenceTicketTypeAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(ConferenceTicketType, ConferenceTicketTypeAdmin)
+admin.site.register(TicketType, ConferenceTicketTypeAdmin)

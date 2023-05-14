@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from ticket.models import TicketType
+
 User = get_user_model()
+
 
 class Payment(models.Model):
     payment_key = models.CharField(max_length=32)  # TODO: uuid 처리
