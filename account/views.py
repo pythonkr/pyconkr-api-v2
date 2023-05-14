@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.views import APIView
 
+import payment
+
 
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
@@ -24,4 +26,6 @@ class MyPage(APIView):
 
 @login_required
 def mypage_payments(request):
-    return render(request, 'account_mypage_payments.html')
+    payment_list = payment.models.Payment.objects.filter(user_id=request.user)
+    return render(request, 'account_mypage_payments.html',
+                  context={'payment_list': payment_list})
