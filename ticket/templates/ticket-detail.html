@@ -21,9 +21,17 @@
     >
       const IMP = window.IMP;
       const data = document.currentScript.dataset;
+
       IMP.init("imp80859147");
 
       function requestPay(payment_key, name, amount) {
+          const tel_no = document.getElementById("purchase_tel_no").value;
+
+          if (tel_no === undefined || tel_no === "") {
+              alert("전화번호를 입력하세요");
+              return
+          }
+
         IMP.request_pay(
           {
             pg: "html5_inicis.INIpayTest",
@@ -53,8 +61,12 @@
     <title>티켓 상세</title>
 </head>
 <body>
-<h1>{{ ticket_type.name }}</h1>
-<p>{{ ticket_type.desc }}</p>
+    <h1>{{ ticket_type.name }}</h1>
+    <p>상품명: {{ ticket_type.desc }}</p>
+
+    <p>
+        전화번호: <input id="purchase_tel_no" type="tel"/>
+    </p>
 
 <button onclick="requestPay()">
     구매하기
