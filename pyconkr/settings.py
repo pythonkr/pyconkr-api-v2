@@ -80,7 +80,9 @@ ROOT_URLCONF = "pyconkr.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates" , 
+                BASE_DIR / "account/templates",
+                 ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
