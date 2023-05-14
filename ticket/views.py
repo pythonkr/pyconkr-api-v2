@@ -197,5 +197,5 @@ def ticket_failed(request):
     return render(request, "ticket-failed.html")
 
 
-def temp_refund(request, ticket_id):
-    pass
+def ticket_refund(request, ticket_id):
+    return render(request, "ticket-refund-success.html")

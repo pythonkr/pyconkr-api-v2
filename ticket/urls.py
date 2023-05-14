@@ -13,5 +13,5 @@ urlpatterns = [
     path("<int:item_id>", views.TicketDetailView.as_view(), name="ticket-detail"),
     path("success", views.ticket_success, name="page-ticket-success"),
     path("failed", views.ticket_failed, name="page-ticket-failed"),
-    path("<int:ticket_id>/refund", views.temp_refund),
+    path("<int:ticket_id>/refund", views.ticket_refund, name="page-ticket-refund-success"),
 ]
