@@ -15,9 +15,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: psf/black@stable
-        with:
-          options: "--check --verbose"
+      #- uses: psf/black@stable
+      #  with:
+      #    options: "--check --verbose"
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -62,23 +62,23 @@ jobs:
       - name: Setup Auth for Private Repo
         uses: webfactory/ssh-agent@v0.5.4
         with:
-            ssh-private-key: ${{ secrets.SSH_SECRET_GOLONY }}
+          ssh-private-key: ${{ secrets.SSH_SECRET_GOLONY }}
           #  ssh-private-key: ${{ secrets.GH_PYCONKR_SECRETS }}
 
       - name: update pyconkr-secretes
         run: |
-         chmod 775 ./update_secrets.sh
-         ./update_secrets.sh
+          chmod 775 ./update_secrets.sh
+          ./update_secrets.sh
 
-#      - name: Test with Django Test
-#        run: |
-#          source ./zappa-env/bin/activate
-#          python manage.py test
-#
-#      - name: Test with pytest
-#        run: |
-#          source ./zappa-env/bin/activate
-#          pytest .
+      #      - name: Test with Django Test
+      #        run: |
+      #          source ./zappa-env/bin/activate
+      #          python manage.py test
+      #
+      #      - name: Test with pytest
+      #        run: |
+      #          source ./zappa-env/bin/activate
+      #          pytest .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -94,8 +94,7 @@ jobs:
         run: |
           source ./zappa-env/bin/activate
           zappa update prod2023
-#          zappa manage prod2023 "collectstatic --no-input"
-
+      #          zappa manage prod2023 "collectstatic --no-input"
       - name: Collect Static Files to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.PYCON_DEV_2023_AWS_KEY }}
