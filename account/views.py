@@ -9,6 +9,14 @@ from rest_framework.views import APIView
 
 import payment
 
+from allauth.account.views import LoginView, LogoutView
+
+class IdLogin(LoginView):
+    template_name = "account/login.html"
+    success_url = "/"
+
+class Logout(LogoutView):
+    template_name = "account/logout.html"
 
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
