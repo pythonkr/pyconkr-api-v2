@@ -185,9 +185,6 @@ class TicketDetailView(View):
 
         return render(request, "ticket-detail.html", dto)
 
-    def post(self, request):
-        pass
-
 
 def ticket_success(request):
     return render(request, "ticket-success.html")
