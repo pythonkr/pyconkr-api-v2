@@ -4,7 +4,7 @@ from .views import GitHubLogin, GoogleLogin, MyPage, mypage_payments
 
 from .views import IdLogin, Logout
 
-from .views import login_api, login_api_test, logout_api
+from .views import login_api, logout_api
 
 urlpatterns = [
     path("auth/", include("dj_rest_auth.urls")),

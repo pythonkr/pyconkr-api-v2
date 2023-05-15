@@ -76,21 +76,3 @@ def logout_api(request):
     }
     return Response(response_data)
 
-@api_view(["GET"])
-def login_api_test(request):
-
-    if request.user.is_authenticated:
-        return Response({"msg": "already logged in"})
-
-    user = authenticate(
-        request,
-        username="admin",
-        password="admin"
-    )
-
-    login(request, user)
-
-    response_data = {
-        "msg": "ok"
-    }
-    return Response(response_data)
