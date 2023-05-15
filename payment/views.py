@@ -1,4 +1,9 @@
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from ticket.models import TicketType
+from payment.utils import generate_payment_key
 
 
 class PortoneWebhookAPI(APIView):
@@ -10,3 +15,19 @@ class PortoneWebhookAPI(APIView):
 
         pass
 
+@api_view(["GET"])
+def get__generate_payment_key(request):
+
+    request_ticket_type = TicketType.objects.get(id=request.data["ticket_type"])
+
+    payment_key = generate_payment_key(
+        user=request.user,
+        ticket_type=request_ticket_type
+    )
+
+    response_data = {
+        "msg": "ok",
+        "payment_key": payment_key
+    }
+
+    return Response()
