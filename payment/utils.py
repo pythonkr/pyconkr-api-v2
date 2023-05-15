@@ -14,7 +14,7 @@ def generate_payment_key(user: User, ticket_type: TicketType):
     new_payment = Payment(
         payment_key=shortuuid.uuid(),
         user_id=user,
-        # ticket_type=ticket_type,      # TODO
+        ticket_type=ticket_type,
         money=ticket_type.price
     )
 

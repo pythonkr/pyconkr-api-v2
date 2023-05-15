@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
-import payment
+from ticket.models import Ticket
 
 from allauth.account.views import LoginView, LogoutView
 
@@ -39,9 +39,9 @@ class MyPage(APIView):
 
 @login_required
 def mypage_payments(request):
-    payment_list = payment.models.Payment.objects.filter(user_id=request.user)
+    ticket_list = Ticket.objects.filter(user=request.user)
     return render(request, 'account_mypage_payments.html',
-                  context={'payment_list': payment_list})
+                  context={'ticket_list': ticket_list})
 
 
 @api_view(["POST"])
@@ -63,6 +63,7 @@ def login_api(request):
     }
     return Response(response_data)
 
+
 @api_view(["POST"])
 def logout_api(request):
 
@@ -75,4 +76,3 @@ def logout_api(request):
         "msg": "ok"
     }
     return Response(response_data)
-

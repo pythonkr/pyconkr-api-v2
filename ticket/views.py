@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 
-from .models import ConferenceTicket, TicketType
+from .models import Ticket, TicketType
 from .requests import (
     AddConferenceTicketRequest,
     CheckConferenceTicketTypeBuyableRequest,
@@ -94,7 +94,7 @@ def get__check_conference_ticket_type_buyable(
     except User.DoesNotExist:
         return HttpResponse(json.dumps(ticket_type.buyable))
 
-    bought_tickets = ConferenceTicket.objects.filter(user=user)
+    bought_tickets = Ticket.objects.filter(user=user)
 
     return HttpResponse(
         json.dumps(
@@ -141,7 +141,7 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     except User.DoesNotExist:
         return HttpResponse("Cannot find user with user_id", status=400)
 
-    bought_tickets = ConferenceTicket.objects.filter(user=user)
+    bought_tickets = Ticket.objects.filter(user=user)
     if any(
         (
             not bought_ticket.ticket_type.can_coexist(ticket_type)
@@ -150,7 +150,7 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     ):
         return HttpResponse("Duplicate day", status=400)
 
-    ticket = ConferenceTicket.objects.create(
+    ticket = Ticket.objects.create(
         ticket_type=ticket_type,
         bought_at=bought_at,
         user=user,

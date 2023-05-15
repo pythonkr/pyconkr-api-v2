@@ -9,7 +9,6 @@ User = get_user_model()
 
 
 class TicketType(models.Model):
-    code = models.CharField(max_length=50)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
@@ -22,6 +21,8 @@ class TicketType(models.Model):
             ("WEEKEND", "토/일요일"),
         ),
     )
+    # program = models.ForeignKey()     # TODO
+    is_refundable = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -29,10 +30,10 @@ class TicketType(models.Model):
     @property
     def buyable(self) -> bool:
         """잔여 수량이 있는지"""
-        sat_ticket_count = ConferenceTicket.objects.filter(
+        sat_ticket_count = Ticket.objects.filter(
             models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND")
         ).count()
-        sun_ticket_count = ConferenceTicket.objects.filter(
+        sun_ticket_count = Ticket.objects.filter(
             models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND")
         ).count()
 
@@ -61,7 +62,7 @@ def make_ticket_code() -> str:
     return shortuuid.uuid()
 
 
-class ConferenceTicket(models.Model):
+class Ticket(models.Model):
     # 구분
     ticket_type = models.ForeignKey(
         TicketType, on_delete=models.RESTRICT, db_index=True
@@ -74,7 +75,10 @@ class ConferenceTicket(models.Model):
     ticket_code = models.CharField(
         max_length=25, default=make_ticket_code, unique=True, db_index=True
     )
-
+    # 결제 정보
+    payment = models.ForeignKey("payment.Payment", on_delete=models.PROTECT, null=True)
+    is_refunded = models.BooleanField(default=False)
+    refunded_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

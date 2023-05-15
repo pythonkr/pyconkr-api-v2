@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ConferenceTicket, TicketType
+from .models import Ticket, TicketType
 
 
 class ConferenceTicketAdmin(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class ConferenceTicketAdmin(admin.ModelAdmin):
     list_filter = ("ticket_type",)
 
 
-admin.site.register(ConferenceTicket, ConferenceTicketAdmin)
+admin.site.register(Ticket, ConferenceTicketAdmin)
 
 
 class ConferenceTicketTypeAdmin(admin.ModelAdmin):
