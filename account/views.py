@@ -56,7 +56,7 @@ def login_api(request):
         password=request.data["password"]
     )
 
-    login(request, user)
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
 
     response_data = {
         "msg": "ok"
