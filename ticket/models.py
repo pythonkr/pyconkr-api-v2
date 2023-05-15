@@ -5,13 +5,10 @@ from constance import config
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from payment.models import Payment
-
 User = get_user_model()
 
 
 class TicketType(models.Model):
-    code = models.CharField(max_length=50)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
@@ -24,6 +21,8 @@ class TicketType(models.Model):
             ("WEEKEND", "토/일요일"),
         ),
     )
+    # program = models.ForeignKey()     # TODO
+    is_refundable = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -77,8 +76,9 @@ class Ticket(models.Model):
         max_length=25, default=make_ticket_code, unique=True, db_index=True
     )
     # 결제 정보
-    payment = models.ForeignKey(Payment, on_delete=models.PROTECT)
-
+    payment = models.ForeignKey("payment.Payment", on_delete=models.PROTECT, null=True)
+    is_refunded = models.BooleanField(default=False)
+    refunded_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
