@@ -228,7 +228,20 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_WHITELIST = (
+    "https://2023.pycon.kr",
+    "https://pycon-dev2023.pycon.kr",
+    "https://pycon-prod2023.pycon.kr",
+    "https://127.0.0.1:3000",
+    "https://localhost:3000",
+    "http://2023.pycon.kr",
+    "http://pycon-dev2023.pycon.kr",
+    "http://pycon-prod2023.pycon.kr",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+)
+CORS_ALLOW_CREDENTIALS = True
 
 OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
 OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
