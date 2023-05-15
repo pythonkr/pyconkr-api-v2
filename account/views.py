@@ -2,10 +2,15 @@ from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.contrib.auth import login, logout, authenticate
+
+from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 
 import payment
 
@@ -37,3 +42,24 @@ def mypage_payments(request):
     payment_list = payment.models.Payment.objects.filter(user_id=request.user)
     return render(request, 'account_mypage_payments.html',
                   context={'payment_list': payment_list})
+
+
+@api_view(["POST"])
+def login_api(request):
+
+    if request.user.is_authenticated:
+        return Response({"msg": "already logged in"})
+
+    user = authenticate(
+        request,
+        username=request.data["username"],
+        password=request.data["password"]
+    )
+
+    login(request, user)
+
+    response_data = {
+        "msg": "ok"
+    }
+    return Response(response_data)
+
