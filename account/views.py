@@ -56,10 +56,41 @@ def login_api(request):
         password=request.data["password"]
     )
 
-    login(request, user)
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
 
     response_data = {
         "msg": "ok"
     }
     return Response(response_data)
 
+@api_view(["POST"])
+def logout_api(request):
+
+    if not request.user.is_authenticated:
+        return Response({"msg": "not logged in"})
+
+    logout(request)
+
+    response_data = {
+        "msg": "ok"
+    }
+    return Response(response_data)
+
+@api_view(["GET"])
+def login_api_test(request):
+
+    if request.user.is_authenticated:
+        return Response({"msg": "already logged in"})
+
+    user = authenticate(
+        request,
+        username="admin",
+        password="admin"
+    )
+
+    login(request, user)
+
+    response_data = {
+        "msg": "ok"
+    }
+    return Response(response_data)
