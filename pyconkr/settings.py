@@ -82,9 +82,10 @@ ROOT_URLCONF = "pyconkr.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates" , 
-                BASE_DIR / "account/templates",
-                 ],
+        "DIRS": [
+            BASE_DIR / "templates",
+            BASE_DIR / "account/templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -207,8 +208,8 @@ REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
@@ -245,9 +246,9 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOW_CREDENTIALS = True
 
-OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
-OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
-
 # login_required view에 로그인 되지 않은 상태로 접속할 경우 리다이렉트할 로그인 페이지를 설정합니다.
 # The URL or named URL pattern where requests are redirected for login when using the login_required() decorator
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = "/accounts/login/"
+
+OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/google/login/callback/"
+OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
