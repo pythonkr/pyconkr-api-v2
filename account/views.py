@@ -148,7 +148,6 @@ def google_callback(request):
     try:
         # 기존 유저 있음
         user = User.objects.get(email=email)
-        print("기존 유저", user)
 
         # 기존에 가입된 유저의 Provider가 google이 아니면 에러 발생, 맞으면 로그인
         # 다른 SNS로 가입된 유저

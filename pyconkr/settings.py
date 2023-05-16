@@ -252,3 +252,4 @@ LOGIN_URL = "/accounts/login/"
 
 OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/google/login/callback/"
 OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
+OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/google/login/callback/"
