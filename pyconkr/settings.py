@@ -245,6 +245,10 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF WHITE LIST
+CSRF_TRUSTED_ORIGINS = tuple(CORS_ORIGIN_WHITELIST)
+
+# OAUTH
 OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
 OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
 
