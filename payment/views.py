@@ -39,7 +39,8 @@ def get__generate_payment_key(request):
 
     response_data = {
         "msg": "ok",
-        "payment_key": payment_key
+        "payment_key": payment_key,
+        "price": request_ticket_type.price
     }
 
-    return Response()
+    return Response(response_data)
