@@ -58,7 +58,7 @@ def exception_wrapper(func: Callable[[HttpRequest, ...], HttpResponse]):
 
 @request_method("GET")
 @exception_wrapper
-def get__get_conference_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
+def get__get_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
     """티켓 종류 목록 조회"""
     request = GetConferenceTicketTypesRequest(request, **kwargs)
 
