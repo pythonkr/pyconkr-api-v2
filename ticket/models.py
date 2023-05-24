@@ -31,10 +31,10 @@ class TicketType(models.Model):
     def buyable(self) -> bool:
         """잔여 수량이 있는지"""
         sat_ticket_count = Ticket.objects.filter(
-            models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND")
+            models.Q(ticket_type__day="SAT") | models.Q(ticket_type__day="WEEKEND")
         ).count()
         sun_ticket_count = Ticket.objects.filter(
-            models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND")
+            models.Q(ticket_type__day="SUN") | models.Q(ticket_type__day="WEEKEND")
         ).count()
 
         can_buy_sat_ticket = sat_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SAT
