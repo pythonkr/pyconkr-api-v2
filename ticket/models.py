@@ -62,6 +62,9 @@ class TicketType(models.Model):
             return True
         if self.day == "SUN" and other.day == "SAT":
             return True
+        if self.day == "FRI" or other.day == "FRI":
+            # TODO program의 시간이 겹치는지 확인?
+            return True
 
         return False
 

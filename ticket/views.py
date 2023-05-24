@@ -14,7 +14,7 @@ from program.models import CONFERENCE, TUTORIAL, SPRINT
 from .models import Ticket, TicketType
 from .requests import (
     AddConferenceTicketRequest,
-    CheckConferenceTicketTypeBuyableRequest,
+    CheckTicketTypeBuyableRequest,
     GetConferenceTicketTypesRequest,
     RequestParsingException,
 )
@@ -83,14 +83,14 @@ def get__get_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
 
 @request_method("GET")
 @exception_wrapper
-def get__check_conference_ticket_type_buyable(
+def get__check_ticket_type_buyable(
         request: HttpRequest, **kwargs
 ) -> HttpResponse:
     """특정 티켓 종류 구매 가능 여부 조회"""
-    request = CheckConferenceTicketTypeBuyableRequest(request, **kwargs)
+    request = CheckTicketTypeBuyableRequest(request, **kwargs)
 
     ticket_type = get_object_or_404(
-        TicketType, code=request.match_info.ticket_type_code
+        TicketType, id=request.match_info.ticket_type_id
     )
 
     if request.querystring.username is None:
@@ -118,7 +118,7 @@ def get__check_conference_ticket_type_buyable(
 
 @request_method("POST")
 @exception_wrapper
-def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
+def post__add_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     """티켓 결제 완료, 추가 요청"""
     request = AddConferenceTicketRequest(request)
 
