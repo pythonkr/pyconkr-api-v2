@@ -1,24 +1,24 @@
 import json
 import traceback
 from datetime import datetime
-from typing import Callable, Literal
+from typing import Callable, Literal, Dict, List
 
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.decorators.csrf import csrf_exempt
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
+import payment.utils
+from program.models import CONFERENCE, TUTORIAL, SPRINT
 from .models import Ticket, TicketType
 from .requests import (
     AddConferenceTicketRequest,
-    CheckConferenceTicketTypeBuyableRequest,
+    CheckTicketTypeBuyableRequest,
     GetConferenceTicketTypesRequest,
     RequestParsingException,
 )
-from .view_models import ConferenceTicketTypeViewModel
-
-import payment.utils
+from .view_models import TicketTypeViewModel
 
 User = get_user_model()
 
@@ -58,32 +58,39 @@ def exception_wrapper(func: Callable[[HttpRequest, ...], HttpResponse]):
 
 @request_method("GET")
 @exception_wrapper
-def get__get_conference_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
+def get__get_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
     """티켓 종류 목록 조회"""
     request = GetConferenceTicketTypesRequest(request, **kwargs)
 
     ticket_types = TicketType.objects.all()
 
-    return HttpResponse(
-        json.dumps(
-            [
-                ConferenceTicketTypeViewModel(ticket_type).to_dict()
-                for ticket_type in ticket_types
-            ]
-        )
-    )
+    response: Dict[str, List[dict]] = {
+        "conference": [],
+        "tutorial": [],
+        "sprint": [],
+    }
+
+    for ticket_type in ticket_types:
+        if ticket_type.program.program_type == CONFERENCE:
+            response["conference"].append(TicketTypeViewModel(ticket_type).to_dict())
+        elif ticket_type.program.program_type == TUTORIAL:
+            response["tutorial"].append(TicketTypeViewModel(ticket_type).to_dict())
+        elif ticket_type.program.program_type == SPRINT:
+            response["sprint"].append(TicketTypeViewModel(ticket_type).to_dict())
+
+    return HttpResponse(json.dumps(response))
 
 
 @request_method("GET")
 @exception_wrapper
-def get__check_conference_ticket_type_buyable(
-    request: HttpRequest, **kwargs
+def get__check_ticket_type_buyable(
+        request: HttpRequest, **kwargs
 ) -> HttpResponse:
     """특정 티켓 종류 구매 가능 여부 조회"""
-    request = CheckConferenceTicketTypeBuyableRequest(request, **kwargs)
+    request = CheckTicketTypeBuyableRequest(request, **kwargs)
 
     ticket_type = get_object_or_404(
-        TicketType, code=request.match_info.ticket_type_code
+        TicketType, id=request.match_info.ticket_type_id
     )
 
     if request.querystring.username is None:
@@ -111,7 +118,7 @@ def get__check_conference_ticket_type_buyable(
 
 @request_method("POST")
 @exception_wrapper
-def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
+def post__add_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     """티켓 결제 완료, 추가 요청"""
     request = AddConferenceTicketRequest(request)
 
@@ -143,10 +150,10 @@ def post__add_conference_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
 
     bought_tickets = Ticket.objects.filter(user=user)
     if any(
-        (
-            not bought_ticket.ticket_type.can_coexist(ticket_type)
-            for bought_ticket in bought_tickets
-        )
+            (
+                    not bought_ticket.ticket_type.can_coexist(ticket_type)
+                    for bought_ticket in bought_tickets
+            )
     ):
         return HttpResponse("Duplicate day", status=400)
 
