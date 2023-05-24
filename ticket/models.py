@@ -9,6 +9,7 @@ User = get_user_model()
 
 
 class TicketType(models.Model):
+    id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
@@ -16,12 +17,13 @@ class TicketType(models.Model):
     day = models.CharField(
         max_length=10,
         choices=(
+            ("FRI", "금요일"),
             ("SAT", "토요일"),
             ("SUN", "일요일"),
             ("WEEKEND", "토/일요일"),
         ),
     )
-    # program = models.ForeignKey()     # TODO
+    program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True)
     is_refundable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -30,6 +32,12 @@ class TicketType(models.Model):
     @property
     def buyable(self) -> bool:
         """잔여 수량이 있는지"""
+        if self.day == "FRI":
+            ticket_count = Ticket.objects.filter(
+                models.Q(ticket_type=self) & models.Q(is_refunded=False)
+            ).count()
+            return ticket_count < self.program.capacity
+
         sat_ticket_count = Ticket.objects.filter(
             models.Q(ticket_type__day="SAT") | models.Q(ticket_type__day="WEEKEND")
         ).filter(is_refunded=False).count()

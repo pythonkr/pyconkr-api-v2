@@ -5,21 +5,24 @@ from .models import TicketType
 
 
 @dataclass(init=False)
-class ConferenceTicketTypeViewModel:
-    code: str
+class TicketTypeViewModel:
+    id: str
     name: str
     price: int
     min_price: Optional[int]
     desc: str
-    day: str
+    day: str  # choice
+    # program: ...
+    is_refundable: bool
 
     def __init__(self, model: TicketType):
-        self.code = model.code
+        self.id = model.id
         self.name = model.name
         self.price = model.price
         self.min_price = model.min_price
         self.desc = model.desc
         self.day = model.day
+        self.is_refundable = model.is_refundable
 
     def to_dict(self):
         return asdict(self)
