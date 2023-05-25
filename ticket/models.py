@@ -36,7 +36,9 @@ class TicketType(models.Model):
             ticket_count = Ticket.objects.filter(
                 models.Q(ticket_type=self) & models.Q(is_refunded=False)
             ).count()
-            return ticket_count < self.program.capacity
+            if self.program.slot is not None:
+                return ticket_count < self.program.slot
+            return True
 
         sat_ticket_count = Ticket.objects.filter(
             models.Q(ticket_type__day="SAT") | models.Q(ticket_type__day="WEEKEND")

@@ -123,7 +123,7 @@ class Program(models.Model):
             ("203", "203"),  # TODO 2층 호실 추가 필요
         ),
     )
-    capacity = models.IntegerField(null=True, blank=True, help_text="최대 참가 가능 인원 수")
+    slot = models.IntegerField(null=True, blank=True, help_text="최대 참가 가능 인원 수")
     start_at = models.DateTimeField(null=True, blank=True)
     end_at = models.DateTimeField(null=True, blank=True)
     program_type = models.CharField(
