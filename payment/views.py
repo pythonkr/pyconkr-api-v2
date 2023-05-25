@@ -69,8 +69,8 @@ class PaymentSuccessApi(APIView):
         return Response(dto)
 
 
-@api_view(["GET"])
-def get__generate_payment_key(request):
+@api_view(["POST"])
+def post__generate_payment_key(request):
 
     request_ticket_type = TicketType.objects.get(id=request.data["ticket_type"])
 
