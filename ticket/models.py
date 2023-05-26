@@ -9,6 +9,7 @@ User = get_user_model()
 
 
 class TicketType(models.Model):
+    id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
@@ -16,12 +17,13 @@ class TicketType(models.Model):
     day = models.CharField(
         max_length=10,
         choices=(
+            ("FRI", "금요일"),
             ("SAT", "토요일"),
             ("SUN", "일요일"),
             ("WEEKEND", "토/일요일"),
         ),
     )
-    # program = models.ForeignKey()     # TODO
+    program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True)
     is_refundable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -30,12 +32,20 @@ class TicketType(models.Model):
     @property
     def buyable(self) -> bool:
         """잔여 수량이 있는지"""
+        if self.day == "FRI":
+            ticket_count = Ticket.objects.filter(
+                models.Q(ticket_type=self) & models.Q(is_refunded=False)
+            ).count()
+            if self.program.slot is not None:
+                return ticket_count < self.program.slot
+            return True
+
         sat_ticket_count = Ticket.objects.filter(
-            models.Q(ticket_type__day="SAT") & models.Q(ticket_type__day="WEEKEND")
-        ).count()
+            models.Q(ticket_type__day="SAT") | models.Q(ticket_type__day="WEEKEND")
+        ).filter(is_refunded=False).count()
         sun_ticket_count = Ticket.objects.filter(
-            models.Q(ticket_type__day="SUN") & models.Q(ticket_type__day="WEEKEND")
-        ).count()
+            models.Q(ticket_type__day="SUN") | models.Q(ticket_type__day="WEEKEND")
+        ).filter(is_refunded=False).count()
 
         can_buy_sat_ticket = sat_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SAT
         can_buy_sun_ticket = sun_ticket_count < config.CONFERENCE_PARTICIPANT_COUNT_SUN
@@ -53,6 +63,9 @@ class TicketType(models.Model):
         if self.day == "SAT" and other.day == "SUN":
             return True
         if self.day == "SUN" and other.day == "SAT":
+            return True
+        if self.day == "FRI" or other.day == "FRI":
+            # TODO program의 시간이 겹치는지 확인?
             return True
 
         return False

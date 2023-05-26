@@ -207,6 +207,8 @@ REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
@@ -243,6 +245,10 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF WHITE LIST
+CSRF_TRUSTED_ORIGINS = tuple(CORS_ORIGIN_WHITELIST)
+
+# OAUTH
 OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
 OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
 

@@ -33,5 +33,6 @@ class PaymentHistory(models.Model):
             (5, "환불 완료"),
         )
     )
+    is_webhook = models.BooleanField(default=False)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)

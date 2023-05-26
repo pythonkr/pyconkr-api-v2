@@ -57,14 +57,14 @@ class GetConferenceTicketTypesRequest:
 
 
 @dataclass(init=False)
-class CheckConferenceTicketTypeBuyableRequest:
+class CheckTicketTypeBuyableRequest:
     @dataclass
     class Querystring:
         username: Optional[str] = None
 
     @dataclass
     class MatchInfo:
-        ticket_type_code: str
+        ticket_type_id: str
 
     @dataclass
     class Data:
@@ -74,14 +74,14 @@ class CheckConferenceTicketTypeBuyableRequest:
         try:
             self.querystring = jsons.load(
                 _extract_querystring(request),
-                CheckConferenceTicketTypeBuyableRequest.Querystring,
+                CheckTicketTypeBuyableRequest.Querystring,
             )
             self.match_info = jsons.load(
-                kwargs, CheckConferenceTicketTypeBuyableRequest.MatchInfo
+                kwargs, CheckTicketTypeBuyableRequest.MatchInfo
             )
             self.data = jsons.load(
                 json.loads(request.body) if request.body else dict(),
-                CheckConferenceTicketTypeBuyableRequest.Data,
+                CheckTicketTypeBuyableRequest.Data,
             )
         except Exception as e:
             raise RequestParsingException() from e

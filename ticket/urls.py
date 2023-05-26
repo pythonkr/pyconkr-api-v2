@@ -3,12 +3,12 @@ from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
-    path("conference-ticket-types", views.get__get_conference_ticket_types),
+    path("conference-ticket-types", views.get__get_ticket_types),
     re_path(
-        r"^conference-ticket-types/(?P<ticket_type_code>\w+)/check",
-        views.get__check_conference_ticket_type_buyable,
+        r"^conference-ticket-types/(?P<ticket_type_id>\w+)/check",
+        views.get__check_ticket_type_buyable,
     ),
-    path("conference-tickets", views.post__add_conference_ticket),
+    path("conference-tickets", views.post__add_ticket),
     path("list", views.get__ticket_list, name="ticket-list"),
     path("<int:item_id>", views.TicketDetailView.as_view(), name="ticket-detail"),
     path("success", views.ticket_success, name="page-ticket-success"),
