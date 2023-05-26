@@ -22,4 +22,5 @@ urlpatterns = [
     path("api/logout/", logout_api, name="logout-api"),
     # path("api/logout/", )
 
+    path("api/mypage/", MyPage.as_view(), name="mypage-api"),
 ]

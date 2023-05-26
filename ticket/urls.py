@@ -9,7 +9,7 @@ urlpatterns = [
         views.get__check_ticket_type_buyable,
     ),
     path("conference-tickets", views.post__add_ticket),
-    path("list", views.get__ticket_list, name="ticket-list"),
+    path("list", views.get__ticket_type_list, name="ticket-list"),
     path("<int:item_id>", views.TicketDetailView.as_view(), name="ticket-detail"),
     path("success", views.ticket_success, name="page-ticket-success"),
     path("failed", views.ticket_failed, name="page-ticket-failed"),
