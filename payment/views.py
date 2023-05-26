@@ -1,10 +1,12 @@
+import datetime
+
 from django.db import transaction
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from payment import enum
-from ticket.models import TicketType
+from ticket.models import TicketType, Ticket
 from payment.logic import generate_payment_key
 from payment.models import Payment, PaymentHistory
 
@@ -23,6 +25,9 @@ class PortoneWebhookApi(APIView):
         if settings.DEBUG is False and request.META.get("REMOTE_ADDR") not in portone_ips:
             raise ValueError("Not Allowed IP")
 
+        if request.data["status"] != "paid":
+            raise ValueError("결제 승인건 이외의 요청")
+
         payment_key = request.data["merchant_uid"]
 
         target_payment = Payment.objects.get(payment_key=payment_key)
@@ -36,8 +41,12 @@ class PortoneWebhookApi(APIView):
         )
         payment_history.save()
 
-        if request.data["status"] != "paid":
-            raise ValueError("결제 승인건 이외의 요청")
+        ticket = Ticket.objects.create(
+            ticket_type=target_payment.ticket_type,
+            bought_at=datetime.datetime.now(),
+            user=target_payment.user,
+        )
+        ticket.save()
 
         dto = {
             "msg": "ok",
