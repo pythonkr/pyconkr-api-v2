@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from payment import enum
+from payment.clients import PortOneClient
 from ticket.models import TicketType, Ticket
-from payment.logic import generate_payment_key
+from payment.logic import generate_payment_key, cancel_payment
 from payment.models import Payment, PaymentHistory
 
 from django.conf import settings
@@ -95,3 +96,31 @@ def post__generate_payment_key(request):
     }
 
     return Response(response_data)
+
+
+@api_view(["POST"])
+@transaction.atomic
+def post__cancel_payment(request):
+    portone_client = PortOneClient()
+
+    target_payment = Payment.objects.get(payment_key=request.data["payment_key"])
+    target_ticket = Ticket.objects.get(payment=target_payment)
+
+    portone_client.req_cancel_payment(
+        target_payment.payment_key,
+        target_payment.money,
+        "구매자의 환불요청"
+    )
+
+    cancel_payment(target_payment)
+
+    target_ticket.is_refunded = True
+    target_ticket.refunded_at = datetime.datetime.now()
+    target_ticket.save()
+
+    dto = {
+        "msg": "ok"
+    }
+
+    return Response(dto)
+

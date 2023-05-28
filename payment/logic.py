@@ -44,3 +44,14 @@ def _save_history(payment_key: str, status: int):
     )
 
     new_payment_history.save()
+
+
+@transaction.atomic
+def cancel_payment(payment: Payment):
+    payment.status = PaymentStatus.REFUND_SUCCESS.value
+    payment.save()
+
+    payment_history = PaymentHistory(
+        payment_key=payment.payment_key,
+        status=PaymentStatus.REFUND_SUCCESS.value
+    )
