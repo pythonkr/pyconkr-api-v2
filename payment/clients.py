@@ -15,8 +15,8 @@ class PortOneClient:
             raise ValueError("Access Token 발급 실패: imp_key 또는 imp_secret을 찾을 수 없습니다.")
 
         request_dto = {
-            "imp_key": constance.config["imp_key"],
-            "imp_secret": constance.config["imp_secret"]
+            "imp_key": constance.config["IMP_KEY"],
+            "imp_secret": constance.config["IMP_SECRET"]
         }
 
         response = requests.post(
