@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
-    path("ticket-types", views.get__get_ticket_types),
+    path("ticket-types/", views.get__get_ticket_types),
     re_path(
         r"^ticket-types/(?P<ticket_type_id>\w+)/check",
         views.get__check_ticket_type_buyable,
