@@ -200,6 +200,14 @@ CONSTANCE_CONFIG = {
         1700,
         "컨퍼런스(일) 참가자 수",
     ),
+    "IMP_KEY": (
+        "",
+        "포트원 REST API 키",
+    ),
+    "IMP_SECRET": (
+        "",
+        "포트원 REST API 비밀키",
+    ),
 }
 
 # drf-spectacular
