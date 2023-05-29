@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
+from account.logics import get_basic_auth_token
 from account.view_models import UserTicketInfo
 from ticket.models import Ticket
 
@@ -85,8 +86,10 @@ def login_api(request):
     login(request, user, backend="django.contrib.auth.backends.ModelBackend")
 
     response_data = {
-        "msg": "ok"
+        "msg": "ok",
+        "token": get_basic_auth_token(request.data["username"], request.data["password"])
     }
+
     return Response(response_data)
 
 
