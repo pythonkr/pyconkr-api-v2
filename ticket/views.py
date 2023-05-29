@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-import payment.utils
+import payment.logic
 from program.models import CONFERENCE, TUTORIAL, SPRINT
 from .models import Ticket, TicketType
 from .requests import (
@@ -182,7 +182,7 @@ def get__ticket_type_list(request):
 class TicketDetailView(View):
     def get(self, request, item_id: int):
         ticket_type = TicketType.objects.get(id=item_id)
-        payment_key = payment.utils.generate_payment_key(request.user, ticket_type=ticket_type)
+        payment_key = payment.logic.generate_payment_key(request.user, ticket_type=ticket_type)
         user = request.user
 
         dto = {
