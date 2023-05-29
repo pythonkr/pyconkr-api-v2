@@ -24,3 +24,4 @@ jsons==1.6.3
 django-cors-headers==3.14.0
 requests==2.28.2
 PyFunctional==1.4.3
+pymysql==1.0.3
