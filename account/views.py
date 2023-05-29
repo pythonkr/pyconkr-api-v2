@@ -87,7 +87,7 @@ def login_api(request):
 
     response_data = {
         "msg": "ok",
-        "token": get_basic_auth_token(request.data["username"], request.data["password"])
+        "basic_auth_token": get_basic_auth_token(request.data["username"], request.data["password"])
     }
 
     return Response(response_data)
