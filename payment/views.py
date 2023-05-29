@@ -79,6 +79,32 @@ class PaymentSuccessApi(APIView):
         return Response(dto)
 
 
+class PaymentFailedApi(APIView):
+    def post(self, request):
+        if not request.is_authenticated:
+            return Response({"msg": "not logged in user"}, status=400)
+
+        payment_key = request.data["merchant_uid"]
+
+        payment = Payment.objects.get(payment_key=payment_key)
+        payment.status = enum.PaymentStatus.PAYMENT_FAILED.value
+        payment.save()
+
+        payment_history = PaymentHistory(
+            payment_key=payment_key,
+            status=enum.PaymentStatus.PAYMENT_FAILED.value,
+            is_webhook=False
+        )
+        payment_history.save()
+
+        dto = {
+            "msg": "ok",
+            "merchant_uid": request.data["merchant_uid"]
+        }
+
+        return Response(dto)
+
+
 @api_view(["POST"])
 def post__generate_payment_key(request):
 
