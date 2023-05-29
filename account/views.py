@@ -44,6 +44,9 @@ class MyPage(APIView):
     def get(self, request):
         dto = {
             "ticket": self.get_ticket_info(request)
+            # "session": None,        # TODO 세션
+            # "sponsor": None,        # TODO 후원사
+            # "user_info": None       # TODO 사용자 정보
         }
 
         return Response(dto)
