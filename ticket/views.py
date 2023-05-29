@@ -168,7 +168,7 @@ def post__add_ticket(request: HttpRequest, **kwargs) -> HttpResponse:
     return HttpResponse(ticket.id)
 
 
-def get__ticket_list(request):
+def get__ticket_type_list(request):
     all_types = TicketType.objects.all()
 
     dto = {
@@ -178,6 +178,7 @@ def get__ticket_list(request):
     return render(request, "ticket-list.html", dto)
 
 
+# Django Template 기반 코드
 class TicketDetailView(View):
     def get(self, request, item_id: int):
         ticket_type = TicketType.objects.get(id=item_id)

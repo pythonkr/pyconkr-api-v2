@@ -7,21 +7,26 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
+from functional import seq
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
+from account.view_models import UserTicketInfo
 from ticket.models import Ticket
 
 from allauth.account.views import LoginView, LogoutView
+
 
 class IdLogin(LoginView):
     template_name = "account/login.html"
     success_url = "/"
 
+
 class Logout(LogoutView):
     template_name = "account/logout.html"
+
 
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
@@ -34,8 +39,27 @@ class GoogleLogin(SocialLoginView):
     callback_url = settings.OAUTH_GOOGLE_CALLBACK_URL
     client_class = OAuth2Client
 
+
 class MyPage(APIView):
-    pass
+    def get(self, request):
+        dto = {
+            "ticket": self.get_ticket_info(request)
+        }
+
+        return Response(dto)
+
+    def get_ticket_info(self, request) -> list:
+        all_tickets = Ticket.objects.filter(
+            user=request.user,
+            is_refunded=False
+        )
+
+        return list(
+            seq(all_tickets)
+            .map(UserTicketInfo)
+            .map(lambda info: info.to_dict())
+        )
+
 
 @login_required
 def mypage_payments(request):
@@ -46,7 +70,6 @@ def mypage_payments(request):
 
 @api_view(["POST"])
 def login_api(request):
-
     if request.user.is_authenticated:
         return Response({"msg": "already logged in"})
 
@@ -66,7 +89,6 @@ def login_api(request):
 
 @api_view(["POST"])
 def logout_api(request):
-
     if not request.user.is_authenticated:
         return Response({"msg": "not logged in"})
 
