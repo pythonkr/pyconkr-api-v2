@@ -1,15 +1,14 @@
-import os
+import pymysql
 
 from pyconkr.settings import *
-from pyconkr.storage import *
 
-import pymysql
 pymysql.install_as_MySQLdb()
 
 DEBUG = True
 
 ALLOWED_HOSTS += [
     "api-dev.pycon.kr",
+    "4st7mrntih.execute-api.ap-northeast-2.amazonaws.com",
 ]
 
 # RDS
