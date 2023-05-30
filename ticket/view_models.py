@@ -27,7 +27,7 @@ class TicketTypeViewModel:
     is_buyable: property  # type: bool
 
     def __init__(self, model: TicketType):
-        self.id = model.id
+        self.id = str(model.id)
         self.name = model.name
         self.price = model.price
         self.min_price = model.min_price
