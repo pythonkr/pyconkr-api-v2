@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from uuid import uuid4
+
 import shortuuid
 from constance import config
 from django.contrib.auth import get_user_model
@@ -9,7 +11,7 @@ User = get_user_model()
 
 
 class TicketType(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=lambda: str(uuid4()))
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
