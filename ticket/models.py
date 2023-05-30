@@ -10,8 +10,12 @@ from django.db import models
 User = get_user_model()
 
 
+def make_ticket_id() -> str:
+    return str(uuid4())
+
+
 class TicketType(models.Model):
-    id = models.UUIDField(primary_key=True, default=lambda: str(uuid4()))
+    id = models.UUIDField(primary_key=True, default=make_ticket_id)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
@@ -25,7 +29,7 @@ class TicketType(models.Model):
             ("WEEKEND", "토/일요일"),
         ),
     )
-    program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True, blank=True)
+    program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True)
     is_refundable = models.BooleanField(default=True)
 
     def __str__(self):
