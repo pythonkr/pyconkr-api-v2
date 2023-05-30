@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Proposal, ProposalCategory
+from .models import Proposal, ProposalCategory, Program
 
 
 @admin.register(Proposal)
@@ -24,3 +24,19 @@ class ProposalCategoryAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "visible"]
     list_filter = ["visible"]
     search_fields = ["name"]
+
+
+@admin.register(Program)
+class ProgramAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "host",
+        "title",
+        "room",
+        "slot",
+        "start_at",
+        "end_at",
+        "program_type",
+    ]
+    list_filter = ["program_type", ]
+    search_fields = ["title", "host__username"]
