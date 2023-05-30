@@ -25,7 +25,7 @@ class TicketType(models.Model):
             ("WEEKEND", "토/일요일"),
         ),
     )
-    program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True)
+    program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True, blank=True)
     is_refundable = models.BooleanField(default=True)
 
     def __str__(self):
