@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -103,7 +105,7 @@ SPRINT = "SPRINT"
 
 
 class Program(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid4)
     host = models.CharField(max_length=100)  # TODO User로?
     title = models.CharField(max_length=100)
     short_desc = models.CharField(max_length=1000)

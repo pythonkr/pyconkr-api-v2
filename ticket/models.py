@@ -10,12 +10,8 @@ from django.db import models
 User = get_user_model()
 
 
-def make_ticket_id() -> str:
-    return str(uuid4())
-
-
 class TicketType(models.Model):
-    id = models.UUIDField(primary_key=True, default=make_ticket_id)
+    id = models.UUIDField(primary_key=True, default=uuid4)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     min_price = models.IntegerField(null=True, blank=True)
