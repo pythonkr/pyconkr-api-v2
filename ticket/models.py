@@ -93,7 +93,7 @@ class Ticket(models.Model):
     # 결제 정보
     payment = models.ForeignKey("payment.Payment", on_delete=models.PROTECT, null=True)
     is_refunded = models.BooleanField(default=False)
-    refunded_at = models.DateTimeField(null=True)
+    refunded_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
