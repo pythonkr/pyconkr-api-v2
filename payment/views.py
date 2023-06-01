@@ -64,12 +64,23 @@ class PaymentSuccessApi(APIView):
 
         payment_key = request.data["merchant_uid"]
 
+        target_payment = Payment.objects.get(payment_key=payment_key)
+
         payment_history = PaymentHistory(
             payment_key=payment_key,
             status=enum.PaymentStatus.PAYMENT_SUCCESS.value,
             is_webhook=False
         )
         payment_history.save()
+
+        if not Ticket.objects.filter(payment=target_payment).exists():
+            ticket = Ticket.objects.create(
+                ticket_type=target_payment.ticket_type,
+                bought_at=datetime.datetime.now(),
+                user=target_payment.user,
+            )
+            ticket.save()
+
 
         dto = {
             "msg": "ok",
