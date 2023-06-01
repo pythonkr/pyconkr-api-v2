@@ -1,5 +1,5 @@
 import requests
-import constance
+from constance import config
 
 
 class PortOneClient:
@@ -11,12 +11,12 @@ class PortOneClient:
     def get_access_token(self) -> str:
         endpoint = self.url + "/users/getToken"
 
-        if constance.config["imp_key"] is None or constance.config["imp_secret"] is None:
+        if config.IMP_KEY is None or config.IMP_SECRET is None:
             raise ValueError("Access Token 발급 실패: imp_key 또는 imp_secret을 찾을 수 없습니다.")
 
         request_dto = {
-            "imp_key": constance.config["IMP_KEY"],
-            "imp_secret": constance.config["IMP_SECRET"]
+            "imp_key": config.IMP_KEY,
+            "imp_secret": config.IMP_SECRET
         }
 
         response = requests.post(
