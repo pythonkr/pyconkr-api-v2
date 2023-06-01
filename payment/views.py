@@ -46,6 +46,7 @@ class PortoneWebhookApi(APIView):
             ticket_type=target_payment.ticket_type,
             bought_at=datetime.datetime.now(),
             user=target_payment.user,
+            payment=target_payment
         )
         ticket.save()
 
@@ -78,6 +79,7 @@ class PaymentSuccessApi(APIView):
                 ticket_type=target_payment.ticket_type,
                 bought_at=datetime.datetime.now(),
                 user=target_payment.user,
+                payment=target_payment
             )
             ticket.save()
 
