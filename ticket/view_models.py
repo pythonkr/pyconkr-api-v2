@@ -1,5 +1,4 @@
 from dataclasses import asdict, dataclass
-from datetime import datetime
 from typing import Optional, Union
 
 from program.models import CONFERENCE, TUTORIAL, SPRINT
@@ -12,8 +11,8 @@ class TicketTypeViewModel:
     class Program:
         title: str
         short_desc: str
-        start_at: datetime
-        end_at: datetime
+        start_at: Optional[str]
+        end_at: Optional[str]
         program_type: str  # type: Union[CONFERENCE, TUTORIAL, SPRINT]
 
     id: str
@@ -36,8 +35,8 @@ class TicketTypeViewModel:
         self.program = TicketTypeViewModel.Program(
             title=model.program.title,
             short_desc=model.program.short_desc,
-            start_at=model.program.start_at,
-            end_at=model.program.end_at,
+            start_at=model.program.start_at.strftime("%Y-%m-%dT%H:%M:%S"),
+            end_at=model.program.end_at.strftime("%Y-%m-%dT%H:%M:%S"),
             program_type=model.program.program_type,
         )
         self.is_refundable = model.is_refundable
