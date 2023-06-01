@@ -35,8 +35,9 @@ class TicketTypeViewModel:
         self.program = TicketTypeViewModel.Program(
             title=model.program.title,
             short_desc=model.program.short_desc,
-            start_at=model.program.start_at.strftime("%Y-%m-%dT%H:%M:%S"),
-            end_at=model.program.end_at.strftime("%Y-%m-%dT%H:%M:%S"),
+            start_at=model.program.start_at.strftime(
+                "%Y-%m-%dT%H:%M:%S") if model.program.start_at is not None else None,
+            end_at=model.program.end_at.strftime("%Y-%m-%dT%H:%M:%S") if model.program.end_at is not None else None,
             program_type=model.program.program_type,
         )
         self.is_refundable = model.is_refundable
