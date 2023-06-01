@@ -59,7 +59,7 @@ class PortoneWebhookApi(APIView):
 
 class PaymentSuccessApi(APIView):
     def post(self, request):
-        if not request.is_authenticated:
+        if not request.user.is_authenticated:
             return Response({"msg": "not logged in user"}, status=400)
 
         payment_key = request.data["merchant_uid"]
