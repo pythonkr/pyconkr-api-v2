@@ -21,6 +21,11 @@ class SponsorSerializer(serializers.ModelSerializer):
             "level",
             "id",
         ]
+        read_only_fields = [
+            "name",
+            "level",
+            "id",
+        ]
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):
