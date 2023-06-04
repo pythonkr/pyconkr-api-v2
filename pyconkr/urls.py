@@ -22,16 +22,16 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-import sponsor.routers
+import payment.urls
+import sponsor.urls
 import status.urls
 import ticket.urls
-import payment.urls
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("summernote/", include("django_summernote.urls")),
     path("admin/", admin.site.urls),
-    path("sponsors", include(sponsor.routers.get_router().urls)),
+    path("sponsors/", include(sponsor.urls)),
     path("programs/", include("program.urls")),
     path("statuses/", include(status.urls)),
     path("tickets/", include(ticket.urls)),

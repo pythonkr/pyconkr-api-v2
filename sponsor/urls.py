@@ -1,6 +1,11 @@
-from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
+
+from sponsor.viewsets import SponsorViewSet
 
 urlpatterns = [
-    # path("", ),   # TODO
+    path("list/", SponsorViewSet.as_view({"get": "list"})),
+    path(
+        "list/<int:id>/",
+        SponsorViewSet.as_view({"get": "retrieve", "put": "update"}),
+    ),
 ]
