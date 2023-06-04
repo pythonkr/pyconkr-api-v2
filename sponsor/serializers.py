@@ -37,8 +37,6 @@ class SponsorDetailSerializer(serializers.ModelSerializer):
 
 
 class SponsorListSerializer(serializers.ModelSerializer):
-    paid = SerializerMethodField()
-
     class Meta:
         model = Sponsor
         fields = [
@@ -46,12 +44,7 @@ class SponsorListSerializer(serializers.ModelSerializer):
             "logo_image",
             "level",
             "id",
-            "paid",
         ]
-
-    @staticmethod
-    def get_paid(obj: Sponsor):
-        return obj.paid_at is not None
 
 
 class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
