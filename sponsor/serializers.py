@@ -9,7 +9,7 @@ class SponsorSerializer(serializers.ModelSerializer):
         model = Sponsor
         fields = [
             "name",
-            # "desc",  # 국문/영문 모두 한 필드에 담아 제공하는 것으로 결정 # TODO: 상세 페이지 오픈 후 활성화
+            "desc",  # 국문/영문 모두 한 필드에 담아 제공
             "manager_name",  # 상세에만 포함되는 필드
             "manager_email",  # 상세에만 포함되는 필드
             "manager_tel",  # 상세에만 포함되는 필드
@@ -23,28 +23,35 @@ class SponsorSerializer(serializers.ModelSerializer):
         ]
 
 
-class SponsorListSerializer(serializers.ModelSerializer):
+class SponsorDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sponsor
         fields = [
             "name",
-            "level",
+            "desc",
             "url",
             "logo_image",
+            "level",
             "id",
         ]
 
 
-class SponsorLevelSerializer(serializers.ModelSerializer):
+class SponsorListSerializer(serializers.ModelSerializer):
+    paid = SerializerMethodField()
+
     class Meta:
-        model = SponsorLevel
+        model = Sponsor
         fields = [
             "name",
-            "price",
-            "desc",
-            "limit",
+            "logo_image",
+            "level",
             "id",
-        ]  # TODO: Add fields to show
+            "paid",
+        ]
+
+    @staticmethod
+    def get_paid(obj: Sponsor):
+        return obj.paid_at is not None
 
 
 class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
