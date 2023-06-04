@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>티켓 종류</title>
+</head>
+<body>
+    {% for item in ticket_items %}
+        <p>{{ item.name }} : {{ item.price }} <a href="{% url "ticket-detail" item_id=item.id %}">구매하기</a></p>
+    {% endfor %}
+
+</body>
+</html>

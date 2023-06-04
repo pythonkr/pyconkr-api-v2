@@ -1,3 +1,5 @@
+import os
+
 import requests
 from constance import config
 from requests import RequestException
@@ -9,7 +11,8 @@ def send_new_sponsor_notification(id: int, sponsor_name: str):
 
     try:
         response = requests.post(
-            url=config.SLACK_SPONSOR_NOTI_WEBHOOK_URL,
+            # url=config.SLACK_SPONSOR_NOTI_WEBHOOK_URL,
+            url=os.getenv("SLACK_SPONSOR_NOTI_WEBHOOK_URL"),  # TODO 임시조치
             headers={"Content-Type": "application/json"},
             json={"blocks": block},
         )

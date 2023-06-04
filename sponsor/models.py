@@ -11,6 +11,10 @@ class SponsorLevelManager(models.Manager):
 
 
 class SponsorLevel(models.Model):
+    class Meta:
+        verbose_name = "후원사 등급"
+        verbose_name_plural = "후원사 등급"
+
     name = models.CharField(max_length=255, blank=True, default="", help_text="후원 등급명")
     desc = models.TextField(
         null=True, blank=True, help_text="후원 혜택을 입력하면 될 거 같아요 :) 후원사가 등급을 정할 때 볼 문구입니다."
@@ -61,6 +65,8 @@ def logo_image_upload_to(instance, filename):
 class Sponsor(models.Model):
     class Meta:
         ordering = ["paid_at", "id"]
+        verbose_name = "후원사"
+        verbose_name_plural = "후원사 목록"
 
     creator = models.ForeignKey(
         User,

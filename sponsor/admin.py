@@ -11,7 +11,6 @@ class SponsorAdmin(SummernoteModelAdmin):
         "manager_id",
     )
     list_display = (
-        "creator",
         "name",
         "level",
         "manager_name",

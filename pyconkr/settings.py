@@ -38,18 +38,32 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # add-on
     "rest_framework",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.kakao",
+    "dj_rest_auth",
     "django_summernote",
     "constance",
     "constance.backends.database",
     # apps
     "sponsor",
     "status",
+    "ticket",
+    "program",
+    "payment",
     # swagger
     "drf_spectacular",
     # cors
     "corsheaders",
+    # django-import-export
+    "import_export",
 ]
 
 MIDDLEWARE = [
@@ -68,7 +82,9 @@ ROOT_URLCONF = "pyconkr.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates" , 
+                BASE_DIR / "account/templates",
+                 ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -92,6 +108,31 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
+}
+
+
+# https://django-allauth.readthedocs.io/en/latest/providers.html
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {},
+    "google": {},
+    "kakao": {},
+}
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "access_token",
+    # "JWT_AUTH_SECURE": True,
+    "JWT_AUTH_HTTPONLY": False,
 }
 
 
@@ -147,13 +188,38 @@ CONSTANCE_CONFIG = {
         "",
         "Slack 알림 전송에 사용할 Secret",
     ),
-    "SLACK_SPONSOR_NOTI_WEBHOOK_URL": ("", "후원사 관련 사항 알림을 위한 SLACK WEBHOOK URL"),
+    "SPONSOR_NOTI_CHANNEL": (
+        "",
+        "후원사 변동사항에 대한 알림을 보낼 채널",
+    ),
+    "CONFERENCE_PARTICIPANT_COUNT_SAT": (
+        1700,
+        "컨퍼런스(토) 참가자 수",
+    ),
+    "CONFERENCE_PARTICIPANT_COUNT_SUN": (
+        1700,
+        "컨퍼런스(일) 참가자 수",
+    ),
+    "IMP_KEY": (
+        "",
+        "포트원 REST API 키",
+    ),
+    "IMP_SECRET": (
+        "",
+        "포트원 REST API 비밀키",
+    ),
 }
 
 # drf-spectacular
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ),
 }
 
 SPECTACULAR_SETTINGS = {
@@ -172,4 +238,28 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_WHITELIST = (
+    "https://2023.pycon.kr",
+    "https://pycon-dev2023.pycon.kr",
+    "https://pycon-prod2023.pycon.kr",
+    "https://127.0.0.1:3000",
+    "https://localhost:3000",
+    "http://2023.pycon.kr",
+    "http://pycon-dev2023.pycon.kr",
+    "http://pycon-prod2023.pycon.kr",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+)
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF WHITE LIST
+CSRF_TRUSTED_ORIGINS = tuple(CORS_ORIGIN_WHITELIST)
+
+# OAUTH
+OAUTH_GITHUB_CALLBACK_URL = "http://localhost:8000/accounts/github/login/callback/"
+OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callback/"
+
+# login_required view에 로그인 되지 않은 상태로 접속할 경우 리다이렉트할 로그인 페이지를 설정합니다.
+# The URL or named URL pattern where requests are redirected for login when using the login_required() decorator
+LOGIN_URL = '/accounts/login/'
