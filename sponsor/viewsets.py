@@ -73,8 +73,8 @@ class SponsorViewSet(ModelViewSet):
         sponsor_data = get_object_or_404(Sponsor, pk=pk)
         serializer = SponsorSerializer(sponsor_data, data=request.data)
 
-        # if not self.check_owner_permission(request, sponsor_data):
-        #     return Response(None, status.HTTP_401_UNAUTHORIZED)
+        if not self.check_owner_permission(request, sponsor_data):
+            return Response(None, status.HTTP_401_UNAUTHORIZED)
 
         if serializer.is_valid():
             serializer.save()
