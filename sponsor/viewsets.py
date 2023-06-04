@@ -28,7 +28,7 @@ class SponsorViewSet(ModelViewSet):
         return Sponsor.objects.all()
 
     def list(self, request, *args, **kwargs):
-        queryset = Sponsor.objects.filter(accepted=True).order_by("level")
+        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by("level")
         serializer = SponsorListSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -71,7 +71,7 @@ class SponsorViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         pk = kwargs["id"]
         sponsor_data = get_object_or_404(Sponsor, pk=pk)
-        serializer = SponsorSerializer(sponsor_data, data=request.data)
+        serializer = SponsorSerializer(sponsor_data, data=request.data, partial=True)
 
         if not self.check_owner_permission(request, sponsor_data):
             return Response(None, status.HTTP_401_UNAUTHORIZED)
