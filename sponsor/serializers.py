@@ -46,6 +46,7 @@ class SponsorListSerializer(serializers.ModelSerializer):
         model = Sponsor
         fields = [
             "name",
+            "url",
             "logo_image",
             "level",
             "id",
