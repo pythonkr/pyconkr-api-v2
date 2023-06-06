@@ -243,6 +243,7 @@ CORS_ORIGIN_WHITELIST = (
     "https://2023.pycon.kr",
     "https://pycon-dev2023.pycon.kr",
     "https://pycon-prod2023.pycon.kr",
+    "https://ticket-2023.pycon.kr",         # PG 심사 대비 임시 도메인
     "https://127.0.0.1:3000",
     "https://localhost:3000",
     "http://2023.pycon.kr",
