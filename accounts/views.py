@@ -13,8 +13,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
-from account.logics import get_basic_auth_token
-from account.view_models import UserTicketInfo
+from accounts.logics import get_basic_auth_token
+from accounts.view_models import UserTicketInfo
 from ticket.models import Ticket
 
 from allauth.account.views import LoginView, LogoutView

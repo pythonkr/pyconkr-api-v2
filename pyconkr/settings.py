@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "ticket",
     "program",
     "payment",
+    "accounts",
     # swagger
     "drf_spectacular",
     # cors
@@ -82,8 +83,8 @@ ROOT_URLCONF = "pyconkr.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates" , 
-                BASE_DIR / "account/templates",
+        "DIRS": [BASE_DIR / "templates" ,
+                 BASE_DIR / "accounts/templates",
                  ],
         "APP_DIRS": True,
         "OPTIONS": {
