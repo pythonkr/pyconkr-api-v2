@@ -44,6 +44,10 @@ class ProposalListSerializer(serializers.ModelSerializer):
             "category",
         ]
 
+    @staticmethod
+    def get_profile_img(obj: Proposal):
+        return obj.user.userext.profile_img
+
 
 class ProposalCategorySerializer(serializers.ModelSerializer):
     class Meta:

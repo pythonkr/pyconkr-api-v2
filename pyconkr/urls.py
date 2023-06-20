@@ -36,7 +36,7 @@ urlpatterns = [
     path("statuses/", include(status.urls)),
     path("tickets/", include(ticket.urls)),
     path("payments/", include(payment.urls)),
-    path("", include("account.urls")),
+    path("", include("accounts.urls")),
 ]
 
 if settings.DEBUG is True:
