@@ -3,9 +3,9 @@ from rest_framework.routers import DefaultRouter
 
 from program.viewsets import ProposalViewSet
 
-router = DefaultRouter()
-router.register("", ProposalViewSet, basename="program")
+session_router = DefaultRouter()
+session_router.register("sessions", ProposalViewSet, basename="session")
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("", include(session_router.urls)),
 ]
