@@ -4,6 +4,8 @@ from program.models import Proposal, ProposalCategory
 
 
 class ProposalSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    category_name = serializers.SerializerMethodField()
     accepted = serializers.BooleanField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
@@ -12,7 +14,7 @@ class ProposalSerializer(serializers.ModelSerializer):
         model = Proposal
         fields = [
             "id",
-            "user",
+            "username",
             "title",
             "brief",
             "desc",
@@ -21,6 +23,7 @@ class ProposalSerializer(serializers.ModelSerializer):
             "duration",
             "language",
             "category",
+            "category_name",
             "accepted",
             "introduction",
             "video_url",
@@ -29,6 +32,15 @@ class ProposalSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+    @staticmethod
+    def get_username(obj: Proposal):
+        return "{}{}".format(obj.user.last_name, obj.user.first_name)
+
+    @staticmethod
+    def get_category_name(obj: Proposal):
+        return obj.category.name
+
 
 
 class ProposalListSerializer(serializers.ModelSerializer):

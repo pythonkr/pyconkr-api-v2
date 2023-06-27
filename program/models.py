@@ -11,8 +11,8 @@ class ProposalCategory(models.Model):
     visible = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "프로그램 카테고리"
-        verbose_name_plural = "프로그램 카테고리들"
+        verbose_name = "세션 카테고리"
+        verbose_name_plural = "세션 카테고리들"
 
     def __str__(self):
         return self.name
@@ -92,8 +92,8 @@ class Proposal(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "프로그램"
-        verbose_name_plural = "프로그램들"
+        verbose_name = "세션"
+        verbose_name_plural = "세션들"
 
     def __str__(self):
         return self.title
@@ -136,6 +136,10 @@ class Program(models.Model):
             (SPRINT, "스프린트"),
         ),
     )
+
+    class Meta:
+        verbose_name = "프로그램"
+        verbose_name_plural = "프로그램들"
 
     def __str__(self):
         return self.title
