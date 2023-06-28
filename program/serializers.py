@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
 from program.models import Proposal, ProposalCategory
+from accounts.serializers import UserSerializer
 
 
 class ProposalSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField()
     category_name = serializers.SerializerMethodField()
     accepted = serializers.BooleanField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
@@ -14,7 +14,6 @@ class ProposalSerializer(serializers.ModelSerializer):
         model = Proposal
         fields = [
             "id",
-            "username",
             "title",
             "brief",
             "desc",
@@ -33,14 +32,14 @@ class ProposalSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-    @staticmethod
-    def get_username(obj: Proposal):
-        return "{}{}".format(obj.user.last_name, obj.user.first_name)
+    def to_representation(self, instance: Proposal):
+        response = super().to_representation(instance)
+        response["user"] = UserSerializer(instance.user).data
+        return response
 
     @staticmethod
     def get_category_name(obj: Proposal):
         return obj.category.name
-
 
 
 class ProposalListSerializer(serializers.ModelSerializer):
