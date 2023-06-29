@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from program.models import Proposal, ProposalCategory
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserExtSerializer
 
 
 class ProposalSerializer(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class ProposalSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Proposal):
         response = super().to_representation(instance)
-        response["user"] = UserSerializer(instance.user).data
+        response["user"] = UserExtSerializer(instance.user.userext).data
         return response
 
     @staticmethod
@@ -43,6 +43,8 @@ class ProposalSerializer(serializers.ModelSerializer):
 
 
 class ProposalListSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Proposal
         fields = [
@@ -53,11 +55,21 @@ class ProposalListSerializer(serializers.ModelSerializer):
             "duration",
             "language",
             "category",
+            "category_name",
         ]
 
     @staticmethod
     def get_profile_img(obj: Proposal):
         return obj.user.userext.profile_img
+
+    @staticmethod
+    def get_category_name(obj: Proposal):
+        return obj.category.name
+
+    def to_representation(self, instance: Proposal):
+        response = super().to_representation(instance)
+        response["user"] = UserExtSerializer(instance.user.userext).data
+        return response
 
 
 class ProposalCategorySerializer(serializers.ModelSerializer):

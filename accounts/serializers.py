@@ -1,25 +1,22 @@
 from django.contrib.auth import get_user_model
 
 import rest_framework.serializers as serializers
+from accounts.models import UserExt
 
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserExtSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
-    bio = serializers.SerializerMethodField()
 
     class Meta:
-        model = User
+        model = UserExt
         fields = [
             "nickname",
-            "bio"
+            "bio",
+            "profile_img",
         ]
 
     @staticmethod
-    def get_nickname(obj: User):
-        return "{}{}".format(obj.last_name, obj.first_name)
-
-    @staticmethod
-    def get_bio(obj: User):
-        return obj.userext.bio
+    def get_nickname(obj: UserExt):
+        return "{}{}".format(obj.user.last_name, obj.user.first_name)
