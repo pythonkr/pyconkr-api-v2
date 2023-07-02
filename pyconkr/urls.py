@@ -21,11 +21,14 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+from rest_framework.routers import DefaultRouter
 
 import payment.urls
 import sponsor.urls
 import status.urls
 import ticket.urls
+import session.urls
+
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
@@ -36,6 +39,7 @@ urlpatterns = [
     path("statuses/", include(status.urls)),
     path("tickets/", include(ticket.urls)),
     path("payments/", include(payment.urls)),
+    path("sessions/", include(session.urls)),
     path("", include("accounts.urls")),
 ]
 
