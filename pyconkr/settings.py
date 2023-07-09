@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "program",
     "payment",
     "accounts",
+    "session",
     # swagger
     "drf_spectacular",
     # cors
