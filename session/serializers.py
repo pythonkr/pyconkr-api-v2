@@ -65,7 +65,16 @@ class SessionListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Session):
         response = super().to_representation(instance)
-        response["user"] = UserExtSerializer(instance.user.userext).data
+
+        if instance.user is not None:
+            response["user"] = UserExtSerializer(instance.user.userext).data
+        else:
+            response["user"] = {
+                "nickname": "",
+                "bio": "",
+                "profile_img": ""
+            }
+
         return response
 
 
