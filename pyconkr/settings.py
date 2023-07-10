@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     "ticket",
     "program",
     "payment",
+    "accounts",
+    "session",
     # swagger
     "drf_spectacular",
     # cors
@@ -82,8 +84,8 @@ ROOT_URLCONF = "pyconkr.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates" , 
-                BASE_DIR / "account/templates",
+        "DIRS": [BASE_DIR / "templates" ,
+                 BASE_DIR / "accounts/templates",
                  ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -243,6 +245,7 @@ CORS_ORIGIN_WHITELIST = (
     "https://2023.pycon.kr",
     "https://pycon-dev2023.pycon.kr",
     "https://pycon-prod2023.pycon.kr",
+    "https://ticket-2023.pycon.kr",         # PG 심사 대비 임시 도메인
     "https://127.0.0.1:3000",
     "https://localhost:3000",
     "http://2023.pycon.kr",
