@@ -47,7 +47,7 @@ class SessionListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
-            "brief",
+            "introduction",
             "difficulty",
             "duration",
             "language",
