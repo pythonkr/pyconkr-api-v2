@@ -1,23 +1,20 @@
 from rest_framework import serializers
 
-from program.models import Proposal, ProposalCategory
+from session.models import Session, Category, Session
 from accounts.serializers import UserExtSerializer
 
 
-class ProposalSerializer(serializers.ModelSerializer):
+class SessionSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
     accepted = serializers.BooleanField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
-        model = Proposal
+        model = Session
         fields = [
             "id",
             "title",
-            "brief",
-            "desc",
-            "comment",
             "difficulty",
             "duration",
             "language",
@@ -32,21 +29,21 @@ class ProposalSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-    def to_representation(self, instance: Proposal):
+    def to_representation(self, instance: Session):
         response = super().to_representation(instance)
         response["user"] = UserExtSerializer(instance.user.userext).data
         return response
 
     @staticmethod
-    def get_category_name(obj: Proposal):
+    def get_category_name(obj: Session):
         return obj.category.name
 
 
-class ProposalListSerializer(serializers.ModelSerializer):
+class SessionListSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
 
     class Meta:
-        model = Proposal
+        model = Session
         fields = [
             "id",
             "title",
@@ -59,22 +56,22 @@ class ProposalListSerializer(serializers.ModelSerializer):
         ]
 
     @staticmethod
-    def get_profile_img(obj: Proposal):
+    def get_profile_img(obj: Session):
         return obj.user.userext.profile_img
 
     @staticmethod
-    def get_category_name(obj: Proposal):
+    def get_category_name(obj: Session):
         return obj.category.name
 
-    def to_representation(self, instance: Proposal):
+    def to_representation(self, instance: Session):
         response = super().to_representation(instance)
         response["user"] = UserExtSerializer(instance.user.userext).data
         return response
 
 
-class ProposalCategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProposalCategory
+        model = Category
         fields = [
             "name",
         ]
