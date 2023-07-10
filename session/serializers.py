@@ -69,11 +69,7 @@ class SessionListSerializer(serializers.ModelSerializer):
         if instance.user is not None:
             response["user"] = UserExtSerializer(instance.user.userext).data
         else:
-            response["user"] = {
-                "nickname": "",
-                "bio": "",
-                "profile_img": ""
-            }
+            response["user"] = None
 
         return response
 

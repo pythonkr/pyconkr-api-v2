@@ -1,6 +1,9 @@
 from django.contrib import admin
 
+from import_export.admin import ImportExportModelAdmin
+
 from .models import Proposal, Session, Category
+from .resources import SessionResource
 
 
 @admin.register(Proposal)
@@ -20,7 +23,7 @@ class ProposalAdmin(admin.ModelAdmin):
 
 
 @admin.register(Session)
-class SessionAdmin(admin.ModelAdmin):
+class SessionAdmin(ImportExportModelAdmin):
     list_display = [
         "id",
         "title",
@@ -32,6 +35,7 @@ class SessionAdmin(admin.ModelAdmin):
     ]
     list_filter = ["difficulty", "duration", "language", "category"]
     search_fields = ["title", "user__username"]
+    resource_class = SessionResource
 
 
 @admin.register(Category)
