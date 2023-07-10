@@ -47,7 +47,7 @@ class SessionListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
-            "brief",
+            "introduction",
             "difficulty",
             "duration",
             "language",
@@ -65,7 +65,12 @@ class SessionListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Session):
         response = super().to_representation(instance)
-        response["user"] = UserExtSerializer(instance.user.userext).data
+
+        if instance.user is not None:
+            response["user"] = UserExtSerializer(instance.user.userext).data
+        else:
+            response["user"] = None
+
         return response
 
 
