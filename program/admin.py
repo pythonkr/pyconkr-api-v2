@@ -1,10 +1,12 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Program
+from .resources import ProgramResource
 
 
 @admin.register(Program)
-class ProgramAdmin(admin.ModelAdmin):
+class ProgramAdmin(ImportExportModelAdmin):
     list_display = [
         "id",
         "host",
@@ -17,3 +19,4 @@ class ProgramAdmin(admin.ModelAdmin):
     ]
     list_filter = ["program_type", ]
     search_fields = ["title", "host__username"]
+    resource_class = ProgramResource
