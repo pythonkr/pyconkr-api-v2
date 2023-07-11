@@ -20,5 +20,7 @@ class ProgramResource(ModelResource):
             "short_desc",
             "desc",
             "room",
-            "program_type"
+            "program_type",
+            "start_at",
+            "end_at"
         ]
