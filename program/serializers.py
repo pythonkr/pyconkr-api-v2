@@ -12,5 +12,7 @@ class ProgramSerializer(serializers.ModelSerializer):
             "title",
             "short_desc",
             "desc",
-            "room"
+            "room",
+            "start_at",
+            "end_at",
         ]
