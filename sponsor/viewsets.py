@@ -91,7 +91,7 @@ class SponsorListViewSet(ModelViewSet):
         return SponsorLevel.objects.all()
 
     def list(self, request, *args, **kwargs):
-        queryset = SponsorLevel.objects.all().order_by("-price").order_by("")
+        queryset = SponsorLevel.objects.all().order_by("-price")
         serializer = SponsorListSerializer(queryset, many=True)
 
         return Response(serializer.data)
