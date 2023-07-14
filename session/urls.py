@@ -8,6 +8,6 @@ session_router = DefaultRouter()
 session_router.register("", SessionViewSet, basename="session")
 
 urlpatterns = [
+    path("timetable/", get__timetable),
     path("", include(session_router.urls)),
-    path("timetable", get__timetable),
 ]
