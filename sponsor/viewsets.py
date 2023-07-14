@@ -28,7 +28,7 @@ class SponsorViewSet(ModelViewSet):
         return Sponsor.objects.all().order_by("paid_at")
 
     def list(self, request, *args, **kwargs):
-        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by("level").order_by("paid_at")
+        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by("level", "paid_at")
         serializer = SponsorListSerializer(queryset, many=True)
         return Response(serializer.data)
 
