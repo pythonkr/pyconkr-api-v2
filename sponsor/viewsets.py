@@ -25,10 +25,10 @@ class SponsorViewSet(ModelViewSet):
     validator = SponsorValidater()
 
     def get_queryset(self):
-        return Sponsor.objects.all()
+        return Sponsor.objects.all().order_by("paid_at")
 
     def list(self, request, *args, **kwargs):
-        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by("level")
+        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by("level").order_by("paid_at")
         serializer = SponsorListSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -91,7 +91,7 @@ class SponsorListViewSet(ModelViewSet):
         return SponsorLevel.objects.all()
 
     def list(self, request, *args, **kwargs):
-        queryset = SponsorLevel.objects.all().order_by("-price")
+        queryset = SponsorLevel.objects.all().order_by("-price").order_by("")
         serializer = SponsorListSerializer(queryset, many=True)
 
         return Response(serializer.data)
