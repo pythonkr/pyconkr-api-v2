@@ -31,7 +31,7 @@ class SessionSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Session):
         response = super().to_representation(instance)
-        response["user"] = UserExtSerializer(instance.user.userext).data
+        response["user"] = UserExtSerializer(instance.user.userext).data if instance.user else None
         return response
 
     @staticmethod
