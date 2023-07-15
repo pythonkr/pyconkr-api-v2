@@ -8,8 +8,7 @@ class SessionSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
     accepted = serializers.BooleanField(read_only=True)
     day_of_week = serializers.SerializerMethodField()
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
+    start_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Session
@@ -27,8 +26,7 @@ class SessionSerializer(serializers.ModelSerializer):
             "slide_url",
             "room_num",
             "day_of_week",
-            "created_at",
-            "updated_at",
+            "start_at"
         ]
 
     def to_representation(self, instance: Session):
