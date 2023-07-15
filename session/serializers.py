@@ -27,8 +27,7 @@ class SessionSerializer(serializers.ModelSerializer):
             "slide_url",
             "room_num",
             "day_of_week",
-            "created_at",
-            "updated_at",
+            "start_at"
         ]
 
     def to_representation(self, instance: Session):
