@@ -23,7 +23,7 @@ class TicketTypeViewModel:
     day: str  # choice
     program: Program
     is_refundable: bool
-    is_buyable: property  # type: bool
+    # is_buyable: property  # type: bool
     buyable_url: Optional[str]
 
     def __init__(self, model: TicketType):
@@ -42,7 +42,7 @@ class TicketTypeViewModel:
             program_type=model.program.program_type,
         )
         self.is_refundable = model.is_refundable
-        self.is_buyable = model.buyable
+        # self.is_buyable = model.buyable
         self.buyable_url = model.buyable_url
 
     def to_dict(self):
