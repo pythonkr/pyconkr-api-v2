@@ -11,7 +11,7 @@ ALLOWED_HOSTS += [
 # RDS
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "mysql.connector.django",
         "NAME": os.getenv("AWS_RDS_DATABASE"),
         "USER": os.getenv("AWS_RDS_USER_ID"),
         "PASSWORD": os.getenv("AWS_RDS_PW"),
