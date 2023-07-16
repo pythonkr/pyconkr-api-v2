@@ -12,4 +12,15 @@ class SessionResource(resources.ModelResource):
 
     class Meta:
         model = Session
-        fields = ["id", "title", "difficulty", "duration", "language", "category", "start_at", "room_num"]
+        fields = [
+            "id",
+            "title",
+            "difficulty",
+            "duration",
+            "language",
+            "category",
+            "start_at",
+            "room_num",
+            "introduction",
+            "host_name"
+        ]
