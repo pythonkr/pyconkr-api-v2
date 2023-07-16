@@ -1,6 +1,10 @@
 import os
 
+import pymysql
+
 from pyconkr.settings import *
+
+pymysql.install_as_MySQLdb()
 
 DEBUG = False
 
@@ -11,6 +15,7 @@ ALLOWED_HOSTS += [
 # RDS
 DATABASES = {
     "default": {
+        # "ENGINE": "mysql.connector.django",
         "ENGINE": "django.db.backends.mysql",
         "NAME": os.getenv("AWS_RDS_DATABASE"),
         "USER": os.getenv("AWS_RDS_USER_ID"),
