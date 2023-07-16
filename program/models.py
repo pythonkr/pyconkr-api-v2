@@ -42,6 +42,7 @@ class Program(models.Model):
             (SPRINT, "스프린트"),
         ),
     )
+    profile_img = models.ImageField(null=True, blank=True)
 
     class Meta:
         verbose_name = "프로그램"
