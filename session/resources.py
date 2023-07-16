@@ -7,9 +7,20 @@ from session.models import Session, Category
 
 
 class SessionResource(resources.ModelResource):
-    def before_save_instance(self, instance: Session, using_transactions, dry_run):
-        instance.start_at = datetime.datetime.now()
+    def before_import_row(self, row, row_number=None, **kwargs):
+        row["room_num"] = int(row["room_num"])
 
     class Meta:
         model = Session
-        fields = ["id", "title", "difficulty", "duration", "language", "category"]
+        fields = [
+            "id",
+            "title",
+            "difficulty",
+            "duration",
+            "language",
+            "category",
+            "start_at",
+            "room_num",
+            "introduction",
+            "host_name"
+        ]

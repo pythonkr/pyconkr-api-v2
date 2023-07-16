@@ -76,12 +76,13 @@ class Proposal(models.Model):
 
 class Session(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    host_name = models.CharField(max_length=50, null=True, blank=True)
     title = models.CharField(max_length=255)
     introduction = models.TextField(
         max_length=3000,
         null=True,
         blank=True,
-        help_text="발표 소개 페이지에 들어가는 내용입니다. 변경 사항은 최대 60분 이내에 적용됩니다.",
+        help_text="발표 소개 페이지에 들어가는 내용입니다.",
     )
 
     difficulty = models.CharField(
