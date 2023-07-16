@@ -27,6 +27,7 @@ class TicketType(models.Model):
     )
     program = models.ForeignKey("program.Program", on_delete=models.PROTECT, null=True)
     is_refundable = models.BooleanField(default=True)
+    buyable_url = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name
