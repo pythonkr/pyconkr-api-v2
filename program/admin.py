@@ -10,6 +10,7 @@ class ProgramAdmin(ImportExportModelAdmin):
     list_display = [
         "id",
         "host",
+        "profile_img",
         "title",
         "room",
         "slot",
@@ -17,6 +18,8 @@ class ProgramAdmin(ImportExportModelAdmin):
         "end_at",
         "program_type",
     ]
-    list_filter = ["program_type", ]
+    list_filter = [
+        "program_type",
+    ]
     search_fields = ["title", "host__username"]
     resource_class = ProgramResource
