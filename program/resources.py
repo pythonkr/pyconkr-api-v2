@@ -16,11 +16,12 @@ class ProgramResource(ModelResource):
         fields = [
             "id",
             "host",
+            "profile_img",
             "title",
             "short_desc",
             "desc",
             "room",
             "program_type",
             "start_at",
-            "end_at"
+            "end_at",
         ]

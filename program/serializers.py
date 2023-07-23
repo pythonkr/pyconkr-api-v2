@@ -9,6 +9,7 @@ class ProgramSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "host",
+            "profile_img",
             "title",
             "short_desc",
             "desc",
