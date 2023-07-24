@@ -99,7 +99,7 @@ class Session(models.Model):
     duration = models.CharField(
         max_length=15,
         choices=(
-            ("SHORT", "25min"),
+            ("SHORT", "20min"),
             ("LONG", "40min"),
         ),
     )
