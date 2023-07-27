@@ -4,11 +4,12 @@ from django.db.transaction import atomic
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 
-from sponsor.models import Sponsor, SponsorLevel
+from sponsor.models import Patron, Sponsor, SponsorLevel
 from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
 from sponsor.serializers import (
+    PatronListSerializer,
     SponsorDetailSerializer,
     SponsorListSerializer,
     SponsorRemainingAccountSerializer,
@@ -28,7 +29,9 @@ class SponsorViewSet(ModelViewSet):
         return Sponsor.objects.all().order_by("paid_at")
 
     def list(self, request, *args, **kwargs):
-        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by("level", "paid_at")
+        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by(
+            "level", "paid_at"
+        )
         serializer = SponsorListSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -108,4 +111,11 @@ class SponsorRemainingAccountViewSet(ModelViewSet):
         queryset = SponsorLevel.objects.all().order_by("-price")
         serializer = self.get_serializer(queryset, many=True)
 
+        return Response(serializer.data)
+
+
+class PatronListViewSet(ViewSet):
+    def list(self, request):
+        queryset = Patron.objects.all()
+        serializer = PatronListSerializer(queryset, many=True)
         return Response(serializer.data)
