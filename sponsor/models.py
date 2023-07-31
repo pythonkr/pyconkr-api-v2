@@ -158,3 +158,36 @@ class Sponsor(models.Model):
 
     def __str__(self):
         return f"{self.name}/{self.level}"
+
+
+
+class Patron(models.Model):
+    class Meta:
+        ordering = ["-total_contribution", "contribution_datetime"]
+        verbose_name = "개인후원자"
+        verbose_name_plural = "개인후원자 목록"
+
+    name = models.CharField(max_length=100)
+    creator = models.ForeignKey(
+        User,
+        null=True,  # TODO: 추후 로그인 적용 후 입력
+        blank=True,  # TODO: 추후 로그인 적용 후 입력
+        on_delete=models.CASCADE,
+        help_text="개인후원을 등록한 유저",
+        related_name="patron_user",
+    )
+    total_contribution = models.IntegerField(default=0, help_text="개인후원한 금액입니다.")
+    contribution_datetime = models.DateTimeField(
+        help_text="개인후원 결제한 일시입니다."
+    )
+    contribution_message = models.TextField(
+        help_text="후원메시지입니다. emoji 를 입력가능해야하고 html 태그가 들어갈 수 있습니다."
+    )
+    # need html sanitizing before saving
+    # but need to include emoji
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}"

@@ -1,7 +1,7 @@
 import rest_framework.serializers as serializers
 from rest_framework.fields import SerializerMethodField
 
-from sponsor.models import Sponsor, SponsorLevel
+from sponsor.models import Patron, Sponsor, SponsorLevel
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -74,3 +74,23 @@ class SponsorRemainingAccountSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_available(obj: SponsorLevel):
         return True if obj.current_remaining_number > 0 else False
+
+
+class PatronListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patron
+        fields = [
+            "name",
+            "contribution_message",
+            "sort_order",
+        ]
+
+    sort_order = serializers.SerializerMethodField()
+
+    def get_sort_order(self, obj: Patron):
+        self._sort_order += 1
+        return self._sort_order
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._sort_order = 0
