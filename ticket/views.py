@@ -10,7 +10,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 import payment.logic
-from program.models import CONFERENCE, TUTORIAL, SPRINT
+from program.models import CONFERENCE, TUTORIAL, SPRINT, CHILDCARE
 from .models import Ticket, TicketType
 from .requests import (
     AddConferenceTicketRequest,
@@ -68,6 +68,7 @@ def get__get_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
         "conference": [],
         "tutorial": [],
         "sprint": [],
+        "childcare": [],
     }
 
     for ticket_type in ticket_types:
@@ -77,6 +78,8 @@ def get__get_ticket_types(request: HttpRequest, **kwargs) -> HttpResponse:
             response["tutorial"].append(TicketTypeViewModel(ticket_type).to_dict())
         elif ticket_type.program.program_type == SPRINT:
             response["sprint"].append(TicketTypeViewModel(ticket_type).to_dict())
+        elif ticket_type.program.program_type == CHILDCARE:
+            response["childcare"].append(TicketTypeViewModel(ticket_type).to_dict())
 
     return HttpResponse(json.dumps(response))
 
