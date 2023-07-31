@@ -8,7 +8,7 @@ User = get_user_model()
 CONFERENCE = "CONFERENCE"
 TUTORIAL = "TUTORIAL"
 SPRINT = "SPRINT"
-CHILD_CARE = "CHILD_CARE"
+CHILDCARE = "CHILDCARE"
 
 
 class Program(models.Model):
@@ -41,7 +41,7 @@ class Program(models.Model):
             (CONFERENCE, "컨퍼런스"),
             (TUTORIAL, "튜토리얼"),
             (SPRINT, "스프린트"),
-            (CHILD_CARE, "아이돌봄"),
+            (CHILDCARE, "아이돌봄"),
         ),
     )
     profile_img = models.ImageField(null=True, blank=True)
