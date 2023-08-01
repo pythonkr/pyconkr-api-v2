@@ -29,6 +29,8 @@ class SponsorSerializer(serializers.ModelSerializer):
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):
+    creator_userid = serializers.SerializerMethodField()
+
     class Meta:
         model = Sponsor
         fields = [
@@ -38,7 +40,12 @@ class SponsorDetailSerializer(serializers.ModelSerializer):
             "logo_image",
             "level",
             "id",
+            "creator_userid",
         ]
+
+    @staticmethod
+    def get_creator_userid(obj: Sponsor):
+        return obj.creator.username if obj.creator is not None else None
 
 
 class SponsorListSerializer(serializers.ModelSerializer):
