@@ -77,6 +77,8 @@ class Proposal(models.Model):
 class Session(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     host_name = models.CharField(max_length=50, null=True, blank=True)
+    host_introduction = models.TextField(null=True, blank=True)
+    host_profile_image = models.ImageField(null=True, blank=True)
     title = models.CharField(max_length=255)
     introduction = models.TextField(
         max_length=3000,
