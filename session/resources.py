@@ -22,5 +22,7 @@ class SessionResource(resources.ModelResource):
             "start_at",
             "room_num",
             "introduction",
-            "host_name"
+            "host_name",
+            "host_introduction",
+            "host_profile_image",
         ]
