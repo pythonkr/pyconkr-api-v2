@@ -27,7 +27,9 @@ class SessionSerializer(serializers.ModelSerializer):
             "room_num",
             "day_of_week",
             "start_at",
-            "host_name"
+            "host_name",
+            "host_introduction",
+            "host_profile_image",
         ]
 
     def to_representation(self, instance: Session):
@@ -60,6 +62,9 @@ class SessionListSerializer(serializers.ModelSerializer):
             "category",
             "category_name",
             "day_of_week",
+            "host_name",
+            "host_introduction",
+            "host_profile_image",
         ]
 
     @staticmethod
