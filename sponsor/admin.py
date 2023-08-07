@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
 
-from sponsor.models import Sponsor, SponsorLevel
+from sponsor.models import Sponsor, SponsorLevel, Patron
 
 
 class SponsorAdmin(SummernoteModelAdmin):
@@ -41,3 +41,16 @@ class SponsorLevelAdmin(SummernoteModelAdmin):
 
 
 admin.site.register(SponsorLevel, SponsorLevelAdmin)
+
+
+class PatronAdmin(SummernoteModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "total_contribution",
+    )
+    ordering = ("total_contribution",)
+    search_fields = ("name",)
+
+
+admin.site.register(Patron, PatronAdmin)
