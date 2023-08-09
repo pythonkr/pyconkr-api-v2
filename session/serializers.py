@@ -69,7 +69,7 @@ class SessionListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_profile_img(obj: Session):
-        return obj.user.userext.profile_img
+        return obj.host_profile_image
 
     @staticmethod
     def get_category_name(obj: Session):
