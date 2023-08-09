@@ -27,7 +27,7 @@ class SessionAdmin(ImportExportModelAdmin):
     list_display = [
         "id",
         "title",
-        "user",
+        "host_profile_image",
         "difficulty",
         "duration",
         "language",
