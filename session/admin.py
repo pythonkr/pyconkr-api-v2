@@ -28,6 +28,7 @@ class SessionAdmin(ImportExportModelAdmin):
         "id",
         "title",
         "host_profile_image",
+        "host_name",
         "difficulty",
         "duration",
         "language",
