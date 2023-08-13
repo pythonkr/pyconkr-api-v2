@@ -266,3 +266,5 @@ OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callbac
 # login_required view에 로그인 되지 않은 상태로 접속할 경우 리다이렉트할 로그인 페이지를 설정합니다.
 # The URL or named URL pattern where requests are redirected for login when using the login_required() decorator
 LOGIN_URL = '/accounts/login/'
+
+AWS_QUERYSTRING_AUTH = False
