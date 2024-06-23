@@ -7,6 +7,7 @@ User = get_user_model()
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     visible = models.BooleanField(default=True)
+    year = models.IntegerField(default=2023)
 
     class Meta:
         verbose_name = "세션 카테고리"
