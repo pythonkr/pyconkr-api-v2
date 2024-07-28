@@ -28,6 +28,19 @@ class SponsorSerializer(serializers.ModelSerializer):
         ]
 
 
+class SponsorLevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SponsorLevel
+        fields = [
+            "name",
+            "desc",
+            "visible",
+            "price",
+            "limit",
+            "order",
+        ]
+
+
 class SponsorDetailSerializer(serializers.ModelSerializer):
     creator_userid = serializers.SerializerMethodField()
 
