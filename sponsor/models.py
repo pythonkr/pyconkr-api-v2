@@ -15,9 +15,13 @@ class SponsorLevel(models.Model):
         verbose_name = "후원사 등급"
         verbose_name_plural = "후원사 등급"
 
-    name = models.CharField(max_length=255, blank=True, default="", help_text="후원 등급명")
+    name = models.CharField(
+        max_length=255, blank=True, default="", help_text="후원 등급명"
+    )
     desc = models.TextField(
-        null=True, blank=True, help_text="후원 혜택을 입력하면 될 거 같아요 :) 후원사가 등급을 정할 때 볼 문구입니다."
+        null=True,
+        blank=True,
+        help_text="후원 혜택을 입력하면 될 거 같아요 :) 후원사가 등급을 정할 때 볼 문구입니다.",
     )
     visible = models.BooleanField(default=True)
     price = models.IntegerField(default=0)
@@ -50,6 +54,24 @@ class SponsorLevel(models.Model):
         return self.name
 
 
+class SponsorBenefit(models.Model):
+    class Meta:
+        verbose_name = "후원사 등급 별 혜택"
+        verbose_name_plural = "후원사 등급 별 혜택 목록"
+
+    name = models.CharField(max_length=255, help_text="혜택 이름")
+    desc = models.TextField(null=True, blank=True, help_text="기타")
+    offer = models.PositiveIntegerField(help_text="제공 하는 혜택 개수")
+    unit = models.CharField(max_length=10, help_text="혜택 단위")
+    is_countable = models.BooleanField(
+        default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
+    )
+
+    sponsor_level = models.ForeignKey(
+        SponsorLevel, related_name="benefits", on_delete=models.CASCADE
+    )
+
+
 def registration_file_upload_to(instance, filename):
     return f"sponsor/business_registration/{instance.id}/{filename}"
 
@@ -77,7 +99,8 @@ class Sponsor(models.Model):
         related_name="sponsor_creator",
     )
     name = models.CharField(
-        max_length=255, help_text="후원사의 이름입니다. 서비스나 회사 이름이 될 수 있습니다."
+        max_length=255,
+        help_text="후원사의 이름입니다. 서비스나 회사 이름이 될 수 있습니다.",
     )
     level = models.ForeignKey(
         SponsorLevel,
@@ -87,13 +110,18 @@ class Sponsor(models.Model):
         help_text="후원을 원하시는 등급을 선택해주십시오. 모두 판매된 등급은 선택할 수 없습니다.",
     )
     desc = models.TextField(
-        null=True, blank=True, help_text="후원사 설명입니다. 이 설명은 국문 홈페이지에 게시됩니다."
+        null=True,
+        blank=True,
+        help_text="후원사 설명입니다. 이 설명은 국문 홈페이지에 게시됩니다.",
     )
     eng_desc = models.TextField(
-        null=True, blank=True, help_text="후원사 영문 설명입니다. 이 설명은 영문 홈페이지에 게시됩니다."
+        null=True,
+        blank=True,
+        help_text="후원사 영문 설명입니다. 이 설명은 영문 홈페이지에 게시됩니다.",
     )
     manager_name = models.CharField(
-        max_length=100, help_text="준비위원회와 후원과 관련된 논의를 진행할 담당자의 이름을 입력해주십시오."
+        max_length=100,
+        help_text="준비위원회와 후원과 관련된 논의를 진행할 담당자의 이름을 입력해주십시오.",
     )
     manager_email = models.CharField(
         max_length=100,
@@ -148,17 +176,19 @@ class Sponsor(models.Model):
         help_text="사용자가 제출했는지 여부를 저장합니다. 요청이 제출되면 준비위원회에서 검토하고 받아들일지를 결정합니다.",
     )
     accepted = models.BooleanField(
-        default=False, help_text="후원사 신청이 접수되었고, 입금 대기 상태인 경우 True로 설정됩니다."
+        default=False,
+        help_text="후원사 신청이 접수되었고, 입금 대기 상태인 경우 True로 설정됩니다.",
     )
     paid_at = models.DateTimeField(
-        null=True, blank=True, help_text="후원금이 입금된 일시입니다. 아직 입금되지 않았을 경우 None이 들어갑니다."
+        null=True,
+        blank=True,
+        help_text="후원금이 입금된 일시입니다. 아직 입금되지 않았을 경우 None이 들어갑니다.",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name}/{self.level}"
-
 
 
 class Patron(models.Model):
@@ -176,7 +206,9 @@ class Patron(models.Model):
         help_text="개인후원을 등록한 유저",
         related_name="patron_user",
     )
-    total_contribution = models.IntegerField(default=0, help_text="개인후원한 금액입니다.")
+    total_contribution = models.IntegerField(
+        default=0, help_text="개인후원한 금액입니다."
+    )
     contribution_datetime = models.DateTimeField(
         help_text="개인후원 결제한 일시입니다."
     )
