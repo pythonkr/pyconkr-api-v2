@@ -1,7 +1,14 @@
 import rest_framework.serializers as serializers
 from rest_framework.fields import SerializerMethodField
 
-from sponsor.models import Patron, Sponsor, SponsorLevel
+from sponsor.models import Patron, Sponsor, SponsorLevel, SponsorBenefit
+
+
+class SponsorBenefitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SponsorBenefit
+        fields = ["name", "desc", "offer", "unit", "is_countable"]
+        read_only_fields = ["id"]
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -39,6 +46,23 @@ class SponsorLevelSerializer(serializers.ModelSerializer):
             "limit",
             "order",
         ]
+        read_only_fields = ["id"]
+
+
+class SponsorLevelDetailSerializer(SponsorLevelSerializer):
+    benefits = SponsorBenefitSerializer(many=True)
+
+    class Meta(SponsorLevelSerializer.Meta):
+        fields = [
+            "name",
+            "desc",
+            "visible",
+            "price",
+            "limit",
+            "order",
+            "benefits",
+        ]
+        read_only_fields = ["id", "benefits"]
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):

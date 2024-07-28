@@ -15,6 +15,7 @@ from sponsor.serializers import (
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
     SponsorLevelSerializer,
+    SponsorLevelDetailSerializer,
 )
 from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
@@ -22,11 +23,17 @@ from sponsor.validators import SponsorValidater
 
 class SponsorLevelViewSet(ModelViewSet):
     lookup_field = "id"
-    serializer_class = SponsorLevelSerializer
     http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         return SponsorLevel.objects.get_queryset()
+
+    def get_serializer(self, *args, **kwargs):
+        match self.action:
+            case "list" | "create":
+                return SponsorLevelSerializer(*args, **kwargs)
+            case _:
+                return SponsorLevelDetailSerializer(*args, **kwargs)
 
     def list(self, request, *args, **kwagrs):
         queryset = self.get_queryset()
@@ -44,18 +51,6 @@ class SponsorLevelViewSet(ModelViewSet):
         sponsor_level = self.get_object()
         serializer = self.get_serializer(sponsor_level)
         return Response(serializer.data)
-
-    # def update(self, request, id, *args, **kwargs):
-    #     sponsor_level = self.get_object()
-    #     serializer = self.get_serializer(sponsor_level, data=request.data, partial=True)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data)
-
-    # def delete(self, request, id, *args, **kwagrs):
-    #     sponsor_level = self.get_object()
-    #     sponsor_level.delete()
-    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SponsorViewSet(ModelViewSet):
