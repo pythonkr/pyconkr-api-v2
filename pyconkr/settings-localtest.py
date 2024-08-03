@@ -10,7 +10,12 @@ ALLOWED_HOSTS += [
 
 
 # RDS
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "local.sqlite3",
+    }
+}
 
 # django-storages: TODO fix to in memory?
 del MEDIA_ROOT
