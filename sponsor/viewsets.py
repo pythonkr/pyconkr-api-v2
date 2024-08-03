@@ -28,12 +28,12 @@ class SponsorLevelViewSet(ModelViewSet):
     def get_queryset(self):
         return SponsorLevel.objects.get_queryset()
 
-    def get_serializer(self, *args, **kwargs):
+    def get_serializer_class(self):
         match self.action:
             case "list" | "create":
-                return SponsorLevelSerializer(*args, **kwargs)
+                return SponsorLevelSerializer
             case _:
-                return SponsorLevelDetailSerializer(*args, **kwargs)
+                return SponsorLevelDetailSerializer
 
     def list(self, request, *args, **kwagrs):
         queryset = self.get_queryset()
