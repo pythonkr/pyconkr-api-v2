@@ -25,14 +25,13 @@ from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
 
 
-
 class SponsorBenefitViewSet(ModelViewSet):
     lookup_field = "id"
     http_method_names = ["get", "post", "put", "delete"]
     serializer_class = SponsorBenefitSerializer
 
     def get_queryset(self):
-        return SponsorBenefit.objects.all()
+        return SponsorBenefit.objects.filter(level__year=self.request.version).all()
 
 
 class SponsorLevelViewSet(ModelViewSet):
@@ -71,6 +70,7 @@ class SponsorLevelViewSet(ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
+
 class SponsorViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -84,7 +84,12 @@ class SponsorViewSet(
     validator = SponsorValidater()
 
     def get_queryset(self):
-        return super().get_queryset().filter(paid_at__isnull=False, level__year=self.request.version).order_by("level__order", "paid_at")
+        return (
+            super()
+            .get_queryset()
+            .filter(paid_at__isnull=False, level__year=self.request.version)
+            .order_by("level__order", "paid_at")
+        )
 
     def get_serializer_class(self):
         if self.action == "list":
