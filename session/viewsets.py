@@ -15,3 +15,6 @@ class SessionViewSet(ModelViewSet):
             return SessionListSerializer
         else:
             return SessionSerializer
+
+    def get_queryset(self):
+        return super().get_queryset().filter(category__year=self.request.version)

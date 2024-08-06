@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
-from pathlib import Path
+import pathlib
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Build paths inside the project like this: BASE_DIR / "subdir".
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -54,10 +54,7 @@ INSTALLED_APPS = [
     "constance.backends.database",
     # apps
     "sponsor",
-    "status",
-    "ticket",
     "program",
-    "payment",
     "accounts",
     "session",
     # swagger
@@ -142,18 +139,10 @@ REST_AUTH = {
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
@@ -186,30 +175,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 # django-constance
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_CONFIG = {
-    "SLACK_SECRET": (
-        "",
-        "Slack 알림 전송에 사용할 Secret",
-    ),
-    "SPONSOR_NOTI_CHANNEL": (
-        "",
-        "후원사 변동사항에 대한 알림을 보낼 채널",
-    ),
-    "CONFERENCE_PARTICIPANT_COUNT_SAT": (
-        1700,
-        "컨퍼런스(토) 참가자 수",
-    ),
-    "CONFERENCE_PARTICIPANT_COUNT_SUN": (
-        1700,
-        "컨퍼런스(일) 참가자 수",
-    ),
-    "IMP_KEY": (
-        "",
-        "포트원 REST API 키",
-    ),
-    "IMP_SECRET": (
-        "",
-        "포트원 REST API 비밀키",
-    ),
+    "SLACK_SECRET": ("", "Slack 알림 전송에 사용할 Secret"),
+    "SPONSOR_NOTI_CHANNEL": ("", "후원사 변동사항에 대한 알림을 보낼 채널"),
+    "CONFERENCE_PARTICIPANT_COUNT_SAT": (1700, "컨퍼런스(토) 참가자 수"),
+    "CONFERENCE_PARTICIPANT_COUNT_SUN": (1700, "컨퍼런스(일) 참가자 수"),
+    "IMP_KEY": ("", "포트원 REST API 키"),
+    "IMP_SECRET": ("", "포트원 REST API 비밀키"),
 }
 
 # drf-spectacular
@@ -217,12 +188,16 @@ REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
+    "DEFAULT_VERSION": "2023",
+    "ALLOWED_VERSIONS": ["2023", "2024"],
 }
+
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "pyconkr-api-v2",
@@ -236,8 +211,7 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
         "displayOperationId": True,
     },
-    # available SwaggerUI versions: https://github.com/swagger-api/swagger-ui/releases
-    "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
+    "PREPROCESSING_HOOKS": ["pyconkr.openapi.preprocessing_filter_spec"],
 }
 
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -265,6 +239,6 @@ OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callbac
 
 # login_required view에 로그인 되지 않은 상태로 접속할 경우 리다이렉트할 로그인 페이지를 설정합니다.
 # The URL or named URL pattern where requests are redirected for login when using the login_required() decorator
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = "/accounts/login/"
 
 AWS_QUERYSTRING_AUTH = False

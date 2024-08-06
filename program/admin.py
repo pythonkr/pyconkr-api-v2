@@ -8,6 +8,7 @@ from .resources import ProgramResource
 @admin.register(Program)
 class ProgramAdmin(ImportExportModelAdmin):
     list_display = [
+        "year",
         "id",
         "host",
         "profile_img",
@@ -18,8 +19,6 @@ class ProgramAdmin(ImportExportModelAdmin):
         "end_at",
         "program_type",
     ]
-    list_filter = [
-        "program_type",
-    ]
+    list_filter = ["year", "program_type"]
     search_fields = ["title", "host__username"]
     resource_class = ProgramResource

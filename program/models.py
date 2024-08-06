@@ -14,6 +14,7 @@ CHILDCARE = "CHILDCARE"
 class Program(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
     host = models.CharField(max_length=100)  # TODO User로?
+    year = models.IntegerField(default=2023)
     title = models.CharField(max_length=100)
     short_desc = models.CharField(max_length=1000)
     desc = models.CharField(max_length=4000)

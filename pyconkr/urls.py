@@ -15,32 +15,25 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularRedocView,
-    SpectacularSwaggerView,
-)
-from rest_framework.routers import DefaultRouter
+from django.urls import include, path, re_path
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
-import payment.urls
-import sponsor.urls
-import status.urls
-import ticket.urls
+import accounts.urls
+import program.urls
 import session.urls
-
+import sponsor.urls
 
 urlpatterns = [
-    path("api-auth/", include("rest_framework.urls")),
-    path("summernote/", include("django_summernote.urls")),
-    path("admin/", admin.site.urls),
-    path("sponsors/", include(sponsor.urls)),
-    path("programs/", include("program.urls")),
-    path("statuses/", include(status.urls)),
-    path("tickets/", include(ticket.urls)),
-    path("payments/", include(payment.urls)),
-    path("sessions/", include(session.urls)),
-    path("", include("accounts.urls")),
+    path(kwargs={"version": "2023"}, route="sponsors/", view=include(sponsor.urls)),
+    path(kwargs={"version": "2023"}, route="programs/", view=include(program.urls)),
+    path(kwargs={"version": "2023"}, route="sessions/", view=include(session.urls)),
+    re_path(route="^(?P<version>(2023|2024))/sponsors/", view=include(sponsor.urls)),
+    re_path(route="^(?P<version>(2023|2024))/programs/", view=include(program.urls)),
+    re_path(route="^(?P<version>(2023|2024))/sessions/", view=include(session.urls)),
+    path(route="summernote/", view=include("django_summernote.urls")),
+    path(route="api-auth/", view=include("rest_framework.urls")),
+    path(route="admin/", view=admin.site.urls),
+    path(route="", view=include(accounts.urls)),
 ]
 
 if settings.DEBUG is True:

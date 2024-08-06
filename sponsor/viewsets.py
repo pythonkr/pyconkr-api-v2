@@ -4,7 +4,7 @@ from django.db.transaction import atomic
 
 from django.shortcuts import get_object_or_404
 from django.db.utils import IntegrityError
-from rest_framework import status
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ViewSet
@@ -23,6 +23,7 @@ from sponsor.serializers import (
 )
 from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
+
 
 
 class SponsorBenefitViewSet(ModelViewSet):
@@ -70,22 +71,25 @@ class SponsorLevelViewSet(ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
-
-class SponsorViewSet(ModelViewSet):
+class SponsorViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Sponsor.objects.all()
     serializer_class = SponsorSerializer
     permission_classes = [IsOwnerOrReadOnly]  # 본인 소유만 수정 가능
-    http_method_names = ["get", "post", "put"]
     validator = SponsorValidater()
 
     def get_queryset(self):
-        return Sponsor.objects.all().order_by("paid_at")
+        return super().get_queryset().filter(paid_at__isnull=False, level__year=self.request.version).order_by("level__order", "paid_at")
 
-    def list(self, request, *args, **kwargs):
-        queryset = Sponsor.objects.filter(paid_at__isnull=False).order_by(
-            "level", "paid_at"
-        )
-        serializer = SponsorListSerializer(queryset, many=True)
-        return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.action == "list":
+            return SponsorListSerializer
+        return SponsorSerializer
 
     @atomic
     def create(self, request, *args, **kwargs):
@@ -106,7 +110,7 @@ class SponsorViewSet(ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         pk = kwargs["id"]
-        sponsor_data = get_object_or_404(Sponsor, pk=pk)
+        sponsor_data = get_object_or_404(self.get_queryset(), pk=pk)
 
         # 본인 소유인 경우는 모든 필드
         # 그렇지 않은 경우는 공개 가능한 필드만 응답
@@ -136,20 +140,6 @@ class SponsorViewSet(ModelViewSet):
             return Response(serializer.data)
 
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
-
-
-class SponsorListViewSet(ModelViewSet):
-    serializer_class = SponsorListSerializer
-    http_method_names = ["get"]
-
-    def get_queryset(self):
-        return SponsorLevel.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        queryset = SponsorLevel.objects.all().order_by("-price")
-        serializer = SponsorListSerializer(queryset, many=True)
-
-        return Response(serializer.data)
 
 
 class SponsorRemainingAccountViewSet(ModelViewSet):

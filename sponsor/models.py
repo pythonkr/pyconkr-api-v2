@@ -42,6 +42,7 @@ class SponsorLevel(models.Model):
     order = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    year = models.IntegerField(default=2023)
 
     benefits = models.ManyToManyField(
         SponsorBenefit, through="BenefitByLevel", related_name="level"
