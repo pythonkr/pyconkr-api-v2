@@ -8,7 +8,7 @@ from sponsor.viewsets import (
 )
 
 urlpatterns = [
-    path("list/", SponsorViewSet.as_view({"get": "list"})),
+    path("list/", SponsorViewSet.as_view({"get": "list", "post": "create"})),
     path(
         "list/<int:id>/",
         SponsorViewSet.as_view({"get": "retrieve", "put": "update"}),

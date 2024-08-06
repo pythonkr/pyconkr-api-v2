@@ -14,7 +14,7 @@ from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
 from sponsor.serializers import (
     PatronListSerializer,
     SponsorDetailSerializer,
-    SponsorListSerializer,
+    SponsorWithLevelSerializer,
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
     SponsorLevelSerializer,
@@ -79,7 +79,6 @@ class SponsorViewSet(
     viewsets.GenericViewSet,
 ):
     queryset = Sponsor.objects.all()
-    serializer_class = SponsorSerializer
     permission_classes = [IsOwnerOrReadOnly]  # 본인 소유만 수정 가능
     validator = SponsorValidater()
 
@@ -93,7 +92,7 @@ class SponsorViewSet(
 
     def get_serializer_class(self):
         if self.action == "list":
-            return SponsorListSerializer
+            return SponsorWithLevelSerializer
         return SponsorSerializer
 
     @atomic
@@ -102,7 +101,7 @@ class SponsorViewSet(
         serializer.is_valid(raise_exception=True)
         self.validator.assert_create(serializer.validated_data)
 
-        new_sponsor = serializer.save()
+        serializer.save()
 
         # slack 알림을 실패하더라도 transaction 전체를 롤백하지는 않아야 함
         # TODO 람다 외부 인터넷 접근 확인 후 활성화

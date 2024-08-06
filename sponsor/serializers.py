@@ -97,6 +97,14 @@ class SponsorLevelSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 
+class SponsorWithLevelSerializer(serializers.ModelSerializer):
+    sponsor = SponsorSerializer(read_only=True, many=True, source="sponsor_set")
+
+    class Meta:
+        model = SponsorLevel
+        fields = ["name", "order", "sponsor"]
+
+
 class SponsorDetailSerializer(serializers.ModelSerializer):
     creator_userid = serializers.SerializerMethodField()
 
