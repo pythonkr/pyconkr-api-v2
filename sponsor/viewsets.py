@@ -31,7 +31,7 @@ class SponsorBenefitViewSet(ModelViewSet):
     serializer_class = SponsorBenefitSerializer
 
     def get_queryset(self):
-        return SponsorBenefit.objects.filter(level__year=self.request.version).all()
+        return SponsorBenefit.objects.filter(year=self.request.version).all()
 
 
 class SponsorLevelViewSet(ModelViewSet):

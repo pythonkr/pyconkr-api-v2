@@ -20,8 +20,9 @@ class BenefitByLevelSerializer(serializers.ModelSerializer):
 class SponsorBenefitSerializer(serializers.ModelSerializer):
     class Meta:
         model = SponsorBenefit
-        fields = ["id", "name", "desc", "unit", "is_countable"]
+        fields = ["id", "year", "name", "desc", "unit", "is_countable"]
         read_only_fields = ["id"]
+        extra_kwargs = {"year": {"write_only": True}}
 
 
 class SponsorBenefitWithOfferSerializer(SponsorBenefitSerializer):

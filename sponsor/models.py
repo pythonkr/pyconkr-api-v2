@@ -18,6 +18,7 @@ class SponsorBenefit(models.Model):
     name = models.CharField(max_length=255, help_text="혜택 이름")
     desc = models.TextField(null=True, blank=True, help_text="기타")
     unit = models.CharField(max_length=10, help_text="혜택 단위")
+    year = models.IntegerField(default=2023)
     is_countable = models.BooleanField(
         default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
     )
