@@ -1,12 +1,15 @@
 from typing import Type
 
 from django.db.transaction import atomic
+
 from django.shortcuts import get_object_or_404
+from django.db.utils import IntegrityError
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
-from sponsor.models import Patron, Sponsor, SponsorLevel
+from sponsor.models import Patron, Sponsor, SponsorLevel, SponsorBenefit, BenefitByLevel
 from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
 from sponsor.serializers import (
     PatronListSerializer,
@@ -15,10 +18,20 @@ from sponsor.serializers import (
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
     SponsorLevelSerializer,
-    SponsorLevelDetailSerializer,
+    SponsorBenefitSerializer,
+    BenefitByLevelSerializer,
 )
 from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
+
+
+class SponsorBenefitViewSet(ModelViewSet):
+    lookup_field = "id"
+    http_method_names = ["get", "post", "put", "delete"]
+    serializer_class = SponsorBenefitSerializer
+
+    def get_queryset(self):
+        return SponsorBenefit.objects.all()
 
 
 class SponsorLevelViewSet(ModelViewSet):
@@ -30,26 +43,31 @@ class SponsorLevelViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         match self.action:
-            case "list" | "create":
-                return SponsorLevelSerializer
+            case "create_or_update_benefits" | "assign_benefits":
+                return BenefitByLevelSerializer
             case _:
-                return SponsorLevelDetailSerializer
+                return SponsorLevelSerializer
 
-    def list(self, request, *args, **kwagrs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request, *args, **kwagrs):
+    @action(detail=False, methods=["POST"])
+    def assign_benefits(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        try:
+            serializer.save()
+        except IntegrityError:
+            return Response("Already assigned", status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["PUT"])
+    def create_or_update_benefits(self, request):
+        level_id = request.data.get("level_id", None)
+        benefit_id = request.data.get("benefit_id", None)
+        benefit_by_level = get_object_or_404(
+            BenefitByLevel, level_id=level_id, benefit_id=benefit_id
+        )
+        serializer = self.get_serializer(benefit_by_level, data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def retrieve(self, request, id, *args, **kwargs):
-        sponsor_level = self.get_object()
-        serializer = self.get_serializer(sponsor_level)
         return Response(serializer.data)
 
 

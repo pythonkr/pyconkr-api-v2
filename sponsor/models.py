@@ -10,6 +10,19 @@ class SponsorLevelManager(models.Manager):
         return super(SponsorLevelManager, self).get_queryset().all().order_by("order")
 
 
+class SponsorBenefit(models.Model):
+    class Meta:
+        verbose_name = "후원사 등급 별 혜택"
+        verbose_name_plural = "후원사 등급 별 혜택 목록"
+
+    name = models.CharField(max_length=255, help_text="혜택 이름")
+    desc = models.TextField(null=True, blank=True, help_text="기타")
+    unit = models.CharField(max_length=10, help_text="혜택 단위")
+    is_countable = models.BooleanField(
+        default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
+    )
+
+
 class SponsorLevel(models.Model):
     class Meta:
         verbose_name = "후원사 등급"
@@ -29,6 +42,10 @@ class SponsorLevel(models.Model):
     order = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    benefits = models.ManyToManyField(
+        SponsorBenefit, through="BenefitByLevel", related_name="level"
+    )
 
     objects = SponsorLevelManager()
 
@@ -54,22 +71,21 @@ class SponsorLevel(models.Model):
         return self.name
 
 
-class SponsorBenefit(models.Model):
+class BenefitByLevel(models.Model):
     class Meta:
-        verbose_name = "후원사 등급 별 혜택"
-        verbose_name_plural = "후원사 등급 별 혜택 목록"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["benefit_id", "level_id"], name="IX_BENEFIT_BY_LEVEL_1"
+            )
+        ]
 
-    name = models.CharField(max_length=255, help_text="혜택 이름")
-    desc = models.TextField(null=True, blank=True, help_text="기타")
+    benefit = models.ForeignKey(
+        SponsorBenefit, on_delete=models.CASCADE, related_name="benefit_by_level"
+    )
+    level = models.ForeignKey(
+        SponsorLevel, on_delete=models.CASCADE, related_name="benefit_by_level"
+    )
     offer = models.PositiveIntegerField(help_text="제공 하는 혜택 개수")
-    unit = models.CharField(max_length=10, help_text="혜택 단위")
-    is_countable = models.BooleanField(
-        default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
-    )
-
-    sponsor_level = models.ForeignKey(
-        SponsorLevel, related_name="benefits", on_delete=models.CASCADE
-    )
 
 
 def registration_file_upload_to(instance, filename):

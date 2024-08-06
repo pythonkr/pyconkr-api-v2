@@ -1,14 +1,37 @@
 import rest_framework.serializers as serializers
 from rest_framework.fields import SerializerMethodField
 
-from sponsor.models import Patron, Sponsor, SponsorLevel, SponsorBenefit
+from sponsor.models import Patron, Sponsor, SponsorLevel, SponsorBenefit, BenefitByLevel
+
+
+class BenefitByLevelSerializer(serializers.ModelSerializer):
+    benefit_id = serializers.PrimaryKeyRelatedField(
+        queryset=SponsorBenefit.objects.all(), source="benefit"
+    )
+    level_id = serializers.PrimaryKeyRelatedField(
+        queryset=SponsorLevel.objects.get_queryset(), source="level", write_only=True
+    )
+
+    class Meta:
+        model = BenefitByLevel
+        fields = ["benefit_id", "offer", "level_id"]
 
 
 class SponsorBenefitSerializer(serializers.ModelSerializer):
     class Meta:
         model = SponsorBenefit
-        fields = ["name", "desc", "offer", "unit", "is_countable"]
+        fields = ["id", "name", "desc", "unit", "is_countable"]
         read_only_fields = ["id"]
+
+
+class SponsorBenefitWithOfferSerializer(SponsorBenefitSerializer):
+    offer = serializers.SerializerMethodField()
+
+    class Meta(SponsorBenefitSerializer.Meta):
+        fields = SponsorBenefitSerializer.Meta.fields + ["offer"]
+
+    def get_offer(self, obj):
+        return obj.benefit_by_level.filter(benefit_id=obj.id).get().offer
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -36,24 +59,12 @@ class SponsorSerializer(serializers.ModelSerializer):
 
 
 class SponsorLevelSerializer(serializers.ModelSerializer):
+    benefits = SponsorBenefitWithOfferSerializer(many=True, read_only=True)
+
     class Meta:
         model = SponsorLevel
         fields = [
-            "name",
-            "desc",
-            "visible",
-            "price",
-            "limit",
-            "order",
-        ]
-        read_only_fields = ["id"]
-
-
-class SponsorLevelDetailSerializer(SponsorLevelSerializer):
-    benefits = SponsorBenefitSerializer(many=True)
-
-    class Meta(SponsorLevelSerializer.Meta):
-        fields = [
+            "id",
             "name",
             "desc",
             "visible",
@@ -62,7 +73,7 @@ class SponsorLevelDetailSerializer(SponsorLevelSerializer):
             "order",
             "benefits",
         ]
-        read_only_fields = ["id", "benefits"]
+        read_only_fields = ["id"]
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):
