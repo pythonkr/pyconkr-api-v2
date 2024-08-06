@@ -25,13 +25,31 @@ class SponsorBenefitSerializer(serializers.ModelSerializer):
 
 
 class SponsorBenefitWithOfferSerializer(SponsorBenefitSerializer):
-    offer = serializers.SerializerMethodField()
+    id = serializers.SlugRelatedField(slug_field="id", source="benefit", read_only=True)
+    name = serializers.SlugRelatedField(
+        slug_field="name", source="benefit", read_only=True
+    )
+    desc = serializers.SlugRelatedField(
+        slug_field="desc", source="benefit", read_only=True
+    )
+    unit = serializers.SlugRelatedField(
+        slug_field="unit", source="benefit", read_only=True
+    )
+    is_countable = serializers.SlugRelatedField(
+        slug_field="is_countable", source="benefit", read_only=True
+    )
 
-    class Meta(SponsorBenefitSerializer.Meta):
-        fields = SponsorBenefitSerializer.Meta.fields + ["offer"]
+    class Meta:
+        model = BenefitByLevel
+        fields = ["id", "name", "desc", "unit", "is_countable", "offer"]
+
+    def get_benefit_id(self, obj):
+        breakpoint()
+        return
 
     def get_offer(self, obj):
-        return obj.benefit_by_level.filter(benefit_id=obj.id).get().offer
+        breakpoint()
+        return obj.benefit_by_level.filter(benefit_id=obj.id)
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -59,7 +77,9 @@ class SponsorSerializer(serializers.ModelSerializer):
 
 
 class SponsorLevelSerializer(serializers.ModelSerializer):
-    benefits = SponsorBenefitWithOfferSerializer(many=True, read_only=True)
+    benefits = SponsorBenefitWithOfferSerializer(
+        many=True, read_only=True, source="benefit_by_level"
+    )
 
     class Meta:
         model = SponsorLevel

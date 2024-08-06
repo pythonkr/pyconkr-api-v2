@@ -49,7 +49,7 @@ class SponsorLevelViewSet(ModelViewSet):
                 return SponsorLevelSerializer
 
     @action(detail=False, methods=["POST"])
-    def assign_benefits(self, request):
+    def assign_benefits(self, request, version):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
@@ -59,7 +59,7 @@ class SponsorLevelViewSet(ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=["PUT"])
-    def create_or_update_benefits(self, request):
+    def create_or_update_benefits(self, request, version):
         level_id = request.data.get("level_id", None)
         benefit_id = request.data.get("benefit_id", None)
         benefit_by_level = get_object_or_404(
