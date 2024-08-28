@@ -1,6 +1,6 @@
 import os
 
-from pyconkr.settings import *
+from pyconkr.settings import *  # noqa
 
 DEBUG = True
 
@@ -10,10 +10,15 @@ ALLOWED_HOSTS += [
 
 
 # RDS
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "local.sqlite3",
+    }
+}
 
 # django-storages: TODO fix to in memory?
-del MEDIA_ROOT
+del MEDIA_ROOT  # noqa
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 AWS_S3_ACCESS_KEY_ID = os.getenv("AWS_S3_ACCESS_KEY_ID")

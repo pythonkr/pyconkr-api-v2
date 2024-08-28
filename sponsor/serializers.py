@@ -1,7 +1,56 @@
 import rest_framework.serializers as serializers
 from rest_framework.fields import SerializerMethodField
 
-from sponsor.models import Patron, Sponsor, SponsorLevel
+from sponsor.models import Patron, Sponsor, SponsorLevel, SponsorBenefit, BenefitByLevel
+
+
+class BenefitByLevelSerializer(serializers.ModelSerializer):
+    benefit_id = serializers.PrimaryKeyRelatedField(
+        queryset=SponsorBenefit.objects.all(), source="benefit"
+    )
+    level_id = serializers.PrimaryKeyRelatedField(
+        queryset=SponsorLevel.objects.get_queryset(), source="level", write_only=True
+    )
+
+    class Meta:
+        model = BenefitByLevel
+        fields = ["benefit_id", "offer", "level_id"]
+
+
+class SponsorBenefitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SponsorBenefit
+        fields = ["id", "year", "name", "desc", "unit", "is_countable"]
+        read_only_fields = ["id"]
+        extra_kwargs = {"year": {"write_only": True}}
+
+
+class SponsorBenefitWithOfferSerializer(SponsorBenefitSerializer):
+    id = serializers.SlugRelatedField(slug_field="id", source="benefit", read_only=True)
+    name = serializers.SlugRelatedField(
+        slug_field="name", source="benefit", read_only=True
+    )
+    desc = serializers.SlugRelatedField(
+        slug_field="desc", source="benefit", read_only=True
+    )
+    unit = serializers.SlugRelatedField(
+        slug_field="unit", source="benefit", read_only=True
+    )
+    is_countable = serializers.SlugRelatedField(
+        slug_field="is_countable", source="benefit", read_only=True
+    )
+
+    class Meta:
+        model = BenefitByLevel
+        fields = ["id", "name", "desc", "unit", "is_countable", "offer"]
+
+    def get_benefit_id(self, obj):
+        breakpoint()
+        return
+
+    def get_offer(self, obj):
+        breakpoint()
+        return obj.benefit_by_level.filter(benefit_id=obj.id)
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -26,6 +75,34 @@ class SponsorSerializer(serializers.ModelSerializer):
             "level",
             "id",
         ]
+
+
+class SponsorLevelSerializer(serializers.ModelSerializer):
+    benefits = SponsorBenefitWithOfferSerializer(
+        many=True, read_only=True, source="benefit_by_level"
+    )
+
+    class Meta:
+        model = SponsorLevel
+        fields = [
+            "id",
+            "name",
+            "desc",
+            "visible",
+            "price",
+            "limit",
+            "order",
+            "benefits",
+        ]
+        read_only_fields = ["id"]
+
+
+class SponsorWithLevelSerializer(serializers.ModelSerializer):
+    sponsor = SponsorSerializer(read_only=True, many=True, source="sponsor_set")
+
+    class Meta:
+        model = SponsorLevel
+        fields = ["name", "order", "sponsor"]
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):
