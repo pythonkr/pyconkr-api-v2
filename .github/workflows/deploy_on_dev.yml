@@ -57,6 +57,12 @@ jobs:
           pip install zappa
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # Retrieve repo name
+      - name: Get current date and repo name
+        id: info
+        run: |
+          echo "::set-output name=repository_name::$(echo ${{ github.repository }} | sed -e 's/${{ github.repository_owner }}\///')"
+
       # Checkout and import zappa config
       - name: Checkout secrets repo
         uses: actions/checkout@v4
