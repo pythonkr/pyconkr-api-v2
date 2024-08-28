@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
 import os
 import pathlib
+import types
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
@@ -246,3 +246,12 @@ OAUTH_GOOGLE_CALLBACK_URL = "http://localhost:8000/accounts/google/login/callbac
 LOGIN_URL = "/accounts/login/"
 
 AWS_QUERYSTRING_AUTH = False
+
+# External APIs
+PRETALX = types.SimpleNamespace(
+    API_URL=os.getenv("PRETALX_API_URL", "https://pretalx.com"),
+    API_KEY=os.getenv("PRETALX_API_KEY", ""),
+    EVENT_NAME={
+        "2024": os.getenv("PRETALX_EVENT_TITLE_2024", "pyconkr2024"),
+    },
+)
