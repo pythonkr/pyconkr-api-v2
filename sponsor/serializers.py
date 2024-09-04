@@ -70,11 +70,7 @@ class SponsorSerializer(serializers.ModelSerializer):
             "level",
             "id",
         ]
-        read_only_fields = [
-            "name",
-            "level",
-            "id",
-        ]
+        read_only_fields = ["id"]
 
 
 class SponsorLevelSerializer(serializers.ModelSerializer):
@@ -97,12 +93,20 @@ class SponsorLevelSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 
+class SponsorSummariesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sponsor
+        fields = ["name", "desc", "url", "logo_image", "id"]
+
+
 class SponsorWithLevelSerializer(serializers.ModelSerializer):
-    sponsor = SponsorSerializer(read_only=True, many=True, source="sponsor_set")
+    sponsor = SponsorSummariesSerializer(
+        read_only=True, many=True, source="sponsor_set"
+    )
 
     class Meta:
         model = SponsorLevel
-        fields = ["name", "order", "sponsor"]
+        fields = ["id", "name", "visible", "order", "sponsor"]
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):
@@ -126,6 +130,8 @@ class SponsorDetailSerializer(serializers.ModelSerializer):
 
 
 class SponsorListSerializer(serializers.ModelSerializer):
+    level = SponsorLevelSerializer(read_only=True)
+
     class Meta:
         model = Sponsor
         fields = [

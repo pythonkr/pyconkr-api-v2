@@ -14,12 +14,13 @@ from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
 from sponsor.serializers import (
     PatronListSerializer,
     SponsorDetailSerializer,
-    SponsorWithLevelSerializer,
+    SponsorListSerializer,
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
     SponsorLevelSerializer,
     SponsorBenefitSerializer,
     BenefitByLevelSerializer,
+    SponsorWithLevelSerializer,
 )
 from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
@@ -45,8 +46,15 @@ class SponsorLevelViewSet(ModelViewSet):
         match self.action:
             case "create_or_update_benefits" | "assign_benefits":
                 return BenefitByLevelSerializer
+            case "list_with_levels":
+                return SponsorWithLevelSerializer
             case _:
                 return SponsorLevelSerializer
+
+    @action(detail=False, methods=["GET"], url_path="with-sponsor")
+    def list_with_levels(self, request, version):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
 
     @action(detail=False, methods=["POST"])
     def assign_benefits(self, request, version):
@@ -86,13 +94,13 @@ class SponsorViewSet(
         return (
             super()
             .get_queryset()
-            .filter(paid_at__isnull=False, level__year=self.request.version)
+            .filter(level__year=self.request.version)
             .order_by("level__order", "paid_at")
         )
 
     def get_serializer_class(self):
         if self.action == "list":
-            return SponsorWithLevelSerializer
+            return SponsorListSerializer
         return SponsorSerializer
 
     @atomic
