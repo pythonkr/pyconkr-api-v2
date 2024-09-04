@@ -9,6 +9,7 @@ DEBUG = True
 ALLOWED_HOSTS += [
     "api-dev.pycon.kr",
     "4st7mrntih.execute-api.ap-northeast-2.amazonaws.com",
+    "pycon-dev2024.pycon.kr",
 ]
 
 # RDS
