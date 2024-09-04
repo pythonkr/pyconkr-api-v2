@@ -28,6 +28,9 @@ urlpatterns = [
         ),
     ),
     path(
+        "levels/with-sponsor/", SponsorLevelViewSet.as_view({"get": "list_with_levels"})
+    ),
+    path(
         "levels/benefits/",
         SponsorLevelViewSet.as_view(
             {"post": "assign_benefits", "put": "create_or_update_benefits"}
