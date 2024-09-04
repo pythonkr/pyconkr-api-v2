@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+
 import os
 import pathlib
 import types
@@ -231,6 +232,7 @@ CORS_ORIGIN_WHITELIST = (
     "http://pycon-prod2023.pycon.kr",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "pycon-dev2024.pycon.kr",
 )
 CORS_ALLOW_CREDENTIALS = True
 
