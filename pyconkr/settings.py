@@ -232,7 +232,9 @@ CORS_ORIGIN_WHITELIST = (
     "http://pycon-prod2023.pycon.kr",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "https://pycon-dev2024.pycon.kr",
+    "http://pycon-dev2024.pycon.kr",
+    "https://2024.pycon.kr",
+    "http://2024.pycon.kr",
 )
 CORS_ALLOW_CREDENTIALS = True
 
