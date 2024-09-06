@@ -47,7 +47,7 @@ class PretalxSessionSerializer(serializers.Serializer):
     internal_notes = serializers.CharField(allow_null=True, allow_blank=True)
     content_locale = serializers.CharField()
 
-    slot = PretalxSlotSerializer()
+    slot = PretalxSlotSerializer(allow_null=True)
     duration = serializers.IntegerField(allow_null=True)
     do_not_record = serializers.BooleanField()
     is_featured = serializers.BooleanField()
