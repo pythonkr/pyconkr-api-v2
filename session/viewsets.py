@@ -40,8 +40,31 @@ class SessionViewSet(ModelViewSet):
 
         pretalx_event_name = settings.PRETALX.EVENT_NAME[request.version]
         return Response(
-            data=pretalx_client.retrieve_sessions(
+            data=pretalx_client.list_sessions(
                 event_name=pretalx_event_name,
                 only_confirmed=settings.DEBUG,
             )["results"],
+        )
+
+    @extend_schema(
+        examples={
+            200: OpenApiResponse(
+                response=str,
+                examples=[
+                    OpenApiExample(name="2023년 세션 상세", value=SessionSerializer()),
+                    OpenApiExample(name="2024년 이후 세션 상세 (Pretalx)", value=PretalxSessionSerializer()),
+                ],
+            ),
+        },
+    )
+    def retrieve(self, request, *args, **kwargs) -> Response:
+        if request.version == 2023 or request.version not in settings.PRETALX.EVENT_NAME:
+            return super().retrieve(request, *args, **kwargs)
+
+        pretalx_event_name = settings.PRETALX.EVENT_NAME[request.version]
+        return Response(
+            data=pretalx_client.retrieve_session(
+                event_name=pretalx_event_name,
+                session_id=kwargs["pk"],
+            ),
         )
