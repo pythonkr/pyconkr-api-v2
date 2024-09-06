@@ -47,20 +47,20 @@ class PretalxSessionSerializer(serializers.Serializer):
     internal_notes = serializers.CharField(allow_null=True, allow_blank=True)
     content_locale = serializers.CharField()
 
-    slot = PretalxSlotSerializer(allow_blank=True)
-    duration = serializers.IntegerField(allow_null=True, allow_blank=True)
+    slot = PretalxSlotSerializer()
+    duration = serializers.IntegerField(allow_null=True)
     do_not_record = serializers.BooleanField()
     is_featured = serializers.BooleanField()
 
-    speakers = PretalxSpeakerSerializer(many=True, allow_blank=True)
-    answers = PretalxAnswerSerializer(many=True, allow_blank=True)
+    speakers = PretalxSpeakerSerializer(many=True)
+    answers = PretalxAnswerSerializer(many=True)
 
-    tags = serializers.ListField(allow_blank=True)
-    tag_ids = serializers.ListField(allow_blank=True)
+    tags = serializers.ListField()
+    tag_ids = serializers.ListField()
 
 
 class PretalxPaginatedSessionSerializer(serializers.Serializer):
     count = serializers.IntegerField(allow_null=True)
     next = serializers.CharField(allow_null=True)
     previous = serializers.CharField(allow_null=True)
-    results = PretalxSessionSerializer(many=True, allow_blank=True)
+    results = PretalxSessionSerializer(many=True)
