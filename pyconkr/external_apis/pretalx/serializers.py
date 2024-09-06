@@ -39,28 +39,28 @@ class PretalxSessionSerializer(serializers.Serializer):
     submission_type_id = serializers.IntegerField()
     state = serializers.CharField()
 
-    image = serializers.CharField()
+    image = serializers.CharField(allow_null=True)
     title = serializers.CharField()
-    abstract = serializers.CharField()
-    description = serializers.CharField()
-    notes = serializers.CharField()
-    internal_notes = serializers.CharField()
+    abstract = serializers.CharField(allow_null=True)
+    description = serializers.CharField(allow_null=True, allow_blank=True)
+    notes = serializers.CharField(allow_null=True, allow_blank=True)
+    internal_notes = serializers.CharField(allow_null=True, allow_blank=True)
     content_locale = serializers.CharField()
 
-    slot = PretalxSlotSerializer()
-    duration = serializers.IntegerField()
+    slot = PretalxSlotSerializer(allow_blank=True)
+    duration = serializers.IntegerField(allow_null=True, allow_blank=True)
     do_not_record = serializers.BooleanField()
     is_featured = serializers.BooleanField()
 
-    speakers = PretalxSpeakerSerializer(many=True)
-    answers = PretalxAnswerSerializer(many=True)
+    speakers = PretalxSpeakerSerializer(many=True, allow_blank=True)
+    answers = PretalxAnswerSerializer(many=True, allow_blank=True)
 
-    tags = serializers.ListField()
-    tag_ids = serializers.ListField()
+    tags = serializers.ListField(allow_blank=True)
+    tag_ids = serializers.ListField(allow_blank=True)
 
 
 class PretalxPaginatedSessionSerializer(serializers.Serializer):
-    count = serializers.IntegerField()
-    next = serializers.CharField()
-    previous = serializers.CharField()
-    results = PretalxSessionSerializer(many=True)
+    count = serializers.IntegerField(allow_null=True)
+    next = serializers.CharField(allow_null=True)
+    previous = serializers.CharField(allow_null=True)
+    results = PretalxSessionSerializer(many=True, allow_blank=True)
