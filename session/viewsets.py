@@ -1,6 +1,7 @@
 from django.conf import settings
 from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from pyconkr.external_apis.pretalx.client import pretalx_client
@@ -33,12 +34,14 @@ class SessionViewSet(ModelViewSet):
             ),
         },
     )
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         if request.version == 2023 or request.version not in settings.PRETALX.EVENT_NAME:
             return super().list(request, *args, **kwargs)
 
         pretalx_event_name = settings.PRETALX.EVENT_NAME[request.version]
-        return pretalx_client.retrieve_sessions(
-            event_name=pretalx_event_name,
-            only_confirmed=settings.DEBUG,
-        )["results"]
+        return Response(
+            data=pretalx_client.retrieve_sessions(
+                event_name=pretalx_event_name,
+                only_confirmed=settings.DEBUG,
+            )["results"],
+        )
