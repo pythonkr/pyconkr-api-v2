@@ -4,8 +4,8 @@ from rest_framework import serializers
 class PretalxSpeakerSerializer(serializers.Serializer):
     code = serializers.CharField()
     name = serializers.CharField()
-    biography = serializers.CharField()
-    avatar = serializers.CharField()
+    biography = serializers.CharField(allow_null=True, allow_blank=True)
+    avatar = serializers.CharField(allow_null=True, allow_blank=True)
 
 
 class PretalxSlotSerializer(serializers.Serializer):
