@@ -42,7 +42,7 @@ class SessionViewSet(ModelViewSet):
         return Response(
             data=pretalx_client.list_sessions(
                 event_name=pretalx_event_name,
-                only_confirmed=settings.DEBUG,
+                only_confirmed=not settings.DEBUG,
             )["results"],
         )
 
