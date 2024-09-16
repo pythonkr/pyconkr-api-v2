@@ -10,10 +10,10 @@ class PretalxSpeakerSerializer(serializers.Serializer):
 
 
 class PretalxSlotSerializer(serializers.Serializer):
-    start = serializers.DateTimeField()
-    end = serializers.DateTimeField()
-    room = serializers.DictField()
-    room_id = serializers.IntegerField()
+    start = serializers.DateTimeField(allow_null=True)
+    end = serializers.DateTimeField(allow_null=True)
+    room = serializers.DictField(allow_null=True)
+    room_id = serializers.IntegerField(allow_null=True)
 
 
 class PretalxQuestionSerializer(serializers.Serializer):
