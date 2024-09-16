@@ -6,12 +6,13 @@ class PretalxSpeakerSerializer(serializers.Serializer):
     name = serializers.CharField()
     biography = serializers.CharField(allow_null=True, allow_blank=True)
     avatar = serializers.CharField(allow_null=True, allow_blank=True)
+    email = serializers.CharField()
 
 
 class PretalxSlotSerializer(serializers.Serializer):
     start = serializers.DateTimeField()
     end = serializers.DateTimeField()
-    room = serializers.CharField()
+    room = serializers.DictField()
     room_id = serializers.IntegerField()
 
 
@@ -35,7 +36,7 @@ class PretalxAnswerSerializer(serializers.Serializer):
 
 class PretalxSessionSerializer(serializers.Serializer):
     code = serializers.CharField()
-    submission_type = serializers.CharField()
+    submission_type = serializers.DictField()
     submission_type_id = serializers.IntegerField()
     state = serializers.CharField()
 

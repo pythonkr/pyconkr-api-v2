@@ -41,7 +41,9 @@ class PretalxClient:
 
     def list_sessions(self, event_name: str, only_confirmed: bool = True) -> dict:
         """세션 목록 조회"""
-        endpoint = f"api/events/{event_name}/submissions" + ("?state=confirmed" if only_confirmed else "")
+        query_params = {"limit": 300, "state": "confirmed" if only_confirmed else None}
+        filtered_query_params = {k: v for k, v in query_params.items() if v is not None}
+        endpoint = f"api/events/{event_name}/submissions?{urllib.parse.urlencode(filtered_query_params)}"
 
         try:
             result = self._request("GET", endpoint)
