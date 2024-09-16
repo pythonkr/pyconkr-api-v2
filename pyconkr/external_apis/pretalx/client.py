@@ -48,10 +48,7 @@ class PretalxClient:
         try:
             result = self._request("GET", endpoint)
             result.raise_for_status()
-
-            parsed_result = PretalxPaginatedSessionSerializer(data=result.json())
-            parsed_result.is_valid(raise_exception=True)
-            return parsed_result.validated_data
+            return result.json()
         except Exception as e:
             raise PretalxException("세션 목록을 가져오지 못했습니다, 잠시 후에 다시 시도해주세요.") from e
 
@@ -62,10 +59,7 @@ class PretalxClient:
         try:
             result = self._request("GET", endpoint)
             result.raise_for_status()
-
-            parsed_result = PretalxSessionSerializer(data=result.json())
-            parsed_result.is_valid(raise_exception=True)
-            return parsed_result.validated_data
+            return result.json()
         except Exception as e:
             raise PretalxException("세션을 가져오지 못했습니다, 잠시 후에 다시 시도해주세요.") from e
 
