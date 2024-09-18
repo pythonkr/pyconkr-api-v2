@@ -23,6 +23,9 @@ class SponsorBenefit(models.Model):
         default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
     )
 
+    def __str__(self):
+        return self.name
+
 
 class SponsorLevel(models.Model):
     class Meta:

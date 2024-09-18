@@ -63,7 +63,7 @@ admin.site.register(SponsorBenefit, SponsorBenefitAdmin)
 
 
 class BenefitByLevelAdmin(SummernoteModelAdmin):
-    list_display = ("id", "benefit_id", "level_id", "offer")
+    list_display = ("id", "benefit", "level", "offer")
     list_editable = ("offer",)
 
 
