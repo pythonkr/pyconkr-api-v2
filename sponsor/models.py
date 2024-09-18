@@ -12,8 +12,8 @@ class SponsorLevelManager(models.Manager):
 
 class SponsorBenefit(models.Model):
     class Meta:
-        verbose_name = "후원사 등급 별 혜택"
-        verbose_name_plural = "후원사 등급 별 혜택 목록"
+        verbose_name = "후원사 혜택"
+        verbose_name_plural = "후원사 혜택 목록"
 
     name = models.CharField(max_length=255, help_text="혜택 이름")
     desc = models.TextField(null=True, blank=True, help_text="기타")
@@ -75,6 +75,8 @@ class SponsorLevel(models.Model):
 
 class BenefitByLevel(models.Model):
     class Meta:
+        verbose_name = "후원사 등급별 혜택"
+        verbose_name_plural = "후원사 등급별 혜택 목록"
         constraints = [
             models.UniqueConstraint(
                 fields=["benefit_id", "level_id"], name="IX_BENEFIT_BY_LEVEL_1"
