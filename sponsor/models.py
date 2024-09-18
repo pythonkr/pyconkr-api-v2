@@ -17,7 +17,7 @@ class SponsorBenefit(models.Model):
 
     name = models.CharField(max_length=255, help_text="혜택 이름")
     desc = models.TextField(null=True, blank=True, help_text="기타")
-    unit = models.CharField(max_length=10, help_text="혜택 단위")
+    unit = models.CharField(max_length=10, null=True, blank=True, help_text="혜택 단위")
     year = models.IntegerField(default=2023)
     is_countable = models.BooleanField(
         default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
@@ -92,7 +92,13 @@ class BenefitByLevel(models.Model):
     level = models.ForeignKey(
         SponsorLevel, on_delete=models.CASCADE, related_name="benefit_by_level"
     )
-    offer = models.PositiveIntegerField(help_text="제공 하는 혜택 개수")
+    offer = models.PositiveIntegerField(null=True, help_text="제공 하는 혜택 개수")
+    uncountable_offer = models.TextField(
+        null=True, blank=True, help_text="셀 수 없는 혜택"
+    )
+
+    def __str__(self):
+        return f"{self.level!s} - {self.benefit!s}"
 
 
 def registration_file_upload_to(instance, filename):
