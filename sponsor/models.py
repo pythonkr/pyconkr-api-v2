@@ -92,7 +92,9 @@ class BenefitByLevel(models.Model):
     level = models.ForeignKey(
         SponsorLevel, on_delete=models.CASCADE, related_name="benefit_by_level"
     )
-    offer = models.PositiveIntegerField(null=True, help_text="제공 하는 혜택 개수")
+    offer = models.PositiveIntegerField(
+        null=True, blank=True, help_text="제공 하는 혜택 개수"
+    )
     uncountable_offer = models.TextField(
         null=True, blank=True, help_text="셀 수 없는 혜택"
     )
