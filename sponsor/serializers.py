@@ -42,7 +42,15 @@ class SponsorBenefitWithOfferSerializer(SponsorBenefitSerializer):
 
     class Meta:
         model = BenefitByLevel
-        fields = ["id", "name", "desc", "unit", "is_countable", "offer"]
+        fields = [
+            "id",
+            "name",
+            "desc",
+            "unit",
+            "is_countable",
+            "offer",
+            "uncountable_offer",
+        ]
 
     def get_benefit_id(self, obj):
         breakpoint()
