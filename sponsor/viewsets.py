@@ -40,7 +40,7 @@ class SponsorLevelViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
-        return SponsorLevel.objects.get_queryset()
+        return SponsorLevel.objects.filter(year=self.request.version).get_queryset()
 
     def get_serializer_class(self):
         match self.action:
@@ -159,7 +159,7 @@ class SponsorRemainingAccountViewSet(ModelViewSet):
     http_method_names = ["get"]
 
     def get_queryset(self):
-        return SponsorLevel.objects.all()
+        return SponsorLevel.objects.filter(year=self.request.version).all()
 
     def list(self, request, *args, **kwargs):
         queryset = SponsorLevel.objects.all().order_by("-price")
