@@ -5,29 +5,28 @@ from sorl.thumbnail import ImageField as SorlImageField
 User = get_user_model()
 
 
-class SponsorLevelManager(models.Manager):
-    def get_queryset(self):
-        return super(SponsorLevelManager, self).get_queryset().all().order_by("order")
-
-
 class SponsorBenefit(models.Model):
     class Meta:
-        verbose_name = "후원사 등급 별 혜택"
-        verbose_name_plural = "후원사 등급 별 혜택 목록"
+        verbose_name = "후원사 혜택"
+        verbose_name_plural = "후원사 혜택 목록"
 
     name = models.CharField(max_length=255, help_text="혜택 이름")
     desc = models.TextField(null=True, blank=True, help_text="기타")
-    unit = models.CharField(max_length=10, help_text="혜택 단위")
+    unit = models.CharField(max_length=10, null=True, blank=True, help_text="혜택 단위")
     year = models.IntegerField(default=2023)
     is_countable = models.BooleanField(
         default=True, help_text="제공 하는 혜택이 셀 수 있는지 여부"
     )
+
+    def __str__(self):
+        return self.name
 
 
 class SponsorLevel(models.Model):
     class Meta:
         verbose_name = "후원사 등급"
         verbose_name_plural = "후원사 등급"
+        ordering = ["order"]
 
     name = models.CharField(
         max_length=255, blank=True, default="", help_text="후원 등급명"
@@ -48,8 +47,6 @@ class SponsorLevel(models.Model):
     benefits = models.ManyToManyField(
         SponsorBenefit, through="BenefitByLevel", related_name="level"
     )
-
-    objects = SponsorLevelManager()
 
     @property
     def current_remaining_number(self):
@@ -75,6 +72,8 @@ class SponsorLevel(models.Model):
 
 class BenefitByLevel(models.Model):
     class Meta:
+        verbose_name = "후원사 등급별 혜택"
+        verbose_name_plural = "후원사 등급별 혜택 목록"
         constraints = [
             models.UniqueConstraint(
                 fields=["benefit_id", "level_id"], name="IX_BENEFIT_BY_LEVEL_1"
@@ -87,7 +86,15 @@ class BenefitByLevel(models.Model):
     level = models.ForeignKey(
         SponsorLevel, on_delete=models.CASCADE, related_name="benefit_by_level"
     )
-    offer = models.PositiveIntegerField(help_text="제공 하는 혜택 개수")
+    offer = models.PositiveIntegerField(
+        null=True, blank=True, help_text="제공 하는 혜택 개수"
+    )
+    uncountable_offer = models.TextField(
+        null=True, blank=True, help_text="셀 수 없는 혜택"
+    )
+
+    def __str__(self):
+        return f"{self.level!s} - {self.benefit!s}"
 
 
 def registration_file_upload_to(instance, filename):
