@@ -2,6 +2,7 @@ from typing import Type
 
 from django.db.transaction import atomic
 
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from django.db.utils import IntegrityError
 from rest_framework import mixins, status, viewsets
@@ -53,9 +54,12 @@ class SponsorLevelViewSet(ModelViewSet):
 
     @action(detail=False, methods=["GET"], url_path="with-sponsor")
     def list_with_levels(self, request, version):
-        serializer = self.get_serializer(
-            self.get_queryset().filter(sponsor__paid_at__isnull=False), many=True
+        queryset = self.get_queryset().prefetch_related(
+            Prefetch(
+                "sponsor_set", queryset=Sponsor.objects.filter(paid_at__isnull=False)
+            )
         )
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=["POST"])
