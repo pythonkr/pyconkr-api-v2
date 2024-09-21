@@ -12,6 +12,7 @@ Markdown==3.4.1
 mysql-connector-python==8.0.32
 mysqlclient==2.2.4
 sqlparse==0.4.3
+setuptools==74.1.2
 tzdata==2022.7
 sorl-thumbnail==12.9.0
 django-summernote==0.8.20.0
