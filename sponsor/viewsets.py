@@ -53,7 +53,9 @@ class SponsorLevelViewSet(ModelViewSet):
 
     @action(detail=False, methods=["GET"], url_path="with-sponsor")
     def list_with_levels(self, request, version):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
+        serializer = self.get_serializer(
+            self.get_queryset().filter(sponsor__paid_at__isnull=False), many=True
+        )
         return Response(serializer.data)
 
     @action(detail=False, methods=["POST"])
