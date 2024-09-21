@@ -5,11 +5,6 @@ from sorl.thumbnail import ImageField as SorlImageField
 User = get_user_model()
 
 
-class SponsorLevelManager(models.Manager):
-    def get_queryset(self):
-        return super(SponsorLevelManager, self).get_queryset().all().order_by("order")
-
-
 class SponsorBenefit(models.Model):
     class Meta:
         verbose_name = "후원사 혜택"
@@ -31,6 +26,7 @@ class SponsorLevel(models.Model):
     class Meta:
         verbose_name = "후원사 등급"
         verbose_name_plural = "후원사 등급"
+        ordering = ["order"]
 
     name = models.CharField(
         max_length=255, blank=True, default="", help_text="후원 등급명"
@@ -51,8 +47,6 @@ class SponsorLevel(models.Model):
     benefits = models.ManyToManyField(
         SponsorBenefit, through="BenefitByLevel", related_name="level"
     )
-
-    objects = SponsorLevelManager()
 
     @property
     def current_remaining_number(self):

@@ -40,7 +40,7 @@ class SponsorLevelViewSet(ModelViewSet):
     http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
-        return SponsorLevel.objects.filter(year=self.request.version).get_queryset()
+        return SponsorLevel.objects.filter(year=self.request.version).all()
 
     def get_serializer_class(self):
         match self.action:
