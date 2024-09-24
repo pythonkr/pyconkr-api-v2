@@ -1,26 +1,25 @@
 from typing import Type
 
-from django.db.transaction import atomic
-
 from django.db.models import Prefetch
-from django.shortcuts import get_object_or_404
+from django.db.transaction import atomic
 from django.db.utils import IntegrityError
+from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status, viewsets
-from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
-from sponsor.models import Patron, Sponsor, SponsorLevel, SponsorBenefit, BenefitByLevel
+from sponsor.models import BenefitByLevel, Patron, Sponsor, SponsorBenefit, SponsorLevel
 from sponsor.permissions import IsOwnerOrReadOnly, OwnerOnly
 from sponsor.serializers import (
+    BenefitByLevelSerializer,
     PatronListSerializer,
+    SponsorBenefitSerializer,
     SponsorDetailSerializer,
+    SponsorLevelSerializer,
     SponsorListSerializer,
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
-    SponsorLevelSerializer,
-    SponsorBenefitSerializer,
-    BenefitByLevelSerializer,
     SponsorWithLevelSerializer,
 )
 from sponsor.slack import send_new_sponsor_notification
@@ -175,7 +174,7 @@ class SponsorRemainingAccountViewSet(ModelViewSet):
 
 
 class PatronListViewSet(ViewSet):
-    def list(self, request):
+    def list(self, request, *args, **kwargs):
         queryset = Patron.objects.all()
         serializer = PatronListSerializer(queryset, many=True)
         return Response(serializer.data)
