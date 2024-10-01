@@ -219,6 +219,16 @@ SPECTACULAR_SETTINGS = {
     "PREPROCESSING_HOOKS": ["pyconkr.openapi.preprocessing_filter_spec"],
 }
 
+
+# cache for django localmem
+# https://docs.djangoproject.com/en/5.1/topics/cache/#local-memory-caching
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "pyconkr-api-v2",
+    }
+}
+
 # CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = (
     "https://2023.pycon.kr",
