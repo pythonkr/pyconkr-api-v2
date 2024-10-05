@@ -67,7 +67,7 @@ class SponsorLevel(models.Model):
         return Sponsor.objects.filter(level=self, submitted=True, accepted=True).count()
 
     def __str__(self):
-        return self.name
+        return f"({self.year}) {self.name}"
 
 
 class BenefitByLevel(models.Model):
