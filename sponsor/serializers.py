@@ -82,10 +82,6 @@ class SponsorSerializer(serializers.ModelSerializer):
 
 
 class SponsorLevelSerializer(serializers.ModelSerializer):
-    benefits = SponsorBenefitWithOfferSerializer(
-        many=True, read_only=True, source="benefit_by_level"
-    )
-
     class Meta:
         model = SponsorLevel
         fields = [
@@ -96,9 +92,17 @@ class SponsorLevelSerializer(serializers.ModelSerializer):
             "price",
             "limit",
             "order",
-            "benefits",
         ]
         read_only_fields = ["id"]
+
+
+class SponsorLevelWithBenefitSerializer(SponsorLevelSerializer):
+    benefits = SponsorBenefitWithOfferSerializer(
+        many=True, read_only=True, source="benefit_by_level"
+    )
+
+    class Meta(SponsorLevelSerializer.Meta):
+        fields = SponsorLevelSerializer.Meta.fields + ["benefits"]
 
 
 class SponsorSummariesSerializer(serializers.ModelSerializer):
