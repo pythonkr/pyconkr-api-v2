@@ -16,11 +16,11 @@ from sponsor.serializers import (
     PatronListSerializer,
     SponsorBenefitSerializer,
     SponsorDetailSerializer,
-    SponsorLevelSerializer,
     SponsorListSerializer,
     SponsorRemainingAccountSerializer,
     SponsorSerializer,
     SponsorWithLevelSerializer,
+    SponsorLevelWithBenefitSerializer,
 )
 from sponsor.slack import send_new_sponsor_notification
 from sponsor.validators import SponsorValidater
@@ -49,7 +49,7 @@ class SponsorLevelViewSet(ModelViewSet):
             case "list_with_levels":
                 return SponsorWithLevelSerializer
             case _:
-                return SponsorLevelSerializer
+                return SponsorLevelWithBenefitSerializer
 
     @action(detail=False, methods=["GET"], url_path="with-sponsor")
     def list_with_levels(self, request, version):
