@@ -20,7 +20,6 @@ class SponsorAdmin(SummernoteModelAdmin):
         "submitted",
         "accepted",
         "paid_at",
-        "year",
     )
     list_filter = ("accepted", "submitted", "paid_at")
     ordering = ("-created_at",)
