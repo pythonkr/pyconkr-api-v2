@@ -13,17 +13,28 @@ ALLOWED_HOSTS += [
 ]
 
 # RDS
-DATABASES = {
-    "default": {
-        # "ENGINE": "mysql.connector.django",
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("AWS_RDS_DATABASE"),
-        "USER": os.getenv("AWS_RDS_USER_ID"),
-        "PASSWORD": os.getenv("AWS_RDS_PW"),
-        "HOST": os.getenv("AWS_RDS_HOST"),
-        "PORT": os.getenv("AWS_RDS_PORT"),
+if os.environ.get("AWS_PSQL_HOST"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": os.getenv("AWS_PSQL_HOST"),
+            "PORT": os.getenv("AWS_PSQL_PORT"),
+            "NAME": os.getenv("AWS_PSQL_DATABASE"),
+            "USER": os.getenv("AWS_PSQL_USER_ID"),
+            "PASSWORD": os.getenv("AWS_PSQL_PW"),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.getenv("AWS_RDS_DATABASE"),
+            "USER": os.getenv("AWS_RDS_USER_ID"),
+            "PASSWORD": os.getenv("AWS_RDS_PW"),
+            "HOST": os.getenv("AWS_RDS_HOST"),
+            "PORT": os.getenv("AWS_RDS_PORT"),
+        }
+    }
 
 # django-storages: S3
 del MEDIA_ROOT
